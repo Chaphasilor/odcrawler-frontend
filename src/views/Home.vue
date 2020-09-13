@@ -11,7 +11,7 @@
 
     <ResultList
       class="w-5/6 m-auto h-full bg-red-500"
-      :results="results"
+      :results="results.hits"
     />
     
   </div>
@@ -51,7 +51,7 @@ export default {
   mounted() {
 
     this.$store.dispatch(`loadStats`);
-    
+
   }
 }
 </script>

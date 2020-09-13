@@ -46,7 +46,7 @@ export default new Vuex.Store({
         stats = await api.retrieveStats();
       } catch (err) {
         console.warn(err);
-        throw new Error(`Couldn't load results!`);
+        throw new Error(`Couldn't load stats!`);
       }
 
       context.commit('UPDATE_STATS', stats);

@@ -4,7 +4,8 @@ export default class API {
 
     this.baseUrl = baseUrl;
     this.apiEndpoint = `${this.baseUrl}/meili/indexes/links`;
-    
+    this.apiKey = process.env.VUE_APP_API_KEY;
+
   }
 
   parseResult(rawResults) {
@@ -36,6 +37,9 @@ export default class API {
         fetch(this.apiEndpoint + `/search?q=${query}`, {
           mode: 'cors',
           method: 'GET',
+          headers: {
+            'X-Meili-API-Key': this.apiKey,
+          }
         })
         .then(response => {
           return response.json();
@@ -59,6 +63,9 @@ export default class API {
       res = fetch(this.baseUrl + `/stats.json`, {
         mode: 'cors',
         method: 'GET',
+        headers: {
+          'X-Meili-API-Key': this.apiKey,
+        }
       })
     } catch (err) {
       console.warn(err);
