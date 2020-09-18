@@ -11,7 +11,7 @@
 
     <div
       class="w-full h-auto pl-1 whitespace-pre-wrap"
-    ><a class="text-blue-600" :href="link">{{ link }}</a></div>
+    ><a class="text-blue-600 dark:text-blue-400" :href="link">{{ link }}</a></div>
     
   </div>
 </template>

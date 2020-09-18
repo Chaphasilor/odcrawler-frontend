@@ -22,12 +22,12 @@
 
           Powered by 
           <a
-            class="text-blue-600 underline"
+            class="text-blue-600 dark:text-blue-400 underline"
             href="https://github.com/KoalaBear84/OpenDirectoryDownloader/"
           >OpenDirectoryDownloader</a>
           and 
           <a
-            class="text-blue-600 underline"
+            class="text-blue-600 dark:text-blue-400 underline"
             href="https://www.meilisearch.com/"
           >MeiliSearch</a>
 
@@ -35,7 +35,7 @@
       </div>
 
       <SearchField
-        :class="`${initialPosition ? `mx-auto my-20` : `ml-0`} w-3/4 lg:w-192 h-12`"
+        :class="`${initialPosition ? `mx-auto my-20` : `ml-0`} w-3/4 lg:w-192 h-12 `"
         v-model="searchQuery"
         @keydown.enter.native="search(searchQuery)"
       />

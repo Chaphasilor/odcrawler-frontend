@@ -2,7 +2,7 @@
   <div>
 
     <input
-      class="w-full h-full p-4 text-left border-2 border-gray-600 rounded-xl outline-none focus:border-green-400"
+      class="w-full h-full bg-white dark:bg-gray-700 p-4 text-left text-black dark:text-gray-100 placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 rounded-xl outline-none focus:border-green-400"
       placeholder="Search in all open directories..."
       type="search"
       :value="value"

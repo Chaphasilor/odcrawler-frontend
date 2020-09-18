@@ -6,6 +6,9 @@ module.exports = {
       './src/**/*.vue'
     ]
   },
+  experimental: {
+    darkModeVariant: true,
+  },
   theme: {
     borderRadius: {
       'lg': '15px',
