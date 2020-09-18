@@ -1,16 +1,49 @@
 <template>
-  <div>
+  <div
+    class="w-full h-full p-4"
+  >
 
-    {{ stats }}
+    <div
+      :class="`${initialPosition ? `w-full h-full flex-col justify-center` : `flex-row justify-start mb-4`} flex`"
+    >
 
-    <SearchField
-      class="w-1/2 h-12 m-auto my-20"
-      v-model="searchQuery"
-      @keydown.enter.native="search(searchQuery)"
-    />
+      <div
+        :class="`${initialPosition ? `w-full text-center` : `w-20 text-left` } flex-shrink-0`"
+      >
+        <h1
+          class="text-3xl font-semibold"
+        >
+          {{ initialPosition ? `ODCrawler` : `ODC` }}
+        </h1>
+        <h2
+          v-if="initialPosition"
+          class="text-base"
+        >
+
+          Powered by 
+          <a
+            class="text-blue-600 underline"
+            href="https://github.com/KoalaBear84/OpenDirectoryDownloader/"
+          >OpenDirectoryDownloader</a>
+          and 
+          <a
+            class="text-blue-600 underline"
+            href="https://www.meilisearch.com/"
+          >MeiliSearch</a>
+
+        </h2>
+      </div>
+
+      <SearchField
+        :class="`${initialPosition ? `mx-auto my-20` : `ml-0`} w-3/4 lg:w-192 h-12`"
+        v-model="searchQuery"
+        @keydown.enter.native="search(searchQuery)"
+      />
+
+    </div>
 
     <ResultList
-      class="w-5/6 m-auto h-full bg-red-500"
+      class="w-full h-auto flex flex-row justify-start"
       :results="results.hits"
     />
     
@@ -30,6 +63,7 @@ export default {
   },
   data: function() {
     return {
+      initialPosition: true,
       searchQuery: ``,
     };
   },
@@ -45,6 +79,7 @@ export default {
     search(query) {
 
       this.$store.dispatch(`search`, { query });
+      this.initialPosition = false;
       
     }
   },

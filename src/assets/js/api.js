@@ -60,11 +60,11 @@ export default class API {
     let res, stats;
 
     try {
-      res = fetch(this.baseUrl + `/stats.json`, {
+      res = await fetch(this.baseUrl + `/stats.json`, {
         mode: 'cors',
         method: 'GET',
         headers: {
-          'X-Meili-API-Key': this.apiKey,
+          // 'X-Meili-API-Key': this.apiKey,
         }
       })
     } catch (err) {
