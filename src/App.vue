@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="absolute w-full h-full dark bg-gray-100 dark:bg-gray-900 dark:text-gray-100"
+    class="absolute w-full h-full dark:text-gray-100 font-quicksand"
   >
 
     <router-view />

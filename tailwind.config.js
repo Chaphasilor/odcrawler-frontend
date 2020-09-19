@@ -19,6 +19,8 @@ module.exports = {
       backgroundColor: {
       },
       fontFamily: {
+        'quicksand': ['Quicksand', 'serif', 'system-ui'],
+        'quicksand-bold': ['QuicksandBold', 'serif', 'system-ui'],
       },
       boxShadow: {
       },
@@ -42,6 +44,9 @@ module.exports = {
       },
       height: {
       },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+      }
     }, 
   },
   variants: {},

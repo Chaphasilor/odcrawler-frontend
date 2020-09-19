@@ -12,14 +12,14 @@
       >
 
         <div
-          class="w-20 px-2 text-right flex-shrink-0"
+          class="w-20 p-2 text-right flex-shrink-0"
         >
           {{ (id % pageSize === 0) ? `${Math.ceil( (id+1) / pageSize )} / ${Math.floor(results.length/pageSize)}` : `` }}
         </div>
 
 
         <LinkRow
-          class="w-full p-2 border border-black rounded-lg"
+          class="w-full p-2 border border-black dark:border-gray-700 rounded-lg"
           :link="link.url"
           :size="link.size"
         />

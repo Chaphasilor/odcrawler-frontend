@@ -11,7 +11,19 @@
 
     <div
       class="w-full h-auto pl-1 whitespace-pre-wrap"
-    ><a class="text-blue-600 dark:text-blue-400" :href="link">{{ link }}</a></div>
+    >
+
+      <span
+        v-for="(sublink, index) of sublinks"
+        :key="index"
+        class=""
+      ><a
+          class="text-blue-600 dark:text-blue-400"
+          :href="sublink.link"
+        >{{sublink.name}}</a><span v-if="index != sublinks.length-1"> / </span></span>
+    
+      <!-- <a class="text-blue-600 dark:text-blue-400" :href="link">{{ link }}</a> -->
+    </div>
     
   </div>
 </template>
@@ -31,6 +43,11 @@ export default {
       }
     },
   },
+  computed: {
+    sublinks: function() {
+      return this.generateSublinks(this.link);
+    }
+  },
   methods: {
     formatBytes(bytes, decimals = 2) {
 
@@ -44,7 +61,36 @@ export default {
     
       return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ` ` + sizes[i];
 
-    }
+    },
+    generateSublinks(link) {
+
+      let parts = link.split(`/`);
+      parts.unshift(parts.splice(0, 3).join(`/`));
+
+      parts = parts.map((part, index, arr) => {
+        return {
+          name: part,
+          link: arr.reduce((sum, curr, innerIndex) => {
+            if (innerIndex <= index) {
+              return innerIndex == 0 ? curr : `${sum}/${curr}`; 
+            } else {
+              return sum;
+            }
+          }, ``),
+        }
+      })
+
+      console.log(`parts:`, parts);
+      
+      return parts;
+
+    },
+    
+  },
+  mounted() {
+
+    this.generateSublinks(this.link);
+    
   }
 }
 </script>
