@@ -17,6 +17,7 @@ module.exports = {
       colors: {
       },
       backgroundColor: {
+        
       },
       fontFamily: {
         'quicksand': ['Quicksand', 'serif', 'system-ui'],

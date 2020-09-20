@@ -7,10 +7,8 @@
       class="w-14 mr-1 text-right flex-shrink-0"
     >{{ formatBytes(size) }}</div>
 
-    |
-
     <div
-      class="w-full h-auto pl-1 whitespace-pre-wrap"
+      class="w-full h-auto pl-1 whitespace-pre-wrap break-all"
     >
 
       <span
@@ -20,9 +18,22 @@
       ><a
           class="text-blue-600 dark:text-blue-400"
           :href="sublink.link"
-        >{{sublink.name}}</a><span v-if="index != sublinks.length-1"> / </span></span>
+        ><text-highlight
+          :queries="highlights"
+          :caseSensitive="false"
+          highlightClass="text-red-500"
+          highlightComponent="span"
+        >{{sublink.name}}</text-highlight></a><span v-if="index != sublinks.length-1"> / </span></span>
     
-      <!-- <a class="text-blue-600 dark:text-blue-400" :href="link">{{ link }}</a> -->
+    </div>
+
+    <div
+      class="w-14 ml-1 text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
+    >
+      <button
+        class="focus:outline-none"
+        @click="copyLinkToClipboard"
+      >Copy Link</button>
     </div>
     
   </div>
@@ -42,6 +53,17 @@ export default {
         return 0;
       }
     },
+    highlights: {
+      type: Array,
+      default: function() {
+        return ``;
+      }
+    },
+  },
+  data: function() {
+    return {
+      copied: false,
+    }
   },
   computed: {
     sublinks: function() {
@@ -80,16 +102,20 @@ export default {
         }
       })
 
-      console.log(`parts:`, parts);
-      
       return parts;
 
     },
-    
+    copyLinkToClipboard() {
+
+      navigator.clipboard.writeText(this.link)
+      
+    } 
   },
   mounted() {
 
     this.generateSublinks(this.link);
+
+    console.log(`this.highlights:`, this.highlights);
     
   }
 }

@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div
+    v-infinite-scroll="() => this.$emit(`end-of-list`)"
+    infinite-scroll-distance="5"
+    infinite-scroll-throttle-delay="500"
+  >
 
     <div
       class="flex flex-col overflow-auto"
@@ -7,20 +11,21 @@
 
       <div
         class="w-full mb-2 flex flex-row"
-        v-for="(link, id) of results"
+        v-for="(link, id) of results.hits"
         :key="id"
       >
 
         <div
           class="w-20 p-2 text-right flex-shrink-0"
         >
-          {{ (id % pageSize === 0) ? `${Math.ceil( (id+1) / pageSize )} / ${Math.floor(results.length/pageSize)}` : `` }}
+          {{ (id % pageSize === 0) ? `${Math.ceil( (id+1) / pageSize )} / ${Math.floor(results.totalHits/pageSize)}` : `` }}
         </div>
 
 
         <LinkRow
           class="w-full p-2 border border-black dark:border-gray-700 rounded-lg"
           :link="link.url"
+          :highlights="link.highlights"
           :size="link.size"
         />
 
@@ -44,10 +49,8 @@ export default {
   },
   props: {
     results: {
-      type: Array,
-      default: function() {
-        return [];
-      }
+      type: Object,
+      required: true,
     },
     pageSize: {
       type: Number,
@@ -55,6 +58,13 @@ export default {
         return 10;
       }
     },
-  }
+  },
+  // methods: {
+  //   loadNextPage() {
+
+  //     this.$emit(`end-of-list`);
+
+  //   }
+  // }
 }
 </script>

@@ -60,6 +60,7 @@
       <SearchField
         :class="`${initialPosition ? `mx-auto my-16` : `ml-0`} w-3/4 lg:w-192 h-12`"
         v-model="searchQuery"
+        :focus="initialPosition"
         :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
         @search="search(searchQuery)"
       />
@@ -75,8 +76,10 @@
 
     <ResultList
       v-if="!initialPosition"
-      class="w-full h-auto flex flex-row justify-start"
-      :results="results.hits"
+      class="w-full h-auto flex flex-row justify-start pb-32"
+      :results="results"
+      :pageSize="pageSize"
+      @end-of-list="loadNextPage"
     />
     
   </div>
@@ -109,6 +112,9 @@ export default {
     isIndexing: function() {
       return this.stats.isIndexing;
     },
+    pageSize: function() {
+      return this.$store.getters.pageSize;
+    }
   },
   methods: {
     async search(query) {
@@ -125,6 +131,11 @@ export default {
         
       }
       
+    },
+    async loadNextPage() {
+
+      this.$store.dispatch(`loadNextPage`);
+
     }
   },
   mounted() {
