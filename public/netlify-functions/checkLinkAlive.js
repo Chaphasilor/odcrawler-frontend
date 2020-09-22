@@ -25,11 +25,6 @@ exports.handler = function(event, context, callback) {
       body: `You need to provide a valid url! Recieved ${parsedBody}, ${parsedBody.url}`,
     })
   }
-
-  return callback(null, {
-    statusCode: 201,
-    body: parsedBody.url,
-  })
   
   fetch(parsedBody.url, {
     method: `HEAD`,
@@ -37,14 +32,14 @@ exports.handler = function(event, context, callback) {
 
     return callback(null, {
       statusCode: res.status,
-      body: res.ok,
+      body: `from .then: ${res.ok}`,
     })
     
   }).catch(err => {
 
     return callback(err, {
       statusCode: 500,
-      body: err.message,
+      body: `from .catch: ${err.message}`,
     })
     
   })
