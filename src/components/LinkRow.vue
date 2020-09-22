@@ -16,24 +16,51 @@
         :key="index"
         class=""
       ><a
-          class="text-blue-600 dark:text-blue-400"
+          :class="`${(index == sublinks.length-1 && alive === false) ? `line-through text-red-500` : `text-blue-600 dark:text-blue-400 hover:underline`} `"
+          :title="(index == sublinks.length-1 && alive === false) ? `This link appears to be dead...` : ``"
           :href="sublink.link"
         ><text-highlight
           :queries="highlights"
           :caseSensitive="false"
-          highlightClass="text-red-500"
+          highlightClass="bg-yellow-500 dark:bg-yellow-900"
           highlightComponent="span"
-        >{{sublink.name}}</text-highlight></a><span v-if="index != sublinks.length-1"> / </span></span>
+        >{{sublink.name}}</text-highlight></a><span v-if="index != sublinks.length-1">/</span></span>
     
     </div>
 
     <div
-      class="w-14 ml-1 text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
+      class="w-28 ml-4 text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
+    >
+      
+      <button
+        class="mx-1 px-2 rounded-full font-bold hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none"
+        @click="copyLinkToClipboard"
+      >
+        <transition
+          mode="out-in"
+          name="fade"
+          enter-active-class="transition-opacity duration-150"
+          enter-class="opacity-0"
+          enter-to-class="opacity-100"
+          leave-active-class="transition-opacity duration-150"
+          leave-class="opacity-100"
+          leave-to-class="opacity-0"
+        >
+          <span v-if="!copied" key="0">Copy Link</span>
+          <span v-if="copied" key="1" class="text-green-500">Copied!</span>
+        </transition>
+      </button>
+    </div>
+
+    <div
+      class="w-24 lg:w-auto text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
     >
       <button
-        class="focus:outline-none"
-        @click="copyLinkToClipboard"
-      >Copy Link</button>
+        class="mx-1 px-2 rounded-full font-bold hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none"
+        @click="openNewTab(`https://www.virustotal.com/gui/search/${doubleEncodedUrl}`)"
+      >
+        Scan for Viruses
+      </button>
     </div>
     
   </div>
@@ -63,15 +90,32 @@ export default {
   data: function() {
     return {
       copied: false,
+      alive: undefined,
     }
   },
   computed: {
     sublinks: function() {
       return this.generateSublinks(this.link);
+    },
+    doubleEncodedUrl: function() {
+      return encodeURIComponent(encodeURIComponent(this.link));
+    },
+  },
+  watch: {
+    copied: {
+      handler: function(newValue) {
+
+        if (newValue) {
+          setTimeout(() => {
+            this.copied = false;
+          }, 1000)
+        }
+
+      }
     }
   },
   methods: {
-    formatBytes(bytes, decimals = 2) {
+    formatBytes(bytes, decimals = 0) {
 
       if (bytes === 0) return `0 B`;
     
@@ -107,11 +151,45 @@ export default {
     },
     copyLinkToClipboard() {
 
-      navigator.clipboard.writeText(this.link)
+      navigator.clipboard.writeText(this.link);
+      this.copied = true;
       
-    } 
+    },
+    openNewTab(url) {
+      window.open(url);
+    },
+    async checkLinkAlive() {
+
+      let schroedingersLink = this.link;
+      let res;
+
+      try {
+        res = await fetch(`.netlify/functions/checkLinkAlive`, {
+          method: `POST`,
+          body: JSON.stringify({
+            url: schroedingersLink,
+          })
+        })
+      } catch (err) {
+
+        console.warn(`Couldn't check if link is alive:`, err);
+        return false;
+
+      }
+
+      console.log(`res:`, res);
+
+      if (res.ok) {
+        return true;
+      } else {
+        return false;
+      }
+      
+    }
   },
   mounted() {
+
+    this.checkLinkAlive().then(alive => this.alive = alive);
 
     this.generateSublinks(this.link);
 

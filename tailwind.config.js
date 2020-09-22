@@ -27,6 +27,7 @@ module.exports = {
       },
       borderRadius: {
         'xl': '25px',
+        'full': '9999px',
         'parent': 'inherit',
       },
       spacing: {
@@ -38,6 +39,7 @@ module.exports = {
         '1/8': '12.5%',
         '7/8': '87.5%',
         '14': '3.5rem',
+        '28': '7rem',
         '96': '24rem',
         '128': '32rem',
         '192': '48rem',
@@ -50,6 +52,8 @@ module.exports = {
       }
     }, 
   },
-  variants: {},
+  variants: {
+    backgroundColor: ({ after }) => after(['active'])
+  },
   plugins: [],
 }
