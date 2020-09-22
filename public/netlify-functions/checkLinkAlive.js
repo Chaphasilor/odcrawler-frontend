@@ -22,7 +22,7 @@ exports.handler = function(event, context, callback) {
   if (!parsedBody.url || parsedBody.url.length === 0) {
     return callback(null, {
       statusCode: 400,
-      body: `You need to provide a valid url!`,
+      body: `You need to provide a valid url! Recieved ${parsedBody}, ${parsedBody.url}`,
     })
   }
   
