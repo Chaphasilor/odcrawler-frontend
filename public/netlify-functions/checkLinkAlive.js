@@ -11,7 +11,7 @@ exports.handler = function(event, context, callback) {
   
   let parsedBody;
   try {
-    parsedBody = event.body;
+    parsedBody = JSON.parse(event.body);
   } catch (err) {
     return callback(err, {
       statusCode: 500,
@@ -25,6 +25,11 @@ exports.handler = function(event, context, callback) {
       body: `You need to provide a valid url! Recieved ${parsedBody}, ${parsedBody.url}`,
     })
   }
+
+  return callback(null, {
+    statusCode: 201,
+    body: parsedBody.url,
+  })
   
   fetch(parsedBody.url, {
     method: `HEAD`,
