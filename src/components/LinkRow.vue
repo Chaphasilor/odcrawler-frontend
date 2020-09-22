@@ -16,7 +16,8 @@
         :key="index"
         class=""
       ><a
-          class="text-blue-600 dark:text-blue-400"
+          :class="`${(index == sublinks.length-1 && alive === false) ? `line-through text-red-500` : `text-blue-600 dark:text-blue-400 hover:underline`} `"
+          :title="(index == sublinks.length-1 && alive === false) ? `This link appears to be dead...` : ``"
           :href="sublink.link"
         ><text-highlight
           :queries="highlights"
@@ -28,7 +29,7 @@
     </div>
 
     <div
-      class="w-14 ml-1 text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
+      class="w-20 ml-1 pl-1 text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
     >
       <button
         class="focus:outline-none"
@@ -63,6 +64,7 @@ export default {
   data: function() {
     return {
       copied: false,
+      alive: undefined,
     }
   },
   computed: {
@@ -71,7 +73,7 @@ export default {
     }
   },
   methods: {
-    formatBytes(bytes, decimals = 2) {
+    formatBytes(bytes, decimals = 0) {
 
       if (bytes === 0) return `0 B`;
     
@@ -109,9 +111,43 @@ export default {
 
       navigator.clipboard.writeText(this.link)
       
-    } 
+    },
+    async checkLinkAlive() {
+
+      let schroedingersLink = this.link;
+      let res;
+
+      try {
+        // res = await fetch(schroedingersLink, {
+        //   method: `HEAD`,
+        //   mode: `no-cors`,
+        // })
+        res = await fetch(`.netlify/functions/checkLinkAlive`, {
+          method: `POST`,
+          body: JSON.stringify({
+            url: schroedingersLink,
+          })
+        })
+      } catch (err) {
+
+        console.warn(`Couldn't check if link is alive:`, err);
+        return false;
+
+      }
+
+      console.log(`res:`, res);
+
+      if (res.ok) {
+        return true;
+      } else {
+        return false;
+      }
+      
+    }
   },
   mounted() {
+
+    this.checkLinkAlive().then(alive => this.alive = alive);
 
     this.generateSublinks(this.link);
 
