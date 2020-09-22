@@ -32,14 +32,14 @@ exports.handler = function(event, context, callback) {
 
     return callback(null, {
       statusCode: res.status,
-      body: `from .then: ${res.ok}`,
+      body: res.ok,
     })
     
   }).catch(err => {
 
     return callback(err, {
       statusCode: 500,
-      body: `from .catch: ${err.message}`,
+      body: err.message,
     })
     
   })
