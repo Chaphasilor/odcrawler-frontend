@@ -11,7 +11,7 @@ exports.handler = function(event, context, callback) {
   
   let parsedBody;
   try {
-    parsedBody = JSON.parse(event.body);
+    parsedBody = event.body;
   } catch (err) {
     return callback(err, {
       statusCode: 500,
