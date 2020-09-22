@@ -118,10 +118,6 @@ export default {
       let res;
 
       try {
-        // res = await fetch(schroedingersLink, {
-        //   method: `HEAD`,
-        //   mode: `no-cors`,
-        // })
         res = await fetch(`.netlify/functions/checkLinkAlive`, {
           method: `POST`,
           body: JSON.stringify({
