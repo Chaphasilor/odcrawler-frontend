@@ -32,7 +32,7 @@ exports.handler = function(event, context, callback) {
 
     return callback(null, {
       statusCode: res.status,
-      body: res.ok,
+      body: String(res.ok),
     })
     
   }).catch(err => {
