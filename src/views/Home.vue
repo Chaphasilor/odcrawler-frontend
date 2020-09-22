@@ -79,6 +79,7 @@
       class="w-full h-auto flex flex-row justify-start pb-32"
       :results="results"
       :pageSize="pageSize"
+      :bottomText="resultListBottomText"
       @end-of-list="loadNextPage"
     />
     
@@ -100,6 +101,7 @@ export default {
     return {
       initialPosition: true,
       searchQuery: ``,
+      resultListBottomText: ``,
     };
   },
   computed: {
@@ -134,7 +136,16 @@ export default {
     },
     async loadNextPage() {
 
-      this.$store.dispatch(`loadNextPage`);
+      this.resultListBottomText = `Loading the next Page...`
+
+      try {
+
+        await this.$store.dispatch(`loadNextPage`);
+        this.resultListBottomText = ``;
+
+      } catch (err) {
+        this.resultListBottomText = `Error while loading more links :/`
+      }
 
     }
   },

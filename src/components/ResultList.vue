@@ -6,7 +6,7 @@
   >
 
     <div
-      class="flex flex-col overflow-auto"
+      class="w-full flex flex-col overflow-auto"
     >
 
       <div
@@ -18,7 +18,7 @@
         <div
           class="w-20 p-2 text-right flex-shrink-0"
         >
-          {{ (id % pageSize === 0) ? `${Math.ceil( (id+1) / pageSize )} / ${Math.floor(results.totalHits/pageSize)}` : `` }}
+          {{ (id % pageSize === 0) ? `${Math.ceil( (id+1) / pageSize )} / ${Math.floor(results.totalHits/pageSize)+1}` : `` }}
         </div>
 
 
@@ -31,9 +31,13 @@
 
       </div>
 
+      <div
+        class="w-full font-bold text-lg text-center"
+      >
+        {{ bottomText }}
+      </div>
 
     </div>
-
 
   </div>
 </template>
@@ -56,6 +60,12 @@ export default {
       type: Number,
       default: function() {
         return 10;
+      }
+    },
+    bottomText: {
+      type: String,
+      default: function() {
+        return ``;
       }
     },
   },

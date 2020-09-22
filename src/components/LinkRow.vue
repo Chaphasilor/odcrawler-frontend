@@ -29,7 +29,7 @@
     </div>
 
     <div
-      class="w-28 text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
+      class="w-28 ml-4 text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
     >
       
       <button
