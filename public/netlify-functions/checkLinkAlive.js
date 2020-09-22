@@ -2,9 +2,31 @@ const fetch = require(`node-fetch`);
 
 exports.handler = function(event, context, callback) {
 
-  event.body = JSON.parse(event.body);
+  if (event.httpMethod !== `POST`) {
+    return callback(null, {
+      statusCode: 405,
+      body: `Method not allowed!`,
+    })
+  }
   
-  fetch(event.body.url, {
+  let parsedBody;
+  try {
+    parsedBody = JSON.parse(event.body);
+  } catch (err) {
+    return callback(err, {
+      statusCode: 500,
+      body: err.message,
+    })
+  }
+
+  if (!parsedBody.url || parsedBody.url.length === 0) {
+    return callback(null, {
+      statusCode: 400,
+      body: `You need to provide a valid url!`,
+    })
+  }
+  
+  fetch(parsedBody.url, {
     method: `HEAD`,
   }).then(res => {
 
