@@ -9,6 +9,15 @@ const fetchTimeout = (url, ms, options = {}) => {
   return promise.finally(() => clearTimeout(timeout));
 };
 
+function resolveLink(url) {
+
+  let resolvedUrl = url;
+  resolvedUrl.replace(`driveindex.ga/`, `hashhackers.com`);
+  
+  return resolvedUrl;
+  
+}
+
 exports.handler = function(event, context, callback) {
 
   if (event.httpMethod !== `POST`) {
@@ -34,8 +43,10 @@ exports.handler = function(event, context, callback) {
       body: `You need to provide a valid url! Recieved ${parsedBody}, ${parsedBody.url}`,
     })
   }
+
+  let urlToCheck = resolveLink(parsedBody.url);
   
-  fetchTimeout(parsedBody.url, 9500, {
+  fetchTimeout(urlToCheck, 9500, {
     method: `HEAD`,
   }).then(res => {
 
