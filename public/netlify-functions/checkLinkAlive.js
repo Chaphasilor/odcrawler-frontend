@@ -55,6 +55,7 @@ exports.handler = function(event, context, callback) {
       body: JSON.stringify({
         isAlive: res.ok,
         sizeInBytes: res.headers.get(`Content-Length`),
+        checkedUrl: urlToCheck,
       })
     })
     
