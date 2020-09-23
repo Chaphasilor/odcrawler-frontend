@@ -1,5 +1,13 @@
 const fetch = require(`node-fetch`);
 
+// https://stackoverflow.com/a/57888548/5485777
+const fetchTimeout = (url, ms, options = {}) => {
+  const controller = new AbortController();
+  const promise = fetch(url, { signal: controller.signal, ...options });
+  const timeout = setTimeout(() => controller.abort(), ms);
+  return promise.finally(() => clearTimeout(timeout));
+};
+
 exports.handler = function(event, context, callback) {
 
   if (event.httpMethod !== `POST`) {
@@ -26,7 +34,7 @@ exports.handler = function(event, context, callback) {
     })
   }
   
-  fetch(parsedBody.url, {
+  fetchTimeout(parsedBody.url, 9500, {
     method: `HEAD`,
   }).then(res => {
 
@@ -41,7 +49,7 @@ exports.handler = function(event, context, callback) {
   }).catch(err => {
 
     return callback(err, {
-      statusCode: 500,
+      statusCode: 504, // gateway timeout
       body: err.message,
     })
     
