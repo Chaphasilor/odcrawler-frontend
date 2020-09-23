@@ -5,7 +5,7 @@
 
     <div
       class="w-14 mr-1 text-right flex-shrink-0"
-    >{{ formatBytes(size) }}</div>
+    >{{ formattedSize }}</div>
 
     <div
       class="w-full h-auto pl-1 whitespace-pre-wrap break-all"
@@ -24,7 +24,7 @@
           :caseSensitive="false"
           highlightClass="bg-yellow-500 dark:bg-yellow-900"
           highlightComponent="span"
-        >{{sublink.name}}</text-highlight></a><span v-if="index != sublinks.length-1">/</span></span>
+        >{{sublink.name}}</text-highlight></a><span v-if="index != sublinks.length-1" class="text-blue-600 dark:text-blue-400">/</span></span>
     
     </div>
 
@@ -100,6 +100,9 @@ export default {
     doubleEncodedUrl: function() {
       return encodeURIComponent(encodeURIComponent(this.link));
     },
+    formattedSize: function() {
+      return this.formatBytes(this.size);
+    }
   },
   watch: {
     copied: {

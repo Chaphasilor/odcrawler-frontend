@@ -11,13 +11,6 @@
         :class="`${initialPosition ? `w-full text-center` : `w-20 text-left` } flex-shrink-0`"
       >
 
-        <!-- <object type="image/svg+xml"
-          :data="require(`@/assets/icons/cog.svg`)"
-          v-if="initialPosition"
-          class="w-16 h-16 m-auto text-black dark:text-gray-200 animate-spin-slow"
-          src="@/assets/icons/cog.svg"
-        /> -->
-
         <svg
           v-if="initialPosition"
           class="w-20 h-20 m-auto text-black dark:text-gray-200 animate-spin-slow"
@@ -65,6 +58,42 @@
         @search="search(searchQuery)"
       />
 
+      <div
+        v-if="!initialPosition"
+        class="w-1/4 flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm font-bold flex flex-row"
+      >
+      
+        <div
+          class="h-full flex flex-col justify-center pr-2"
+        >
+          <span>TIP:</span>
+        </div>
+
+        <div
+          class="h-full flex flex-row overflow-hidden"
+        >
+          <transition
+            name="slideTips"
+            enter-active-class="transform transition-all duration-1000"
+            enter-class="translate-x-64 opacity-0"
+            enter-to-class="translate-x-0 opacity-100"
+            leave-active-class="transform transition-all duration-700 whitespace-no-wrap"
+            leave-class="translate-x-0 opacity-100"
+            leave-to-class="-translate-x-64 opacity-0 w-0"
+          >
+          <div
+            v-if="index == activeTipIndex"
+            class="h-auto flex flex-col justify-center break-words leading-4"
+            v-for="(tip, index) of tips"
+            :key="index"
+          >
+            <span>{{ tip }}</span>
+          </div>
+          </transition>
+        </div>
+
+      </div>
+
       <p
         v-if="initialPosition"
         class="w-3/4 lg:w-192 mx-auto px-10 text-center text-xs italic text-gray-600 dark:text-gray-600"
@@ -102,6 +131,13 @@ export default {
       initialPosition: true,
       searchQuery: ``,
       resultListBottomText: ``,
+      activeTipIndex: 0,
+      tips: [
+        `You can click on subpaths to jump to the corresponing folder!`,
+        `Striked-through links are most likely dead!`,
+        `You can see the amount of pages on the left side of the links!`
+      ],
+      tipTimer: undefined,
     };
   },
   computed: {
@@ -116,8 +152,21 @@ export default {
     },
     pageSize: function() {
       return this.$store.getters.pageSize;
-    }
+    },
   },
+  // watch: {
+  //   currentTip: {
+  //     handler: function() {
+  //       console.log(`TEEEEST`)
+  //       setTimeout(() => {
+  //         let currentIndex = this.tips.indexOf(this.currentTip);
+  //         console.log(`currentIndex:`, currentIndex);
+  //         console.log(`this.currentTip:`, this.currentTip);
+  //         this.currentTip = currentIndex < this.tips.length-1 ? this.tips[currentIndex+1] : this.tips[0];
+  //       }, 7000);
+  //     }
+  //   }
+  // },
   methods: {
     async search(query) {
 
@@ -147,16 +196,29 @@ export default {
         this.resultListBottomText = `Error while loading more links :/`
       }
 
-    }
+    },
   },
   mounted() {
 
     // this.$store.dispatch(`loadStats`);
+    this.currentTip = this.tips[0];
+
+    // cycle through active tips
+    this.tipTimer = setInterval(() => {
+
+      this.activeTipIndex = this.activeTipIndex < this.tips.length-1 ? this.activeTipIndex+1 : 0;
+
+    }, 7000)
 
   },
   beforeMount() {
 
     this.$store.dispatch(`loadStats`);
+    
+  },
+  beforeDestroy() {
+
+    clearInterval(this.tipTimer);
     
   }
 }
