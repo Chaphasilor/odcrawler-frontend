@@ -101,7 +101,7 @@ export default {
       return encodeURIComponent(encodeURIComponent(this.link));
     },
     formattedSize: function() {
-      return this.formatBytes(this.size);
+      return this.size >= 0 ? this.formatBytes(this.size) : `N/A`;
     }
   },
   watch: {

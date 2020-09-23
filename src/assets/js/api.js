@@ -26,7 +26,7 @@ export default class API {
         id: hit.id,
         url: hit.url,
         highlights: [...new Set(hit._formatted.url.match(/(?<=<em>)(.*?)(?=<\/em>)/g))],
-        size: hit.size,
+        size: hit.size || -1,
       }
     })
   }
