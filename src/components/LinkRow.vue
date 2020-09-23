@@ -179,6 +179,10 @@ export default {
 
       console.log(`res:`, res);
 
+      if ([502, 504].includes(res.status)) {
+        return false;
+      }
+
       let body;
       try {
         body = await res.json();
