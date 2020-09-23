@@ -12,7 +12,7 @@ const fetchTimeout = (url, ms, options = {}) => {
 function resolveLink(url) {
 
   let resolvedUrl = url;
-  resolvedUrl.replace(`driveindex.ga/`, `hashhackers.com`);
+  resolvedUrl = resolvedUrl.replace(`driveindex.ga/`, `hashhackers.com/`);
   
   return resolvedUrl;
   
