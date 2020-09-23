@@ -1,4 +1,5 @@
 const fetch = require(`node-fetch`);
+const AbortController = require(`abort-controller`);
 
 // https://stackoverflow.com/a/57888548/5485777
 const fetchTimeout = (url, ms, options = {}) => {
