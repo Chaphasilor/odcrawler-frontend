@@ -32,7 +32,10 @@ exports.handler = function(event, context, callback) {
 
     return callback(null, {
       statusCode: res.status,
-      body: String(res.ok),
+      body: JSON.stringify({
+        isAlive: res.ok,
+        sizeInBytes: res.headers.get(`Content-Length`),
+      })
     })
     
   }).catch(err => {

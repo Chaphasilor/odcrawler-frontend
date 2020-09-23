@@ -158,7 +158,7 @@ export default {
     openNewTab(url) {
       window.open(url);
     },
-    async checkLinkAlive() {
+    async checkLink() {
 
       let schroedingersLink = this.link;
       let res;
@@ -179,17 +179,24 @@ export default {
 
       console.log(`res:`, res);
 
-      if (res.ok) {
-        return true;
-      } else {
-        return false;
+      let body;
+      try {
+        body = await res.json();
+      } catch (err) {
+        console.warn(`Couldn't parse JSON from response body!`);
+        return res.ok;
       }
+
+      if (body.sizeInBytes > 0) {
+        this.size = body.sizeInBytes;
+      }
+      return body.isAlive;
       
     }
   },
   mounted() {
 
-    this.checkLinkAlive().then(alive => this.alive = alive);
+    this.checkLink().then(alive => this.alive = alive);
 
     this.generateSublinks(this.link);
 
