@@ -1,6 +1,7 @@
 <template>
   <div
     v-infinite-scroll="() => this.$emit(`end-of-list`)"
+    infinite-scroll-disabled="disableInfiniteScroll"
     infinite-scroll-distance="5"
     infinite-scroll-throttle-delay="500"
   >
@@ -18,7 +19,7 @@
         <div
           class="w-20 p-2 text-right flex-shrink-0"
         >
-          {{ (id % pageSize === 0) ? `${Math.ceil( (id+1) / pageSize )} / ${Math.floor(results.totalHits/pageSize)+1}` : `` }}
+          {{ (id % pageSize === 0) ? `${Math.ceil( (id + (lowestPage)*pageSize ) / pageSize )} / ${Math.floor(results.totalHits/pageSize)+1}` : ``}}
         </div>
 
 
@@ -68,13 +69,36 @@ export default {
         return ``;
       }
     },
+    disableInfiniteScroll: {
+      type: Boolean,
+      default: function() {
+        false;
+      }
+    },
+    lowestPage: {
+      type: Number,
+      default: function() {
+        return 1;
+      }
+    },
+    scrollToInitialPage: {
+      type: Number,
+      default: function() {
+        return 1;
+      }
+    },
   },
-  // methods: {
-  //   loadNextPage() {
+  methods: {
+    smoothScrollToPage(page) {
 
-  //     this.$emit(`end-of-list`);
+      console.log(`page:`, page);
+      
+    }
+  },
+  mounted() {
 
-  //   }
-  // }
+    this.smoothScrollToPage(this.scrollToInitialPage);
+    
+  }
 }
 </script>

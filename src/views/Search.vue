@@ -73,7 +73,10 @@
       class="w-full h-auto flex flex-row justify-start pb-32"
       :results="results"
       :pageSize="pageSize"
+      :lowestPage="lowestPage"
+      :scrollToInitialPage="highestPage"
       :bottomText="resultListBottomText"
+      :disableInfiniteScroll="infiniteScrollDisabled"
       @end-of-list="loadNextPage"
     />
     
@@ -102,6 +105,9 @@ export default {
         `You can see the amount of pages on the left side of the links!`
       ],
       tipTimer: undefined,
+      lowestPage: 0,
+      highestPage: 0,
+      loadingResults: false,
     };
   },
   computed: {
@@ -117,33 +123,60 @@ export default {
     pageSize: function() {
       return this.$store.getters.pageSize;
     },
+    infiniteScrollDisabled: function() {
+      return this.loadingResults || this.highestPage === 0;
+    }
   },
   methods: {
-    async search(query) {
+    async search(query, page = 1) {
 
       try {
 
-        await this.$store.dispatch(`search`, { query });
+        this.loadingResults = true;
+        await this.$store.dispatch(`search`, { query, page });
+        this.lowestPage = page;
+        console.log(`this.lowestPage:`, this.lowestPage);
+        this.highestPage = page;
+        return true;
 
       } catch (err) {
 
         console.error(err);
         alert(`Couldn't load search results :/`);
+        return false;
         
+      } finally {
+        this.loadingResults = false;
       }
       
     },
     async loadNextPage() {
 
+      if (this.lowestPage == 0) {
+        return;
+      }
+
       this.resultListBottomText = `Loading the next Page...`
 
       try {
 
+        this.loadingResults = true;
         await this.$store.dispatch(`loadNextPage`);
+        this.highestPage = this.highestPage + 1;
+
+        this.$router.push({
+          path: this.$router.path,
+          query: {
+            p: this.highestPage,
+          }
+        })
+        
         this.resultListBottomText = ``;
 
       } catch (err) {
         this.resultListBottomText = `Error while loading more links :/`
+      } finally {
+        this.loadingResults = false;
       }
 
     },
@@ -156,9 +189,18 @@ export default {
   mounted() {
 
     this.searchQuery = this.$route.params.query
+    this.lowestPage = Number(this.$route.query.p) || 0;
 
     if (this.searchQuery !== ``) {
-      this.search(this.searchQuery);
+      
+      if (this.lowestPage > 1) {
+        this.search(this.searchQuery, this.lowestPage).then(success => {
+          console.log(`success:`, success);
+          //TODO smooth-scroll to requested page
+        })
+      } else {
+        this.search(this.searchQuery);
+      }
     }
 
     this.currentTip = this.tips[0];
