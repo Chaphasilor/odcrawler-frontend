@@ -10,8 +10,16 @@ var api = new API(baseUrl);
 
 export default new Vuex.Store({
   state: {
-    results: [],
-    stats: {},
+    results: {
+      query: ``,
+      hits: [],
+      totalHits: 0,
+    },
+    stats: {
+      totalIndexed: 0,
+      isIndexing: false,
+      types: {},
+    },
     pageSize: 20,
   },
   mutations: {
