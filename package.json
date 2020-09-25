@@ -13,6 +13,7 @@
     "postcss": "^7.0.32",
     "tailwindcss": "^1.8.8",
     "vue": "^2.6.11",
+    "vue-headful": "^2.1.0",
     "vue-infinite-scroll": "^2.0.2",
     "vue-router": "^3.4.3",
     "vue-text-highlight": "^2.0.10",

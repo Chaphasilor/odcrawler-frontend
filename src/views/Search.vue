@@ -3,6 +3,10 @@
     class="w-full h-full p-4"
   >
 
+    <vue-headful
+      :title="pageTitle"
+    />
+
     <div
       class="flex flex-row justify-start mb-4"
     >
@@ -125,6 +129,9 @@ export default {
     },
     infiniteScrollDisabled: function() {
       return this.loadingResults || this.highestPage === 0;
+    },
+    pageTitle: function() {
+      return this.searchQuery === `` ? `ODCrawler - Search` : `ODCrawler - ${this.searchQuery}${this.highestPage > 1 ? ` (${this.highestPage})` : ``}`;
     }
   },
   methods: {
