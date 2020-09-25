@@ -135,8 +135,17 @@ export default {
         this.loadingResults = true;
         await this.$store.dispatch(`search`, { query, page });
         this.lowestPage = page;
-        console.log(`this.lowestPage:`, this.lowestPage);
         this.highestPage = page;
+
+        if (this.$route.query.p && Number(this.$route.query.p) != this.highestPage) {
+          this.$router.push({
+            path: this.$router.path,
+            query: {
+              p: this.highestPage,
+            }
+          })
+        }
+
         return true;
 
       } catch (err) {
