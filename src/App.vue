@@ -14,6 +14,11 @@
 export default {
   name: 'App',
   components: {
+  },
+  created() {
+
+    this.$store.dispatch(`loadStats`);
+    
   }
 }
 </script>
