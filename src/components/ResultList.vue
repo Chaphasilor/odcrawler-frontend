@@ -89,15 +89,15 @@ export default {
     },
   },
   methods: {
-    smoothScrollToPage(page) {
+    // smoothScrollToPage(page) {
 
-      console.log(`page:`, page);
+    //   console.log(`page:`, page);
       
-    }
+    // }
   },
   mounted() {
 
-    this.smoothScrollToPage(this.scrollToInitialPage);
+    // this.smoothScrollToPage(this.scrollToInitialPage);
     
   }
 }

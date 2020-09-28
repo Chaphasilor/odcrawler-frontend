@@ -37,11 +37,11 @@
       />
 
       <div
-        class="w-1/4 flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm font-bold flex flex-row"
+        class="w-1/4 flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm flex flex-row"
       >
       
         <div
-          class="h-full flex flex-col justify-center pr-2"
+          class="h-full flex flex-col justify-center pr-2 font-bold tracking-wider"
         >
           <span>TIP:</span>
         </div>
