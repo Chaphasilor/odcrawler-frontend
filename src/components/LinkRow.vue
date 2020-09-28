@@ -167,7 +167,7 @@ export default {
       let res;
 
       try {
-        res = await fetch(`.netlify/functions/checkLinkAlive`, {
+        res = await fetch(`/.netlify/functions/checkLinkAlive`, {
           method: `POST`,
           body: JSON.stringify({
             url: schroedingersLink,
