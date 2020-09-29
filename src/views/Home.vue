@@ -3,6 +3,10 @@
     class="w-full h-full p-4"
   >
 
+    <vue-headful
+      title="ODCrawler"
+    />
+
     <div
       class="w-full h-full flex-col justify-center flex"
     >
