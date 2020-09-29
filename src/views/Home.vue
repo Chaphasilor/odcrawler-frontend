@@ -99,6 +99,7 @@ export default {
   data: function() {
     return {
       searchQuery: ``,
+      resultListBottomText: ``,
     };
   },
   computed: {
