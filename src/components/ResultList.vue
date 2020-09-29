@@ -1,7 +1,7 @@
 <template>
   <div
     v-infinite-scroll="() => this.$emit(`end-of-list`)"
-    infinite-scroll-disabled="disableInfiniteScroll"
+    :infinite-scroll-disabled="disableInfiniteScroll"
     infinite-scroll-distance="5"
     infinite-scroll-throttle-delay="500"
   >
@@ -88,6 +88,13 @@ export default {
       }
     },
   },
+  watch: {
+    disableInfiniteScroll: {
+      handler: function() {
+        console.log(`this.disableInfiniteScroll:`, this.disableInfiniteScroll);
+      }
+    }
+  },
   methods: {
     // smoothScrollToPage(page) {
 
@@ -98,6 +105,7 @@ export default {
   mounted() {
 
     // this.smoothScrollToPage(this.scrollToInitialPage);
+    console.log(`this.disableInfiniteScroll:`, this.disableInfiniteScroll);
     
   }
 }

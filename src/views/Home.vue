@@ -52,10 +52,19 @@
           >MeiliSearch</a>
 
         </h2>
+
+        <iframe
+          class="m-auto mt-4"
+          src="https://github.com/sponsors/MCOfficer/button"
+          title="Sponsor MCOfficer"
+          height="35"
+          width="116"
+        ></iframe>
+        
       </div>
 
       <SearchField
-        class="mx-auto my-16 w-3/4 lg:w-192 h-12"
+        class="mx-auto my-12 w-3/4 lg:w-192 h-12"
         v-model="searchQuery"
         :focus="true"
         :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
@@ -68,7 +77,6 @@
       />
 
       <p
-        v-if="initialPosition"
         class="w-3/4 lg:w-192 mx-auto px-10 text-center text-xs italic text-gray-600 dark:text-gray-600"
       >
         Links are automatically aggregated from all over the Internet. Illegal Content may be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website.

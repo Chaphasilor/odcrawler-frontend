@@ -105,8 +105,9 @@ export default {
       activeTipIndex: 0,
       tips: [
         `You can click on subpaths to jump to the corresponing folder!`,
-        `Striked-through links are most likely dead!`,
-        `You can see the amount of pages on the left side of the links!`
+        `Strike-through'd links are most likely dead!`,
+        `You can see the amount of pages on the left side of the links!`,
+        `You can click the middle mouse button (scroll wheel) to open links in a new tab!`
       ],
       tipTimer: undefined,
       lowestPage: 0,
@@ -128,7 +129,8 @@ export default {
       return this.$store.getters.pageSize;
     },
     infiniteScrollDisabled: function() {
-      return this.loadingResults || this.highestPage === 0;
+      
+      return this.results.hits.length === 0 || (this.results.hits.length % this.pageSize) != 0 || this.loadingResults || this.highestPage === 0;
     },
     pageTitle: function() {
       return this.searchQuery === `` ? `ODCrawler - Search` : `ODCrawler - ${this.searchQuery}${this.highestPage > 1 ? ` (${this.highestPage})` : ``}`;
@@ -153,6 +155,10 @@ export default {
           })
         }
 
+        if (this.results.hits.length == 0) {
+          this.resultListBottomText = `No links found!`
+        }
+
         return true;
 
       } catch (err) {
@@ -172,6 +178,13 @@ export default {
         return;
       }
 
+      if (this.infiniteScrollDisabled) {
+
+        this.resultListBottomText = `No more links to load!`;
+        return;
+        
+      }
+
       this.resultListBottomText = `Loading the next Page...`
 
       try {
@@ -186,9 +199,13 @@ export default {
             p: this.highestPage,
           }
         })
-        
-        this.resultListBottomText = ``;
 
+        if (this.results.hits.length == 0) {
+          this.resultListBottomText = `No more links to load!`;
+        } else {
+          this.resultListBottomText = ``;
+        }
+        
       } catch (err) {
         this.resultListBottomText = `Error while loading more links :/`
       } finally {
@@ -210,10 +227,7 @@ export default {
     if (this.searchQuery !== ``) {
       
       if (this.lowestPage > 1) {
-        this.search(this.searchQuery, this.lowestPage).then(success => {
-          console.log(`success:`, success);
-          //TODO smooth-scroll to requested page
-        })
+        this.search(this.searchQuery, this.lowestPage);
       } else {
         this.search(this.searchQuery);
       }
