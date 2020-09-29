@@ -1,4 +1,22 @@
 const fetch = require(`node-fetch`);
+const AbortController = require(`abort-controller`);
+
+// https://stackoverflow.com/a/57888548/5485777
+const fetchTimeout = (url, ms, options = {}) => {
+  const controller = new AbortController();
+  const promise = fetch(url, { signal: controller.signal, ...options });
+  const timeout = setTimeout(() => controller.abort(), ms);
+  return promise.finally(() => clearTimeout(timeout));
+};
+
+function resolveLink(url) {
+
+  let resolvedUrl = url;
+  resolvedUrl = resolvedUrl.replace(`driveindex.ga/`, `hashhackers.com/`);
+  
+  return resolvedUrl;
+  
+}
 
 exports.handler = function(event, context, callback) {
 
@@ -25,20 +43,26 @@ exports.handler = function(event, context, callback) {
       body: `You need to provide a valid url! Recieved ${parsedBody}, ${parsedBody.url}`,
     })
   }
+
+  let urlToCheck = resolveLink(parsedBody.url);
   
-  fetch(parsedBody.url, {
+  fetchTimeout(urlToCheck, 9500, {
     method: `HEAD`,
   }).then(res => {
 
     return callback(null, {
       statusCode: res.status,
-      body: String(res.ok),
+      body: JSON.stringify({
+        isAlive: res.ok,
+        sizeInBytes: res.headers.get(`Content-Length`),
+        checkedUrl: urlToCheck,
+      })
     })
     
   }).catch(err => {
 
     return callback(err, {
-      statusCode: 500,
+      statusCode: 504, // gateway timeout
       body: err.message,
     })
     

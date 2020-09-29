@@ -5,7 +5,7 @@
 
     <div
       class="w-14 mr-1 text-right flex-shrink-0"
-    >{{ formatBytes(size) }}</div>
+    >{{ formattedSize }}</div>
 
     <div
       class="w-full h-auto pl-1 whitespace-pre-wrap break-all"
@@ -24,7 +24,7 @@
           :caseSensitive="false"
           highlightClass="bg-yellow-500 dark:bg-yellow-900"
           highlightComponent="span"
-        >{{sublink.name}}</text-highlight></a><span v-if="index != sublinks.length-1">/</span></span>
+        >{{sublink.name}}</text-highlight></a><span v-if="index != sublinks.length-1" class="text-blue-600 dark:text-blue-400">/</span></span>
     
     </div>
 
@@ -100,6 +100,9 @@ export default {
     doubleEncodedUrl: function() {
       return encodeURIComponent(encodeURIComponent(this.link));
     },
+    formattedSize: function() {
+      return this.size >= 0 ? this.formatBytes(this.size) : `N/A`;
+    }
   },
   watch: {
     copied: {
@@ -158,13 +161,13 @@ export default {
     openNewTab(url) {
       window.open(url);
     },
-    async checkLinkAlive() {
+    async checkLink() {
 
       let schroedingersLink = this.link;
       let res;
 
       try {
-        res = await fetch(`.netlify/functions/checkLinkAlive`, {
+        res = await fetch(`/.netlify/functions/checkLinkAlive`, {
           method: `POST`,
           body: JSON.stringify({
             url: schroedingersLink,
@@ -179,17 +182,28 @@ export default {
 
       console.log(`res:`, res);
 
-      if (res.ok) {
-        return true;
-      } else {
+      if ([502, 504].includes(res.status)) {
         return false;
       }
+
+      let body;
+      try {
+        body = await res.json();
+      } catch (err) {
+        console.warn(`Couldn't parse JSON from response body!`);
+        return res.ok;
+      }
+
+      if (body.sizeInBytes > 0) {
+        this.size = body.sizeInBytes;
+      }
+      return body.isAlive;
       
     }
   },
   mounted() {
 
-    this.checkLinkAlive().then(alive => this.alive = alive);
+    this.checkLink().then(alive => this.alive = alive);
 
     this.generateSublinks(this.link);
 

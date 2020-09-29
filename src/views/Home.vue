@@ -4,23 +4,15 @@
   >
 
     <div
-      :class="`${initialPosition ? `w-full h-full flex-col justify-center` : `flex-row justify-start mb-4`} flex`"
+      class="w-full h-full flex-col justify-center flex"
     >
 
       <div
-        :class="`${initialPosition ? `w-full text-center` : `w-20 text-left` } flex-shrink-0`"
+        class="w-full text-center flex-shrink-0"
       >
 
-        <!-- <object type="image/svg+xml"
-          :data="require(`@/assets/icons/cog.svg`)"
-          v-if="initialPosition"
-          class="w-16 h-16 m-auto text-black dark:text-gray-200 animate-spin-slow"
-          src="@/assets/icons/cog.svg"
-        /> -->
-
         <svg
-          v-if="initialPosition"
-          class="w-20 h-20 m-auto text-black dark:text-gray-200 animate-spin-slow"
+          class="w-20 h-20 m-auto text-black dark:text-gray-200"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -32,14 +24,19 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       
-        <h1
-          class="text-3xl font-semibold cursor-pointer"
-          @click="initialPosition = true; searchQuery = ``"
+        <router-link
+          :to="{
+            name: `Home`,
+          }"
         >
-          {{ initialPosition ? `ODCrawler` : `ODC` }}
-        </h1>
+          <h1
+            class="text-3xl font-semibold cursor-pointer"
+          >
+            ODCrawler
+          </h1>
+        </router-link>
+        
         <h2
-          v-if="initialPosition"
           class="text-base"
         >
 
@@ -55,18 +52,31 @@
           >MeiliSearch</a>
 
         </h2>
+
+        <iframe
+          class="m-auto mt-4"
+          src="https://github.com/sponsors/MCOfficer/button"
+          title="Sponsor MCOfficer"
+          height="35"
+          width="116"
+        ></iframe>
+        
       </div>
 
       <SearchField
-        :class="`${initialPosition ? `mx-auto my-16` : `ml-0`} w-3/4 lg:w-192 h-12`"
+        class="mx-auto my-12 w-3/4 lg:w-192 h-12"
         v-model="searchQuery"
-        :focus="initialPosition"
+        :focus="true"
         :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
-        @search="search(searchQuery)"
+        @search="$router.push({
+          name: `Search`,
+          params: {
+            query: searchQuery,
+          }
+        })"
       />
 
       <p
-        v-if="initialPosition"
         class="w-3/4 lg:w-192 mx-auto px-10 text-center text-xs italic text-gray-600 dark:text-gray-600"
       >
         Links are automatically aggregated from all over the Internet. Illegal Content may be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website.
@@ -74,90 +84,37 @@
 
     </div>
 
-    <ResultList
-      v-if="!initialPosition"
-      class="w-full h-auto flex flex-row justify-start pb-32"
-      :results="results"
-      :pageSize="pageSize"
-      :bottomText="resultListBottomText"
-      @end-of-list="loadNextPage"
-    />
-    
   </div>
 </template>
 
 <script>
 
 import SearchField from '@/components/SearchField';
-import ResultList from '@/components/ResultList';
 
 export default {
   name: `Home`,
   components: {
     SearchField,
-    ResultList,
   },
   data: function() {
     return {
-      initialPosition: true,
       searchQuery: ``,
       resultListBottomText: ``,
     };
   },
   computed: {
-    results: function() {
-      return this.$store.getters.results;
-    },
     stats: function() {
       return this.$store.getters.stats;
     },
     isIndexing: function() {
       return this.stats.isIndexing;
     },
-    pageSize: function() {
-      return this.$store.getters.pageSize;
-    }
   },
   methods: {
-    async search(query) {
 
-      try {
-
-        await this.$store.dispatch(`search`, { query });
-        this.initialPosition = false;
-
-      } catch (err) {
-
-        console.error(err);
-        alert(`Couldn't load search results :/`);
-        
-      }
-      
-    },
-    async loadNextPage() {
-
-      this.resultListBottomText = `Loading the next Page...`
-
-      try {
-
-        await this.$store.dispatch(`loadNextPage`);
-        this.resultListBottomText = ``;
-
-      } catch (err) {
-        this.resultListBottomText = `Error while loading more links :/`
-      }
-
-    }
   },
   mounted() {
 
-    // this.$store.dispatch(`loadStats`);
-
   },
-  beforeMount() {
-
-    this.$store.dispatch(`loadStats`);
-    
-  }
 }
 </script>
