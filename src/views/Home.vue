@@ -12,7 +12,7 @@
       >
 
         <svg
-          class="w-20 h-20 m-auto text-black dark:text-gray-200 animate-spin-slow"
+          class="w-20 h-20 m-auto text-black dark:text-gray-200"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
