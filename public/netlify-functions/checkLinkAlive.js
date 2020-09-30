@@ -12,9 +12,19 @@ const fetchTimeout = (url, ms, options = {}) => {
 function resolveLink(url) {
 
   let resolvedUrl = url;
-  resolvedUrl = resolvedUrl.replace(`driveindex.ga/`, `hashhackers.com/`);
+  let resolvedHeaders = {};
+
+  if (url.includes(`driveindex.ga/`)) {
+    resolvedUrl = resolvedUrl.replace(`driveindex.ga/`, `hashhackers.com/`);
+    resolvedHeaders = {
+      'referer': `hashhackers.com`,
+    }
+  }
   
-  return resolvedUrl;
+  return {
+    url: resolvedUrl,
+    headers: resolvedHeaders,
+  };
   
 }
 
@@ -44,10 +54,11 @@ exports.handler = function(event, context, callback) {
     })
   }
 
-  let urlToCheck = resolveLink(parsedBody.url);
+  let resolvedUrlData = resolveLink(parsedBody.url);
   
-  fetchTimeout(urlToCheck, 9500, {
+  fetchTimeout(resolvedUrlData.url, 9500, {
     method: `HEAD`,
+    headers: resolvedUrlData.headers,
   }).then(res => {
 
     return callback(null, {
@@ -55,7 +66,8 @@ exports.handler = function(event, context, callback) {
       body: JSON.stringify({
         isAlive: res.ok,
         sizeInBytes: res.headers.get(`Content-Length`),
-        checkedUrl: urlToCheck,
+        checkedUrl: resolvedUrlData.url,
+        headers: resolvedUrlData.headers,
       })
     })
     
