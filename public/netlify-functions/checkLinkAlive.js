@@ -68,6 +68,7 @@ exports.handler = function(event, context, callback) {
         sizeInBytes: res.headers.get(`Content-Length`),
         checkedUrl: resolvedUrlData.url,
         headers: resolvedUrlData.headers,
+        res: res,
       })
     })
     
