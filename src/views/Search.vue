@@ -146,9 +146,15 @@ export default {
         this.lowestPage = page;
         this.highestPage = page;
 
+        if (location.pathname != `/search/${query}`) {
+          this.$router.push({
+            path: `/search/${query}`,
+          })
+        }
+
         if (this.$route.query.p && Number(this.$route.query.p) != this.highestPage) {
           this.$router.push({
-            path: this.$router.path,
+            path: location.pathname,
             query: {
               p: this.highestPage,
             }

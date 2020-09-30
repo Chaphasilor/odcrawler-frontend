@@ -214,8 +214,6 @@ export default {
 
     this.generateSublinks(this.link);
 
-    console.log(`this.highlights:`, this.highlights);
-    
   }
 }
 </script>
