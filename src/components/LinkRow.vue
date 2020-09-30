@@ -18,6 +18,8 @@
       ><a
           :class="`${(index == sublinks.length-1 && alive === false) ? `line-through text-red-500` : `text-blue-600 dark:text-blue-400 hover:underline`} `"
           :title="(index == sublinks.length-1 && alive === false) ? `This link appears to be dead...` : ``"
+          rel="noopener noreferrer"
+          target="_blank"
           :href="sublink.link"
         ><text-highlight
           :queries="highlights"
@@ -154,7 +156,7 @@ export default {
     },
     copyLinkToClipboard() {
 
-      navigator.clipboard.writeText(this.link);
+      navigator.clipboard.writeText(encodeURI(this.link));
       this.copied = true;
       
     },
@@ -207,8 +209,6 @@ export default {
 
     this.generateSublinks(this.link);
 
-    console.log(`this.highlights:`, this.highlights);
-    
   }
 }
 </script>

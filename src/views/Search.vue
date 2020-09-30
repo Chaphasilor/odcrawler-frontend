@@ -104,7 +104,7 @@ export default {
       resultListBottomText: ``,
       activeTipIndex: 0,
       tips: [
-        `You can click on subpaths to jump to the corresponing folder!`,
+        `You can click on subpaths to jump to the corresponding folder!`,
         `Strike-through'd links are most likely dead!`,
         `You can see the amount of pages on the left side of the links!`,
         `You can click the middle mouse button (scroll wheel) to open links in a new tab!`
@@ -146,9 +146,15 @@ export default {
         this.lowestPage = page;
         this.highestPage = page;
 
+        if (location.pathname != `/search/${query}`) {
+          this.$router.push({
+            path: `/search/${query}`,
+          })
+        }
+
         if (this.$route.query.p && Number(this.$route.query.p) != this.highestPage) {
           this.$router.push({
-            path: this.$router.path,
+            path: location.pathname,
             query: {
               p: this.highestPage,
             }
