@@ -46,7 +46,7 @@ export default class API {
   search(query, offset = 0, limit = 20) {
     return new Promise((resolve, reject) => {
 
-        fetch(this.apiEndpoint + `/search?q=${query}&offset=${offset}&limit=${limit}&attributesToHighlight=url`, {
+        fetch(this.apiEndpoint + `/search?q=${encodeURIComponent(query)}&offset=${encodeURIComponent(offset)}&limit=${encodeURIComponent(limit)}&attributesToHighlight=url`, {
           mode: 'cors',
           method: 'GET',
           headers: {
