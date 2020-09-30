@@ -165,11 +165,6 @@ export default {
     },
     async checkLink() {
 
-      // // reduce number of lambda calls
-      // if (Math.random(1) > 0.15) {
-      //   return;
-      // } 
-
       let schroedingersLink = this.link;
       let res;
 
