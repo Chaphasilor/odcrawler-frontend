@@ -12,51 +12,9 @@ const fetchTimeout = (url, ms, options = {}) => {
 function resolveLink(url) {
 
   let resolvedUrl = url;
-  let resolvedHeaders = {};
-
-  if (url.includes(`driveindex.ga/`)) {
-    resolvedUrl = resolvedUrl.replace(`driveindex.ga/`, `hashhackers.com/`);
-    resolvedHeaders = {
-      'referer': `hashhackers.com`,
-    }
-  }
+  resolvedUrl = resolvedUrl.replace(`driveindex.ga/`, `hashhackers.com/`);
   
-  return {
-    url: resolvedUrl,
-    headers: resolvedHeaders,
-  };
-  
-}
-
-function checkLink(urlData) {
-  return new Promise((resolve) => {
-  
-    fetchTimeout(urlData.url, 9500, {
-      method: `HEAD`,
-      headers: urlData.headers,
-    }).then(res => {
-  
-      return resolve({
-        statusCode: res.status,
-        body: {
-          isAlive: res.ok,
-          sizeInBytes: res.headers.get(`Content-Length`),
-          checkedUrl: urlData.url,
-          headers: urlData.headers,
-          res: res,
-        }
-      });
-      
-    }).catch(err => {
-  
-      return resolve({
-        statusCode: 504, // gateway timeout
-        body: err.message,
-      });
-      
-    })
-  
-  })
+  return resolvedUrl;
   
 }
 
@@ -79,36 +37,34 @@ exports.handler = function(event, context, callback) {
     })
   }
 
-  if (!parsedBody.urls || parsedBody.urls.length === 0) {
+  if (!parsedBody.url || parsedBody.url.length === 0) {
     return callback(null, {
       statusCode: 400,
-      body: `You need to provide at least one valid url! Received ${parsedBody}, ${parsedBody.url}`,
+      body: `You need to provide a valid url! Recieved ${parsedBody}, ${parsedBody.url}`,
     })
   }
 
-  let responseBody = {
-    results: new Array(parsedBody.urls.length),
-  }
+  let urlToCheck = resolveLink(parsedBody.url);
+  
+  fetchTimeout(urlToCheck, 9500, {
+    method: `HEAD`,
+  }).then(res => {
 
-  let requests = [];
-  for (let i = 0; i < parsedBody.urls.length; i++) {
-
-    const urlToCheck = parsedBody.urls[i];
-    
-    let resolvedUrlData = resolveLink(urlToCheck);
-    requests.push(checkLink(resolvedUrlData).then(result => {
-      responseBody.results[i] = result;
-    }))
-    
-  }
-
-  Promise.all(requests).then(values => {
-
-    console.log(`values:`, values);
     return callback(null, {
-      statusCode: 200,
-      body: JSON.stringify(responseBody),
-    });
+      statusCode: res.status,
+      body: JSON.stringify({
+        isAlive: res.ok,
+        sizeInBytes: res.headers.get(`Content-Length`),
+        checkedUrl: urlToCheck,
+      })
+    })
+    
+  }).catch(err => {
+
+    return callback(err, {
+      statusCode: 504, // gateway timeout
+      body: err.message,
+    })
     
   })
   
