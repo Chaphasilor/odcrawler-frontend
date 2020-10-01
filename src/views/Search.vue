@@ -8,6 +8,15 @@
     />
 
     <div
+      v-if="!isLandscape"
+      class="p-2 text-center mb-4 bg-orange-500 dark:bg-orange-800 rounded-lg"
+    >
+      This page isn't optimized for mobile yet.
+      <br>
+      Please use landscape mode for now!
+    </div>
+
+    <div
       class="flex flex-row justify-start mb-4"
     >
 
@@ -113,6 +122,7 @@ export default {
       lowestPage: 0,
       highestPage: 0,
       loadingResults: false,
+      orientation: window.screen.orientation.type,
     };
   },
   computed: {
@@ -134,6 +144,9 @@ export default {
     },
     pageTitle: function() {
       return this.searchQuery === `` ? `ODCrawler - Search` : `ODCrawler - ${this.searchQuery}${this.highestPage > 1 ? ` (${this.highestPage})` : ``}`;
+    },
+    isLandscape: function() {
+      return this.orientation === 'landscape-primary';
     }
   },
   methods: {
@@ -219,6 +232,9 @@ export default {
       }
 
     },
+    handleOrientationChange() {
+      this.orientation = window.screen.orientation.type;
+    }
   },
   created() {
 
@@ -246,7 +262,9 @@ export default {
 
       this.activeTipIndex = this.activeTipIndex < this.tips.length-1 ? this.activeTipIndex+1 : 0;
 
-    }, 7000)
+    }, 7000);
+
+    window.addEventListener(`orientationchange`, this.handleOrientationChange);
 
   },
   beforeDestroy() {
