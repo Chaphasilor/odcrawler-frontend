@@ -16,14 +16,17 @@
       >
 
       <svg
-        class="absolute right-0 top-0 mx-6 my-3 w-6 h-6 text-black dark:text-gray-200 cursor-pointer"
+        class="absolute right-0 top-0 mx-6 my-3 w-6 h-6 dark:text-gray-200 cursor-pointer"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        stroke-width="2"
         @click="$emit('search')"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <circle cx="10" cy="10" r="7" />
+        <line x1="21" y1="21" x2="15" y2="15" />
       </svg>
 
     </div>
