@@ -92,6 +92,7 @@
     </div>
 
     <div
+      v-if="webShare"
       class="w-auto text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
     >
       
@@ -194,6 +195,9 @@ export default {
     },
     formattedSize: function() {
       return this.size >= 0 ? this.formatBytes(this.size) : `N/A`;
+    },
+    webShare: function() {
+      return navigator.share;
     }
   },
   watch: {
