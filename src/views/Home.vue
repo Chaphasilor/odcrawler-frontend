@@ -100,6 +100,8 @@
               <a
                 class="text-blue-600 dark:text-blue-400 underline"
                 :href="item.url"
+                rel="noopener noreferrer"
+                target="_blank"
               >
               <svg
                 v-if="item.icon"
