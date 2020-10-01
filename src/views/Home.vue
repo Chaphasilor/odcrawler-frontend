@@ -8,83 +8,133 @@
     />
 
     <div
-      class="w-full h-full flex-col justify-center flex"
+      class="w-full h-full flex flex-col"
     >
 
       <div
-        class="w-full text-center flex-shrink-0"
+        class="w-full lg:h-full flex-shrink-0 flex-col justify-center flex"
       >
 
-        <svg
-          class="w-20 h-20 m-auto text-black dark:text-gray-200"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+        <div
+          class="w-full mt-10 text-center flex-shrink-0"
         >
-          <title>{{ isIndexing ? `Currently indexing new links!` : `Not indexing right now...` }}</title>
 
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      
-        <router-link
-          :to="{
-            name: `Home`,
-          }"
-        >
-          <h1
-            class="text-3xl font-semibold cursor-pointer"
+          <svg
+            class="w-20 h-20 m-auto dark:text-gray-200"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            ODCrawler
-          </h1>
-        </router-link>
-        
-        <h2
-          class="text-base"
+            <title>{{ isIndexing ? `Currently indexing new links!` : `Not indexing right now...` }}</title>
+
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+
+          <router-link
+            :to="{
+              name: `Home`,
+            }"
+          >
+            <h1
+              class="text-3xl font-semibold cursor-pointer"
+            >
+              ODCrawler
+            </h1>
+          </router-link>
+          
+          <iframe
+            class="m-auto mt-4"
+            src="https://github.com/sponsors/MCOfficer/button"
+            title="Sponsor MCOfficer"
+            height="35"
+            width="116"
+          ></iframe>
+          
+        </div>
+
+        <SearchField
+          class="mx-auto mt-10 mb-4 lg:my-4 w-full lg:w-192 h-12"
+          v-model="searchQuery"
+          :focus="true"
+          :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
+          @search="$router.push({
+            name: `Search`,
+            params: {
+              query: searchQuery,
+            }
+          })"
+        />
+
+        <p
+          class="w-full lg:w-192 mx-auto mb-10 px-10 text-center text-xs lg:text-sm italic text-gray-800 dark:text-gray-600"
         >
+          Links are automatically aggregated from all over the Internet. Illegal Content may be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website.
+        </p>
 
-          Powered by 
-          <a
-            class="text-blue-600 dark:text-blue-400 underline"
-            href="https://github.com/KoalaBear84/OpenDirectoryDownloader/"
-          >OpenDirectoryDownloader</a>
-          and 
-          <a
-            class="text-blue-600 dark:text-blue-400 underline"
-            href="https://www.meilisearch.com/"
-          >MeiliSearch</a>
-
-        </h2>
-
-        <iframe
-          class="m-auto mt-4"
-          src="https://github.com/sponsors/MCOfficer/button"
-          title="Sponsor MCOfficer"
-          height="35"
-          width="116"
-        ></iframe>
-        
       </div>
 
-      <SearchField
-        class="mx-auto my-12 w-3/4 lg:w-192 h-12"
-        v-model="searchQuery"
-        :focus="true"
-        :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
-        @search="$router.push({
-          name: `Search`,
-          params: {
-            query: searchQuery,
-          }
-        })"
-      />
-
-      <p
-        class="w-3/4 lg:w-192 mx-auto px-10 text-center text-xs italic text-gray-600 dark:text-gray-600"
+      <div
+        class="flex-shrink-0 lg:fixed lg:bottom-0 lg:left-0 w-full p-8 text-center"
       >
-        Links are automatically aggregated from all over the Internet. Illegal Content may be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website.
-      </p>
+
+        <div
+          class="m-auto lg:text-lg lg:font-bold"
+        >
+          <div
+            class="display-block"
+          >
+            Powered by:
+          </div>
+
+          <div
+            class="flex flex-row justify-center flex-wrap"
+          >
+
+            <div
+              v-for="(item, index) of poweredBy"
+              :key="index"
+            >
+              <a
+                class="text-blue-600 dark:text-blue-400 underline"
+                :href="item.url"
+              >
+              <svg
+                v-if="item.icon"
+                v-html="item.icon.paths"
+                :stroke="item.icon.color"
+                class="inline-block h-6 mr-1"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                xmlns="http://www.w3.org/2000/svg"
+              ></svg>{{item.title}}</a>
+              
+              <svg
+                v-if="index != poweredBy.length-1"
+                class="inline-block mx-1 w-4 h-4"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+            </div>
+
+          </div>
+
+        </div>
+        
+      </div>
 
     </div>
 
@@ -104,6 +154,41 @@ export default {
     return {
       searchQuery: ``,
       resultListBottomText: ``,
+      poweredBy: [
+        {
+          title: `OpenDirectoryDownloader`,
+          url: `https://github.com/KoalaBear84/OpenDirectoryDownloader/`,
+        },
+        {
+          title: `MeiliSearch`,
+          url: `https://www.meilisearch.com/`,
+        },
+        {
+          title: `Tabler Icons`,
+          url: `https://tablericons.com/`,
+          icon: {
+            paths: `
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M8 9l3 3l-3 3" />
+              <line x1="13" y1="15" x2="16" y2="15" />
+              <rect x="4" y="4" width="16" height="16" rx="4" />
+            `,
+            color: `#318BEF`,
+          },
+        },
+        {
+          title: `Netlify`,
+          url: `https://www.netlify.com/`,
+        },
+        {
+          title: `VueJS`,
+          url: `https://vuejs.org/`,
+        },
+        {
+          title: `Tailwind CSS`,
+          url: `https://tailwindcss.com/`,
+        },
+      ]
     };
   },
   computed: {

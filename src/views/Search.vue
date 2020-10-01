@@ -38,7 +38,7 @@
       </div>
 
       <SearchField
-        class="ml-0 w-3/4 lg:w-192 h-12"
+        class="ml-0 w-3/5 lg:w-192 h-12"
         v-model="searchQuery"
         :focus="false"
         :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
@@ -46,7 +46,7 @@
       />
 
       <div
-        class="w-1/4 flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm flex flex-row"
+        class="w-2/5 flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm flex flex-row"
       >
       
         <div
