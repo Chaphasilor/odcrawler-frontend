@@ -68,12 +68,10 @@
             leave-to-class="-translate-x-64 opacity-0 w-0"
           >
           <div
-            v-if="index == activeTipIndex"
+            :key="activeTipIndex"
             class="h-auto flex flex-col justify-center break-words leading-4"
-            v-for="(tip, index) of tips"
-            :key="index"
           >
-            <span>{{ tip }}</span>
+            <span>{{ activeTip }}</span>
           </div>
           </transition>
         </div>
@@ -147,6 +145,9 @@ export default {
     },
     isLandscape: function() {
       return this.orientation === 'landscape-primary';
+    },
+    activeTip: function() {
+      return this.tips[this.activeTipIndex];
     }
   },
   methods: {
