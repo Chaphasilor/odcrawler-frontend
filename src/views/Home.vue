@@ -206,6 +206,8 @@ export default {
   },
   mounted() {
 
+    window.umami.trackView(`/`);
+
   },
 }
 </script>
