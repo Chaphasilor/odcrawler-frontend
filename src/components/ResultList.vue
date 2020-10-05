@@ -17,9 +17,9 @@
       >
 
         <div
-          class="w-20 p-2 text-right flex-shrink-0"
+          class="w-20 pt-2 pr-2 text-right flex-shrink-0"
         >
-          {{ (id % pageSize === 0) ? `${Math.ceil( (id + (lowestPage)*pageSize ) / pageSize )} / ${Math.floor(results.totalHits/pageSize)+1}` : ``}}
+          {{ (id % pageSize === 0) ? `${Math.ceil( (id + (lowestPage)*pageSize ) / pageSize )}/${Math.floor(results.totalHits/pageSize)+1}` : ``}}
         </div>
 
 
@@ -32,10 +32,26 @@
 
       </div>
 
-      <div
+      <!-- <div
         class="w-full font-bold text-lg text-center"
       >
         {{ bottomText }}
+      </div> -->
+
+      <div
+        class="w-full mb-2 flex flex-row"
+      >
+
+        <div
+          class="w-20 p-2 text-right flex-shrink-0"
+        ></div>
+
+        <div
+          :class="`w-full p-2 text-center mb-4 ${message.level === `warning` ? `bg-orange-500 dark:bg-orange-800` : message.level === `error` ? `bg-red-500 dark:bg-red-800` : ``} rounded-lg`"
+        >
+          {{ message.text }}
+        </div>
+
       </div>
 
     </div>
@@ -63,10 +79,13 @@ export default {
         return 10;
       }
     },
-    bottomText: {
-      type: String,
+    message: {
+      type: Object,
       default: function() {
-        return ``;
+        return {
+          text: ``,
+          level: `normal`,
+        };
       }
     },
     disableInfiniteScroll: {

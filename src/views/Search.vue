@@ -68,12 +68,10 @@
             leave-to-class="-translate-x-64 opacity-0 w-0"
           >
           <div
-            v-if="index == activeTipIndex"
+            :key="activeTipIndex"
             class="h-auto flex flex-col justify-center break-words leading-4"
-            v-for="(tip, index) of tips"
-            :key="index"
           >
-            <span>{{ tip }}</span>
+            <span>{{ activeTip }}</span>
           </div>
           </transition>
         </div>
@@ -83,16 +81,16 @@
     </div>
 
     <ResultList
-      class="w-full h-auto flex flex-row justify-start pb-32"
+      class="w-full h-auto flex flex-row justify-start pb-16"
       :results="results"
       :pageSize="pageSize"
       :lowestPage="lowestPage"
       :scrollToInitialPage="highestPage"
-      :bottomText="resultListBottomText"
+      :message="message"
       :disableInfiniteScroll="infiniteScrollDisabled"
       @end-of-list="loadNextPage"
     />
-    
+
   </div>
 </template>
 
@@ -110,13 +108,17 @@ export default {
   data: function() {
     return {
       searchQuery: ``,
-      resultListBottomText: ``,
+      message: {
+        text: ``,
+        level: `normal`,
+      },
       activeTipIndex: 0,
       tips: [
         `You can click on subpaths to jump to the corresponding folder!`,
         `Strike-through'd links are most likely dead!`,
         `You can see the amount of pages on the left side of the links!`,
-        `You can click the middle mouse button (scroll wheel) to open links in a new tab!`
+        `You can click the middle mouse button (scroll wheel) to open links in a new tab!`,
+        `If you want to go back to the first page, just press 'Search' again!`
       ],
       tipTimer: undefined,
       lowestPage: 0,
@@ -147,6 +149,9 @@ export default {
     },
     isLandscape: function() {
       return this.orientation === 'landscape-primary';
+    },
+    activeTip: function() {
+      return this.tips[this.activeTipIndex];
     }
   },
   methods: {
@@ -175,15 +180,21 @@ export default {
         }
 
         if (this.results.hits.length == 0) {
-          this.resultListBottomText = `No links found!`
+          this.message = {
+            text: `No links found!`,
+            level: `warning`,
+          }
         }
 
         return true;
 
       } catch (err) {
 
+        this.message = {
+          text: `Couldn't load search results :/`,
+          level: `error`,
+        }
         console.error(err);
-        alert(`Couldn't load search results :/`);
         return false;
         
       } finally {
@@ -197,14 +208,20 @@ export default {
         return;
       }
 
-      if (this.infiniteScrollDisabled) {
+      // if (this.infiniteScrollDisabled) {
 
-        this.resultListBottomText = `No more links to load!`;
-        return;
+      //   this.message = {
+      //     text: `No more links to load!`,
+      //     level: `normal`,
+      //   };
+      //   return;
         
-      }
+      // }
 
-      this.resultListBottomText = `Loading the next Page...`
+      this.message = {
+        text: `Loading the next Page...`,
+        level: `normal`,
+      }
 
       try {
 
@@ -220,13 +237,19 @@ export default {
         })
 
         if (this.results.hits.length == 0) {
-          this.resultListBottomText = `No more links to load!`;
+          this.message = {
+            text: `No more links to load!`,
+            level: `normal`,
+          };
         } else {
-          this.resultListBottomText = ``;
+          this.message.text = ``;
         }
         
       } catch (err) {
-        this.resultListBottomText = `Error while loading more links :/`
+        this.message = {
+          text: `Error while loading more links :/`,
+          level: `error`,
+        }
       } finally {
         this.loadingResults = false;
       }

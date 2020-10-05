@@ -35,7 +35,7 @@
     >
       
       <button
-        class="h-full mx-1 px-2 rounded-full font-bold hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-75"
+        class="h-full mx-1 px-2 rounded-full font-bold sm:hover:bg-gray-400 dark:sm:hover:bg-gray-700 focus:outline-none transition-colors duration-75"
         @click="copyLinkToClipboard"
       >
         <transition
@@ -97,7 +97,7 @@
     >
       
       <button
-        class="h-full mx-1 px-2 rounded-full font-bold hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-75"
+        class="h-full mx-1 px-2 rounded-full font-bold sm:hover:bg-gray-400 dark:sm:hover:bg-gray-700 focus:outline-none transition-colors duration-75"
         @click="shareLink"
       >
         <svg
@@ -126,7 +126,7 @@
       class="w-auto text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
     >
       <button
-        class="h-full mx-1 px-2 rounded-full font-bold hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-75"
+        class="h-full mx-1 px-2 rounded-full font-bold sm:hover:bg-gray-400 dark:sm:hover:bg-gray-700 focus:outline-none transition-colors duration-75"
         @click="openNewTab(`https://www.virustotal.com/gui/search/${doubleEncodedUrl}`)"
       >
 

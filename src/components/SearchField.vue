@@ -1,8 +1,11 @@
 <template>
   <div>
 
-    <div
+    <form
       class="relative"
+      method=""
+      action="#"
+      @submit.prevent="$emit('search')"
     >
 
       <input
@@ -11,8 +14,8 @@
         :placeholder="placeholder"
         type="search"
         :value="value"
+        name="OD Search"
         @input="$emit('input', $event.target.value)"
-        @keydown.enter="$emit('search')"
       >
 
       <svg
@@ -22,14 +25,15 @@
         viewBox="0 0 24 24"
         stroke="currentColor"
         stroke-width="2"
-        @click="$emit('search')"
+        @click="$emit(`search`)"
       >
+        <title>Search</title>
         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
         <circle cx="10" cy="10" r="7" />
         <line x1="21" y1="21" x2="15" y2="15" />
       </svg>
 
-    </div>
+    </form>
 
     
   </div>
