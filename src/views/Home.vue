@@ -39,7 +39,7 @@
             }"
           >
             <h1
-              class="text-3xl font-semibold cursor-pointer"
+              class="inline-block text-3xl font-semibold cursor-pointer"
             >
               ODCrawler
             </h1>
