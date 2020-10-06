@@ -22,6 +22,9 @@ export default new Vuex.Store({
     },
     pageSize: 20,
     lowestPage: 0,
+    advancedOptions: {
+      filenameOnly: false,
+    }
   },
   mutations: {
     UPDATE_RESULTS(state, newResuls) {
@@ -32,6 +35,9 @@ export default new Vuex.Store({
     },
     UPDATE_LOWEST_PAGE(state, newLowestPage) {
       state.lowestPage = newLowestPage;
+    },
+    SET_ADVANCED_OPTIONS(state, advancedOptions) {
+      state.advancedOptions = advancedOptions;
     },
   },
   actions: {
@@ -106,11 +112,15 @@ export default new Vuex.Store({
       context.commit('UPDATE_STATS', stats);
       
     },
+    changeAdvancedOptions(context, advancedOptions) {
+      context.commit(`SET_ADVANCED_OPTIONs`, advancedOptions);
+    }
   },
   getters: {
     results: state => state.results,
     stats: state => state.stats,
     pageSize: state => state.pageSize,
     lowestPage: state => state.lowestPage,
+    advancedOptions: state => state.advancedOptions,
   }
 })

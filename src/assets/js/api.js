@@ -59,7 +59,7 @@ export default class API {
 
         fetch(this.apiEndpoint + `/search?q=${encodeURIComponent(query)}&offset=${encodeURIComponent(offset)}&limit=${encodeURIComponent(limit)}&attributesToHighlight=url`, {
           mode: 'cors',
-          method: 'GET',
+          method: 'POST',
           headers: {
             'X-Meili-API-Key': this.apiKey,
           }

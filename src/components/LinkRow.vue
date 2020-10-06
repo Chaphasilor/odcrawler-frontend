@@ -31,7 +31,7 @@
     </div>
 
     <div
-      class="w-auto text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
+      class="w-auto text-center ml-2 flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
     >
       
       <button

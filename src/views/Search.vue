@@ -41,7 +41,7 @@
         class="ml-0 w-3/5 lg:w-192"
         v-model="searchQuery"
         :focus="false"
-        :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
+        :placeholder="`Search ${stats.totalIndexed} links...`"
         @search="search(searchQuery)"
       />
 
@@ -223,7 +223,7 @@ export default {
         level: `normal`,
       }
 
-      window.umami(`loadNextPage`);
+      // window.umami(`loadNextPage`);
 
       try {
 
@@ -291,9 +291,9 @@ export default {
 
     window.addEventListener(`orientationchange`, this.handleOrientationChange);
 
-    document.querySelector(`#umami-script`).onload = function() {
-      window.umami.trackView(`/search`);
-    }
+    // document.querySelector(`#umami-script`).onload = function() {
+    //   window.umami.trackView(`/search`);
+    // }
 
   },
   beforeDestroy() {

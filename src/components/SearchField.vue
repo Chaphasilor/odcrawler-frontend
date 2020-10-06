@@ -12,7 +12,7 @@
 
       <input
         ref="searchField"
-        class="w-full h-full bg-white dark:bg-gray-700 p-4 pr-12 text-left placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 rounded-xl outline-none focus:border-green-400"
+        :class="`w-full h-full bg-white dark:bg-gray-700 p-4 pr-12 text-left placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 ${(advancedSearchVisible) ? `rounded-t-xl` : `rounded-xl`} outline-none focus:border-green-400`"
         :placeholder="placeholder"
         type="search"
         :value="value"
@@ -23,34 +23,6 @@
       <div
         class="absolute right-0 top-0 flex flex-row pr-3"
       >
-
-        <svg
-          v-if="!advancedSearch"
-          class="w-8 h-8 mx-1 my-3 stroke-current stroke-1.5 cursor-pointer hover:stroke-2"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          xmlns="http://www.w3.org/2000/svg"
-          @click="advancedSearch = true"
-        >
-          <polyline points="7 7 12 12 17 7" />
-          <polyline points="7 13 12 18 17 13" />
-        </svg>
-
-        <svg
-          v-else
-          class="w-8 h-8 mx-1 my-3 stroke-current stroke-1.5 cursor-pointer hover:stroke-2"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          xmlns="http://www.w3.org/2000/svg"
-          @click="advancedSearch = false"
-        >
-          <polyline points="7 11 12 6 17 11" />
-          <polyline points="7 17 12 12 17 17" />
-        </svg>
 
         <svg
           class="w-8 h-8 mx-1 my-3 p-1 dark:text-gray-200 cursor-pointer hover:stroke-2.5"
@@ -65,12 +37,40 @@
           <circle cx="10" cy="10" r="7" />
           <line x1="21" y1="21" x2="15" y2="15" />
         </svg>
+
+        <svg
+          v-if="!advancedSearchVisible"
+          :class="`w-8 h-8 mx-1 my-3 ${advancedSearchActive ? `text-orange-500` : ``} stroke-current stroke-1.5 cursor-pointer hover:stroke-2`"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          xmlns="http://www.w3.org/2000/svg"
+          @click="advancedSearchVisible = true"
+        >
+          <polyline points="7 7 12 12 17 7" />
+          <polyline points="7 13 12 18 17 13" />
+        </svg>
+
+        <svg
+          v-else
+          class="w-8 h-8 mx-1 my-3 stroke-current stroke-1.5 cursor-pointer hover:stroke-2"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          xmlns="http://www.w3.org/2000/svg"
+          @click="advancedSearchVisible = false"
+        >
+          <polyline points="7 11 12 6 17 11" />
+          <polyline points="7 17 12 12 17 17" />
+        </svg>
         
       </div>
 
       <div
-        v-if="advancedSearch"
-        class="p-4 w-5/6 lg:w-1/2 m-auto border-2 border-t-0 border-gray-600 rounded-b-xl"
+        v-if="advancedSearchVisible"
+        :class="`p-4 border-2 border-t-0 border-gray-600 rounded-b-xl`"
       >
 
         <div
@@ -149,11 +149,23 @@ export default {
   },
   data: function() {
     return {
-      advancedSearch: false,
-      advancedOptions: {
-        filenameOnly: false,
-      }
+      advancedSearchVisible: false,
     }
+  },
+  computed: {
+    advancedOptions: {
+      get() {
+        return this.$store.getters.advancedOptions;
+      },
+      set(newOptions) {
+        this.$store.dispatch(`updateAdvancedOptions`, newOptions);
+      }
+    },
+    advancedSearchActive() {
+      return Object.values(this.advancedOptions).reduce((active, current) => {
+        return active || current;
+      })
+    },
   },
   watch: {
     focus: {
@@ -168,7 +180,7 @@ export default {
   },
   mounted() {
 
-    this.advancedSearch = this.advanced;
+    this.advancedSearchVisible = this.advanced;
     if (this.focus) {
       this.$refs.searchField.focus();
     }
