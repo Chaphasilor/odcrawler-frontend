@@ -26,9 +26,20 @@ module.exports = {
       boxShadow: {
       },
       borderRadius: {
+        'sm': '5px',
+        'md': '15px',
+        'lg': '20px',
         'xl': '25px',
         'full': '9999px',
         'parent': 'inherit',
+      },
+      strokeWidth: {
+        '0.5': '0.5',
+        '1.5': '1.5',
+        '2.5': '2.5',
+        '3': '3',
+        '3.5': '3.5',
+        '4': '4',
       },
       spacing: {
         'xs': '.125rem',
@@ -53,7 +64,8 @@ module.exports = {
     }, 
   },
   variants: {
-    backgroundColor: ({ after }) => after(['active'])
+    backgroundColor: ({ after }) => after(['active']),
+    strokeWidth: ({ after }) => after(['hover']),
   },
   plugins: [],
 }

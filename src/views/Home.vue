@@ -56,10 +56,10 @@
         </div>
 
         <SearchField
-          class="mx-auto mt-10 mb-4 lg:my-4 w-full lg:w-192 h-12"
+          class="mx-auto mt-10 mb-4 lg:my-4 w-full lg:w-192"
           v-model="searchQuery"
           :focus="true"
-          :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
+          :placeholder="`Search ${stats.totalIndexed} links...`"
           @search="$router.push({
             name: `Search`,
             params: {
@@ -206,7 +206,9 @@ export default {
   },
   mounted() {
 
-    window.umami.trackView(`/`);
+    document.querySelector(`#umami-script`).onload = function() {
+      window.umami.trackView(`/`);
+    }
 
   },
 }

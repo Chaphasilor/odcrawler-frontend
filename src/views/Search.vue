@@ -38,7 +38,7 @@
       </div>
 
       <SearchField
-        class="ml-0 w-3/5 lg:w-192 h-12"
+        class="ml-0 w-3/5 lg:w-192"
         v-model="searchQuery"
         :focus="false"
         :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
@@ -291,7 +291,9 @@ export default {
 
     window.addEventListener(`orientationchange`, this.handleOrientationChange);
 
-    window.umami.trackView(`/search`);
+    document.querySelector(`#umami-script`).onload = function() {
+      window.umami.trackView(`/search`);
+    }
 
   },
   beforeDestroy() {
