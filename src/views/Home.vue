@@ -206,7 +206,7 @@ export default {
   },
   mounted() {
 
-    window.umami.trackView(`/`);
+    // window.umami.trackView(`/`);
 
   },
 }
