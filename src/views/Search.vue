@@ -223,7 +223,7 @@ export default {
         level: `normal`,
       }
 
-      window.umami(`loadNextPage`);
+      // window.umami(`loadNextPage`);
 
       try {
 
@@ -291,7 +291,7 @@ export default {
 
     window.addEventListener(`orientationchange`, this.handleOrientationChange);
 
-    window.umami.trackView(`/search`);
+    // window.umami.trackView(`/search`);
 
   },
   beforeDestroy() {
