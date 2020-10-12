@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-full p-4"
+    class="w-full h-full px-6"
   >
 
     <vue-headful
@@ -12,7 +12,7 @@
     >
 
       <div
-        class="w-full lg:h-full flex-shrink-0 flex-col justify-center flex"
+        class="w-full md:h-full flex-shrink-0 flex-col justify-center flex"
       >
 
         <div
@@ -46,17 +46,16 @@
           </router-link>
           
           <iframe
-            class="m-auto mt-4"
+            class="m-auto mt-4 w-40 h-10"
             src="https://github.com/sponsors/MCOfficer/button"
             title="Sponsor MCOfficer"
-            height="35"
-            width="116"
+            
           ></iframe>
           
         </div>
 
         <SearchField
-          class="mx-auto mt-10 mb-4 lg:my-4 w-full lg:w-192 h-12"
+          class="mx-auto mt-10 mb-4 md:my-4 w-full md:w-192 h-12"
           v-model="searchQuery"
           :focus="true"
           :placeholder="`Search ${stats.totalIndexed} links...`"
@@ -69,7 +68,7 @@
         />
 
         <p
-          class="w-full lg:w-192 mx-auto mb-10 px-10 text-center text-xs lg:text-sm italic text-gray-800 dark:text-gray-600"
+          class="w-full md:w-192 mx-auto mb-10 px-10 text-center text-xs md:text-sm italic text-gray-800 dark:text-gray-600"
         >
           Links are automatically aggregated from all over the Internet. Illegal Content may be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website.
         </p>
@@ -77,11 +76,11 @@
       </div>
 
       <div
-        class="flex-shrink-0 lg:fixed lg:bottom-0 lg:left-0 w-full p-8 text-center"
+        class="flex-shrink-0 md:fixed md:bottom-0 md:left-0 w-full p-8 text-center"
       >
 
         <div
-          class="m-auto lg:text-lg lg:font-bold"
+          class="m-auto md:text-lg md:font-bold"
         >
           <div
             class="display-block"

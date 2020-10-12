@@ -10,7 +10,7 @@
 
       <input
         ref="searchField"
-        class="w-full h-full bg-white dark:bg-gray-700 p-3 pr-6 text-left text-black dark:text-gray-100 placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 rounded-xl outline-none focus:border-green-400"
+        class="w-full h-full bg-white dark:bg-gray-700 p-3 pr-8 text-left text-black dark:text-gray-100 placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 rounded-xl outline-none focus:border-green-400"
         :placeholder="placeholder"
         type="search"
         :value="value"

@@ -1,37 +1,43 @@
 <template>
   <div
-    class="w-full h-auto flex flex-row"
+    class="w-full h-auto md:flex flex-row"
   >
 
     <div
-      class="w-14 mr-1 text-right flex-shrink-0"
-    >{{ formattedSize }}</div>
-
-    <div
-      class="w-full h-auto pl-1 whitespace-pre-wrap break-all"
+      class="w-full md:flex md:flex-row-reverse border-b md:border-b-0 border-black dark:border-gray-700 mb-3"
     >
 
-      <span
-        v-for="(sublink, index) of sublinks"
-        :key="index"
-        class=""
-      ><a
-          :class="`${(index == sublinks.length-1 && alive === false) ? `line-through text-red-500` : `text-blue-600 dark:text-blue-400 hover:underline`} `"
-          :title="(index == sublinks.length-1 && alive === false) ? `This link appears to be dead...` : ``"
-          rel="noopener noreferrer"
-          target="_blank"
-          :href="sublink.link"
-        ><text-highlight
-          :queries="highlights"
-          :caseSensitive="false"
-          highlightClass="bg-yellow-500 dark:bg-yellow-900"
-          highlightComponent="span"
-        >{{sublink.name}}</text-highlight></a><span v-if="index != sublinks.length-1" class="text-blue-600 dark:text-blue-400">/</span></span>
-    
+      <div
+        class="w-full h-auto pl-1 whitespace-pre-wrap break-all"
+      >
+
+        <span
+          v-for="(sublink, index) of sublinks"
+          :key="index"
+          class=""
+        ><a
+            :class="`${(index == sublinks.length-1 && alive === false) ? `line-through text-red-500` : `text-blue-600 dark:text-blue-400 hover:underline`} `"
+            :title="(index == sublinks.length-1 && alive === false) ? `This link appears to be dead...` : ``"
+            rel="noopener noreferrer"
+            target="_blank"
+            :href="sublink.link"
+          ><text-highlight
+            :queries="highlights"
+            :caseSensitive="false"
+            highlightClass="bg-yellow-500 dark:bg-yellow-900"
+            highlightComponent="span"
+          >{{sublink.name}}</text-highlight></a><span v-if="index != sublinks.length-1" class="text-blue-600 dark:text-blue-400">/</span></span>
+      
+      </div>
+
+      <div
+        class="md:w-14 mr-1 text-center md:text-right flex-shrink-0"
+      >{{ formattedSize }}</div>
+
     </div>
 
     <div
-      class="w-auto text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
+      class="w-1/3 md:w-auto text-center inline-block flex-shrink-0 md:border-l border-black dark:border-gray-700 md:flex flex-col justify-center"
     >
       
       <button
@@ -93,7 +99,7 @@
 
     <div
       v-if="webShare"
-      class="w-auto text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
+      class="w-1/3 md:w-auto text-center inline-block flex-shrink-0 border-l border-black dark:border-gray-700 md:flex flex-col justify-center"
     >
       
       <button
@@ -123,7 +129,7 @@
     </div>
 
     <div
-      class="w-auto text-center flex-shrink-0 border-l border-black dark:border-gray-700 flex flex-col justify-center"
+      class="w-1/3 md:w-auto inline-block text-center flex-shrink-0 border-l border-black dark:border-gray-700 md:flex flex-col justify-center"
     >
       <button
         class="h-full mx-1 px-2 rounded-full font-bold sm:hover:bg-gray-400 dark:sm:hover:bg-gray-700 focus:outline-none transition-colors duration-75"
