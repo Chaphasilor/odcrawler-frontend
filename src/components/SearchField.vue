@@ -10,7 +10,7 @@
 
       <input
         ref="searchField"
-        class="w-full h-full bg-white dark:bg-gray-700 p-3 pr-12 text-left text-black dark:text-gray-100 placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 rounded-xl outline-none focus:border-green-400"
+        class="w-full h-full bg-white dark:bg-gray-700 p-3 pr-6 text-left text-black dark:text-gray-100 placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 rounded-xl outline-none focus:border-green-400"
         :placeholder="placeholder"
         type="search"
         :value="value"
@@ -19,7 +19,7 @@
       >
 
       <svg
-        class="absolute right-0 top-0 mx-6 my-3 w-6 h-6 dark:text-gray-200 cursor-pointer"
+        class="absolute right-0 top-0 mx-3 my-3 w-6 h-6 dark:text-gray-200 cursor-pointer"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

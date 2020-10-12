@@ -41,7 +41,7 @@
         class="ml-0 w-3/5 lg:w-192 h-12"
         v-model="searchQuery"
         :focus="false"
-        :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
+        :placeholder="`Search ${stats.totalIndexed} links...`"
         @search="search(searchQuery)"
       />
 

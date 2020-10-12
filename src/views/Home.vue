@@ -59,7 +59,7 @@
           class="mx-auto mt-10 mb-4 lg:my-4 w-full lg:w-192 h-12"
           v-model="searchQuery"
           :focus="true"
-          :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
+          :placeholder="`Search ${stats.totalIndexed} links...`"
           @search="$router.push({
             name: `Search`,
             params: {
@@ -90,7 +90,7 @@
           </div>
 
           <div
-            class="flex flex-row justify-center flex-wrap"
+            class="md:flex flex-row justify-center flex-wrap"
           >
 
             <div
@@ -118,7 +118,7 @@
               
               <svg
                 v-if="index != poweredBy.length-1"
-                class="inline-block mx-1 w-4 h-4"
+                class="hidden md:inline-block mx-1 w-4 h-4"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
