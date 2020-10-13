@@ -7,6 +7,17 @@ export default class API {
     this.apiKey = process.env.VUE_APP_API_KEY;
 
   }
+  
+  dotify(number) {
+
+    let reversedNumberAsString = String(number).split(``).reverse().join(``);
+    let dotifiedNumber = ``;
+    for (let i = 0; i < reversedNumberAsString.length; i++) {
+      dotifiedNumber = `${reversedNumberAsString.charAt(i)}${(i%3===0 && i!=0) ? `.` : ``}${dotifiedNumber}`;
+    }
+    return dotifiedNumber;
+    
+  }
 
   parseResult(rawResults) {
 
@@ -34,7 +45,7 @@ export default class API {
   parseStats(rawStats) {
 
     let parsedStats = {
-      totalIndexed: rawStats.numberOfDocuments,
+      totalIndexed: this.dotify(rawStats.numberOfDocuments),
       isIndexing: rawStats.isIndexing,
       types: rawStats.fieldsDistribution,
     }

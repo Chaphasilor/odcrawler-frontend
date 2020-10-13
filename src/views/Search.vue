@@ -7,21 +7,21 @@
       :title="pageTitle"
     />
 
-    <div
+    <!-- <div
       v-if="!isLandscape"
       class="p-2 text-center mb-4 bg-orange-500 dark:bg-orange-800 rounded-lg"
     >
       This page isn't optimized for mobile yet.
       <br>
       Please use landscape mode for now!
-    </div>
+    </div> -->
 
     <div
-      class="flex flex-row justify-start mb-4"
+      class="md:flex flex-row justify-start md:mb-4"
     >
 
       <div
-        class="w-20 text-left flex-shrink-0"
+        class="md:w-20 text-center md:text-left flex-shrink-0"
       >
         <router-link
           :to="{
@@ -31,22 +31,23 @@
           <h1
             class="text-3xl font-semibold cursor-pointer"
           >
-            ODC
+            <span class="hidden md:inline">ODC</span>
+            <span class="inline md:hidden">ODCrawler</span>
           </h1>
         </router-link>
         
       </div>
 
       <SearchField
-        class="ml-0 w-3/5 lg:w-192 h-12"
+        class="ml-0 md:w-3/5 lg:w-192 h-12"
         v-model="searchQuery"
         :focus="false"
-        :placeholder="`Search ${stats.totalIndexed} links in open directories...`"
+        :placeholder="`Search ${stats.totalIndexed} links...`"
         @search="search(searchQuery)"
       />
 
       <div
-        class="w-2/5 flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm flex flex-row"
+        class="md:w-2/5 flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm flex flex-row"
       >
       
         <div
