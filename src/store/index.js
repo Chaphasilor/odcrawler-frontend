@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import API from '../assets/js/api'
+import analyticsModule from './modules/analytics';
 // import API from '@/assets/js/api.js';
 
 Vue.use(Vuex)
@@ -9,6 +10,9 @@ var baseUrl = `https://odcrawler.xyz`;
 var api = new API(baseUrl);
 
 export default new Vuex.Store({
+  modules: {
+    analytics: analyticsModule,
+  },
   state: {
     results: {
       query: ``,

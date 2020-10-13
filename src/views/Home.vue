@@ -205,7 +205,7 @@ export default {
   },
   mounted() {
 
-    // window.umami.trackView(`/`);
+    this.$store.dispatch(`analytics/trackView`, `/`);
 
   },
 }

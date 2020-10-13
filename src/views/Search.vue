@@ -224,7 +224,7 @@ export default {
         level: `normal`,
       }
 
-      // window.umami(`loadNextPage`);
+      this.$store.dispatch(`analytics/trackEvent`, `loadNextPage`);
 
       try {
 
@@ -292,7 +292,7 @@ export default {
 
     window.addEventListener(`orientationchange`, this.handleOrientationChange);
 
-    // window.umami.trackView(`/search`);
+    this.$store.dispatch(`analytics/trackView`, `/search`);
 
   },
   beforeDestroy() {

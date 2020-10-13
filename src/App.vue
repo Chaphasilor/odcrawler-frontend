@@ -19,6 +19,16 @@ export default {
 
     this.$store.dispatch(`loadStats`);
     
+  },
+  mounted() {
+
+    // console.log(`this.$store.getters['analytics/umami']:`, this.$store.getters[`analytics/umami`]);
+    document.querySelector(`#umami-script`).onload = () => {
+
+      this.$store.dispatch(`analytics/umamiLoaded`, true);
+      // console.log(`this.$store.getters['analytics/umami']:`, this.$store.getters[`analytics/umami`]);
+    }
+    
   }
 }
 </script>

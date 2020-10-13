@@ -311,6 +311,7 @@ export default {
       }
 
       if (body.sizeInBytes > 0) {
+        //TODO make this persistant by updating the item in the store.
         this.size = body.sizeInBytes;
       }
       return body.isAlive;
