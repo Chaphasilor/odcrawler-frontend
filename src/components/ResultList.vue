@@ -11,20 +11,20 @@
     >
 
       <div
-        class="w-full mb-2 flex flex-row"
+        class="w-full md:mb-2 md:flex flex-row"
         v-for="(link, id) of results.hits"
         :key="id"
       >
 
         <div
-          class="w-20 pt-2 pr-2 text-right flex-shrink-0"
+          class="w-auto my-1 md:w-20 md:pt-2 md:pr-2 font-bold md:font-normal text-center md:text-right flex-shrink-0"
         >
           {{ (id % pageSize === 0) ? `${Math.ceil( (id + (lowestPage)*pageSize ) / pageSize )}/${Math.floor(results.totalHits/pageSize)+1}` : ``}}
         </div>
 
 
         <LinkRow
-          class="w-full p-2 border border-black dark:border-gray-700 rounded-lg"
+          class="w-full pt-1 p-2 mb-3 md:m-0 md:p-2 border border-black dark:border-gray-700 rounded-lg"
           :link="link.url"
           :highlights="link.highlights"
           :size="link.size"
@@ -43,7 +43,7 @@
       >
 
         <div
-          class="w-20 p-2 text-right flex-shrink-0"
+          class="md:w-20 p-2 text-right flex-shrink-0"
         ></div>
 
         <div
