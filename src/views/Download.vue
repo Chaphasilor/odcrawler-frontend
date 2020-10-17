@@ -67,7 +67,7 @@
       >
         Want more control over search results?
         <br>
-        Download a file containing all {{ dumpInfo.numberOfLinks !== 0 ? dumpInfo.numberOfLinks : `` }} links and search them yourself!
+        Download a file containing all {{ dumpInfo.numberOfLinks !== 0 ? dumpInfo.numberOfLinks : `` }} links (including not yet indexed ones!) and search them yourself!
       </h2>
 
       <p>
@@ -80,21 +80,20 @@
         To download, just click on the button below 👇🏻
       </p>
 
-      <button
-        class="mx-auto mt-8 block text-lg font-semibold text-blue-600 dark:text-blue-400 border-3 border-blue-600 dark:border-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 rounded-lg transition-colors duration-100"
-        type="button"
-        @click="startDownload()"
+      <div
+        class="flex flex-row justify-center mt-8 text-lg font-semibold"
+        @click="$store.dispatch(`analytics/trackEvent`, `downloadButtonClicked`);"
       >
         <!-- Link is only for semantics, i.e. enabling right-click menu for link handling, etc. -->
         <a
-          class="block w-full h-full p-4"
+          class="block w-auto h-full p-4 text-blue-600 dark:text-blue-400 border-3 border-blue-600 dark:border-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 rounded-lg transition-colors duration-100"
           :href="dumpInfo.url"
           rel="noopener noreferrer"
           target="_blank"
         >
           Download Dump (.zip, {{ dumpInfo.size }})
         </a>
-      </button>
+      </div>
 
       <h2
         class="text-xl text-left mt-24 mb-10"
@@ -180,7 +179,7 @@
             <img
               class="w-2/3 my-2 mx-auto"
               src="http://astrogrep.sourceforge.net/pics/ss_main_new.png"
-              alt="RipGrep sample output"
+              alt="AstroGrep Screenshot"
             >
             
             Download it from
@@ -223,7 +222,6 @@ export default {
 
       open(this.dumpInfo.url);
       this.$store.dispatch(`analytics/trackEvent`, `downloadButtonClicked`);
-      console.log('test');
       
     }
   },
