@@ -18,6 +18,10 @@ export default {
     },
     trackView(context, page) {
 
+      if (process.env.NODE_ENV !== `production`) {
+        return;
+      }
+
       console.log(`page:`, page);
 
       if (!context.getters.umami) {
@@ -39,6 +43,10 @@ export default {
       
     },
     trackEvent(context, event) {
+
+      if (process.env.NODE_ENV !== `production`) {
+        return;
+      }
 
       console.log(`event:`, event);
 
