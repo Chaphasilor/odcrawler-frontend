@@ -83,6 +83,7 @@
       <button
         class="mx-auto mt-8 block p-4 text-lg font-semibold text-blue-600 dark:text-blue-400 border-3 border-blue-600 dark:border-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 rounded-lg transition-colors duration-100"
         type="button"
+        @click="startDownload()"
       >
         Download Dump (.zip, {{ dumpInfo.size }})
       </button>
@@ -210,7 +211,12 @@ export default {
     }
   },
   methods: {
+    startDownload() {
 
+      location.href = this.dumpInfo.url;
+      this.$store.dispatch(`analytics/trackEvent`, `downloadButtonClicked`);
+      
+    }
   },
   mounted() {
 
