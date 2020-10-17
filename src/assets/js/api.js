@@ -1,10 +1,25 @@
 export default class API {
 
-  constructor(baseUrl) {
+  constructor(baseUrl, discoveryUrl) {
 
     this.baseUrl = baseUrl;
     this.apiEndpoint = `${this.baseUrl}/meili/indexes/links`;
+    this.discoveryEndpoint = discoveryUrl;
     this.apiKey = process.env.VUE_APP_API_KEY;
+
+  }
+
+  formatBytes(bytes, decimals = 2) {
+
+    if (bytes === 0) return `0 B`;
+  
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = [`B`, `KB`, `MB`, `GB`, `TB`, `PB`, `EB`, `ZB`, `YB`];
+  
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+  
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ` ` + sizes[i];
 
   }
   
@@ -51,6 +66,19 @@ export default class API {
     }
 
     return parsedStats;
+    
+  }
+
+  parseDumpInfo(rawDumpInfo) {
+
+    let parsedDumpInfo = {
+      url: rawDumpInfo.url,
+      numberOfLinks: this.dotify(rawDumpInfo.links),
+      size: this.formatBytes(rawDumpInfo.size, 0),
+      created: new Date(rawDumpInfo.created),
+    }
+
+    return parsedDumpInfo;
     
   }
 
@@ -103,6 +131,34 @@ export default class API {
     }
 
     return this.parseStats(stats);
+    
+  }
+
+  async retrieveDumpInfo() {
+
+    let res, dumpInfo;
+
+    try {
+      res = await fetch(this.discoveryEndpoint + `/dump.json`, {
+        mode: 'cors',
+        method: 'GET',
+        headers: {
+          // 'X-Meili-API-Key': this.apiKey,
+        }
+      })
+    } catch (err) {
+      console.warn(err);
+      throw new Error(`Couldn't retrieve dump info`);
+    }
+
+    try {
+      dumpInfo = await res.json()
+    } catch (err) {
+      console.warn(err);
+      throw new Error(`Error while parsing the dump info, the server didn't respond with a valid json string!`);
+    }
+
+    return this.parseDumpInfo(dumpInfo);
     
   }
 

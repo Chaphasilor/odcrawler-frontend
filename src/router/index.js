@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import Home from '../views/Home.vue'
 import Search from '../views/Search.vue'
+import Download from '../views/Download.vue'
 
 Vue.use(VueRouter)
 
@@ -16,6 +17,11 @@ const routes = [
     path: '/search/:query',
     name: 'Search',
     component: Search,
+  },
+  {
+    path: '/download',
+    name: 'Download',
+    component: Download,
   },
 ]
 

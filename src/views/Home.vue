@@ -7,6 +7,19 @@
       title="ODCrawler"
     />
 
+    <nav
+      class="absolute top-0 right-0 p-6 text-lg"
+    >
+      <router-link
+        class="hover:font-bold"
+        :to="{
+          name: `Download`,
+        }"
+      >
+        Get All Links
+      </router-link>
+    </nav>
+
     <div
       class="w-full h-full flex flex-col"
     >
