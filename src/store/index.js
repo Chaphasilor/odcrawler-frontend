@@ -6,8 +6,7 @@ import analyticsModule from './modules/analytics';
 
 Vue.use(Vuex)
 
-var baseUrl = `https://odcrawler.xyz`;
-var api = new API(baseUrl);
+const api = new API(`https://odcrawler.xyz`, `https://discovery.odcrawler.xyz`);
 
 export default new Vuex.Store({
   modules: {
@@ -24,6 +23,12 @@ export default new Vuex.Store({
       isIndexing: false,
       types: {},
     },
+    dumpInfo: {
+      url: `https://discovery.odcrawler.xyz/dump.zip`,
+      numberOfLinks: 0,
+      size: `Unknown`,
+      created: new Date(),
+    },
     pageSize: 20,
     lowestPage: 0,
   },
@@ -36,6 +41,9 @@ export default new Vuex.Store({
     },
     UPDATE_LOWEST_PAGE(state, newLowestPage) {
       state.lowestPage = newLowestPage;
+    },
+    UPDATE_DUMP_INFO(state, newDumpInfo) {
+      state.dumpInfo = newDumpInfo;
     },
   },
   actions: {
@@ -110,11 +118,25 @@ export default new Vuex.Store({
       context.commit('UPDATE_STATS', stats);
       
     },
+    async loadDumpInfo(context) {
+
+      let dumpInfo;
+      try {
+        dumpInfo = await api.retrieveDumpInfo();
+      } catch (err) {
+        console.warn(err);
+        throw new Error(`Couldn't load dump info!`);
+      }
+
+      context.commit('UPDATE_DUMP_INFO', dumpInfo);
+      
+    },
   },
   getters: {
     results: state => state.results,
     stats: state => state.stats,
     pageSize: state => state.pageSize,
     lowestPage: state => state.lowestPage,
+    dumpInfo: state => state.dumpInfo,
   }
 })

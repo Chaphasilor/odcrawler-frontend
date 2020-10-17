@@ -67,7 +67,7 @@
       >
         Want more control over search results?
         <br>
-        Download a file containing all 50.000.000 links and search them yourself!
+        Download a file containing all {{ dumpInfo.numberOfLinks }} links and search them yourself!
       </h2>
 
       <p>
@@ -81,10 +81,10 @@
       </p>
 
       <button
-        class="mx-auto mt-8 block p-4 text-lg font-semibold text-blue-600 dark:text-blue-400 border-3 border-blue-600 dark:border-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 rounded-lg"
+        class="mx-auto mt-8 block p-4 text-lg font-semibold text-blue-600 dark:text-blue-400 border-3 border-blue-600 dark:border-blue-400 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 rounded-lg transition-colors duration-100"
         type="button"
       >
-        Download Dump (.zip, 300MB)
+        Download Dump (.zip, {{ dumpInfo.size }})
       </button>
 
       <h2
@@ -205,6 +205,9 @@ export default {
     stats: function() {
       return this.$store.getters.stats;
     },
+    dumpInfo: function() {
+      return this.$store.getters.dumpInfo;
+    }
   },
   methods: {
 
