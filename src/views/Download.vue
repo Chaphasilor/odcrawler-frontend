@@ -67,7 +67,7 @@
       >
         Want more control over search results?
         <br>
-        Download a file containing all {{ dumpInfo.numberOfLinks }} links and search them yourself!
+        Download a file containing all {{ dumpInfo.numberOfLinks !== 0 ? dumpInfo.numberOfLinks : `` }} links and search them yourself!
       </h2>
 
       <p>
