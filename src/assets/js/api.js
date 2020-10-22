@@ -3,7 +3,7 @@ export default class API {
   constructor(baseUrl, discoveryUrl) {
 
     this.baseUrl = baseUrl;
-    this.apiEndpoint = `${this.baseUrl}/meili/indexes/links`;
+    this.apiEndpoint = `${this.baseUrl}/links`;
     this.discoveryEndpoint = discoveryUrl;
     this.apiKey = process.env.VUE_APP_API_KEY;
 
@@ -34,12 +34,12 @@ export default class API {
     
   }
 
-  parseResult(rawResults) {
+  parseResult(rawResults, query) {
 
     let parsedResults = {
-      query: rawResults.query,
-      hits: this.parseHits(rawResults.hits),
-      totalHits: rawResults.nbHits,
+      hits: this.parseHits(rawResults.hits.hits),
+      totalHits: rawResults.hits.total.value,
+      query,
     }
 
     return parsedResults;
@@ -49,10 +49,12 @@ export default class API {
   parseHits(rawHits) {
     return rawHits.map(hit => {
       return {
-        id: hit.id,
-        url: hit.url,
-        highlights: [...new Set(hit._formatted.url.match(/(?<=<em>)(.*?)(?=<\/em>)/g))],
-        size: hit.size || -1,
+        id: hit._id,
+        score: hit._score,
+        url: hit._source.url,
+        filename: hit._source.filename,
+        highlights: [...new Set(hit.highlight.url[0].match(/(?<=<em>)(.*?)(?=<\/em>)/g))],
+        size: hit._source.size || -1,
       }
     })
   }
@@ -82,21 +84,37 @@ export default class API {
     
   }
 
+  // eslint-disable-next-line no-unused-vars
   search(query, offset = 0, limit = 20) {
     return new Promise((resolve, reject) => {
 
-        fetch(this.apiEndpoint + `/search?q=${encodeURIComponent(query)}&offset=${encodeURIComponent(offset)}&limit=${encodeURIComponent(limit)}&attributesToHighlight=url`, {
+        fetch(`${this.apiEndpoint}/_search`, {
           mode: 'cors',
-          method: 'GET',
+          method: 'POST',
           headers: {
-            'X-Meili-API-Key': this.apiKey,
-          }
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: {
+              match_phrase: {
+                  url: query,
+              }
+            },
+            size: limit,
+            from: offset,
+            highlight: {
+              fields: {
+                url: {},
+                filename: {},
+              }
+            }
+          }),
         })
         .then(response => {
           return response.json();
         })
         .then(result => {
-          return resolve(this.parseResult(result));
+          return resolve(this.parseResult(result, query));
         })
         .catch(err => {
           console.warn(`Failed to fetch results:`, err);

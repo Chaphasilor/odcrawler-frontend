@@ -43,10 +43,6 @@
       >
 
         <div
-          class="md:w-20 p-2 text-right flex-shrink-0"
-        ></div>
-
-        <div
           :class="`w-full p-2 text-center mb-4 ${message.level === `warning` ? `bg-orange-500 dark:bg-orange-800` : message.level === `error` ? `bg-red-500 dark:bg-red-800` : ``} rounded-lg`"
         >
           {{ message.text }}

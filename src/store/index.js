@@ -6,7 +6,7 @@ import analyticsModule from './modules/analytics';
 
 Vue.use(Vuex)
 
-const api = new API(`https://odcrawler.xyz`, `https://discovery.odcrawler.xyz`);
+const api = new API(process.env.VUE_APP_ES_ENDPOINT, `https://discovery.odcrawler.xyz`);
 
 export default new Vuex.Store({
   modules: {
