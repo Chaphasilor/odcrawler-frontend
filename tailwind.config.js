@@ -33,6 +33,9 @@ module.exports = {
         'full': '9999px',
         'parent': 'inherit',
       },
+      strokeWidth: {
+        '1.5': '1.5',
+      },
       spacing: {
         'xs': '.125rem',
       },

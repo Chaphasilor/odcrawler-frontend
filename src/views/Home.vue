@@ -83,7 +83,7 @@
         <p
           class="w-full md:w-192 mx-auto mb-10 px-10 text-center text-xs md:text-sm italic text-gray-800 dark:text-gray-600"
         >
-          Links are automatically aggregated from all over the Internet. Illegal Content may be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website.
+          Links are automatically aggregated from all over the Internet. Illegal Content might be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website which the link points to.
         </p>
 
       </div>

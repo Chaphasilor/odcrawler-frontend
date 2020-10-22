@@ -62,9 +62,8 @@ export default class API {
   parseStats(rawStats) {
 
     let parsedStats = {
-      totalIndexed: this.dotify(rawStats.numberOfDocuments),
-      isIndexing: rawStats.isIndexing,
-      types: rawStats.fieldsDistribution,
+      totalIndexed: this.dotify(rawStats.indices.links.primaries.docs.count),
+      isIndexing: true, //TODO find out how to check if ES is indexing, or remove
     }
 
     return parsedStats;
@@ -129,7 +128,7 @@ export default class API {
     let res, stats;
 
     try {
-      res = await fetch(this.baseUrl + `/stats.json`, {
+      res = await fetch(`${this.apiEndpoint}/_stats/docs,store,indexing,search`, {
         mode: 'cors',
         method: 'GET',
         headers: {
