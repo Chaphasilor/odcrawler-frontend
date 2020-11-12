@@ -53,7 +53,8 @@ export default class API {
         score: hit._score,
         url: hit._source.url,
         filename: hit._source.filename,
-        highlights: [...new Set(hit.highlight.url[0].match(/(?<=<em>).*?(?=<\/em>)/g))],
+        // highlights: [...new Set(hit.highlight.url[0].match(/(?<=<em>).*?(?=<\/em>)/g))],
+        highlights: [...new Set(hit.highlight.url[0].match(/<em>(.*?)<\/em>/g))].map(highlight => highlight.slice(4,-5)),
         size: hit._source.size || -1,
       }
     })
