@@ -125,7 +125,7 @@ export default {
       lowestPage: 0,
       highestPage: 0,
       loadingResults: false,
-      orientation: window.screen.orientation.type,
+      orientation: window.screen.orientation ? window.screen.orientation.type : `landscape-primary`,
     };
   },
   computed: {
@@ -265,7 +265,7 @@ export default {
 
     },
     handleOrientationChange() {
-      this.orientation = window.screen.orientation.type;
+      this.orientation = window.screen.orientation ? window.screen.orientation.type : `landscape-primary`;
     }
   },
   created() {
