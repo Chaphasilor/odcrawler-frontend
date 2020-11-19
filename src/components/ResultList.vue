@@ -7,17 +7,17 @@
   >
 
     <div
-      class="w-full flex flex-col overflow-auto"
+      class="flex flex-col w-full overflow-auto"
     >
 
       <div
-        class="w-full md:mb-2 md:flex flex-row"
+        class="flex-row w-full md:mb-2 md:flex"
         v-for="(link, id) of results.hits"
         :key="id"
       >
 
         <div
-          class="w-auto my-1 md:w-20 md:pt-2 md:pr-2 font-bold md:font-normal text-center md:text-right flex-shrink-0"
+          class="flex-shrink-0 w-auto my-1 font-bold text-center md:w-20 md:pt-2 md:pr-2 md:font-normal md:text-right"
           :ref="`page-${(id % pageSize === 0) ? calcPage(id) : `${calcPage(id)}-${id - calcPage(id)*pageSize}`}`"
         >
           {{ (id % pageSize === 0) ? `${calcPage(id)}/${Math.ceil(results.totalHits/pageSize)}` : ``}}
@@ -25,7 +25,7 @@
 
 
         <LinkRow
-          class="w-full pt-1 p-2 mb-3 md:m-0 md:p-2 border border-black dark:border-gray-700 rounded-lg"
+          class="w-full p-2 pt-1 mb-3 border border-black rounded-lg md:m-0 md:p-2 dark:border-gray-700"
           :link="link.url"
           :highlights="link.highlights"
           :size="link.size"
@@ -35,13 +35,13 @@
       </div>
 
       <!-- <div
-        class="w-full font-bold text-lg text-center"
+        class="w-full text-lg font-bold text-center"
       >
         {{ bottomText }}
       </div> -->
 
       <div
-        class="w-full mb-2 flex flex-row"
+        class="flex flex-row w-full mb-2"
       >
 
         <div
