@@ -18,8 +18,9 @@
 
         <div
           class="w-auto my-1 md:w-20 md:pt-2 md:pr-2 font-bold md:font-normal text-center md:text-right flex-shrink-0"
+          :ref="`page-${(id % pageSize === 0) ? calcPage(id) : `${calcPage(id)}-${id - calcPage(id)*pageSize}`}`"
         >
-          {{ (id % pageSize === 0) ? `${Math.ceil( (id + (lowestPage)*pageSize ) / pageSize )}/${Math.floor(results.totalHits/pageSize)+1}` : ``}}
+          {{ (id % pageSize === 0) ? `${calcPage(id)}/${Math.ceil(results.totalHits/pageSize)}` : ``}}
         </div>
 
 
@@ -28,6 +29,7 @@
           :link="link.url"
           :highlights="link.highlights"
           :size="link.size"
+          @link-mounted="calcPage(id) === scrollToInitialPage ? smoothScrollToPage(calcPage(id)) : false;"
         />
 
       </div>
@@ -108,20 +110,28 @@ export default {
       handler: function() {
         console.log(`this.disableInfiniteScroll:`, this.disableInfiniteScroll);
       }
-    }
+    },
   },
   methods: {
-    // smoothScrollToPage(page) {
+    smoothScrollToPage(page) {
 
-    //   console.log(`page:`, page);
+      console.log(`page:`, page);
+      this.$refs[`page-${page}`][0].scrollIntoView({
+        behavior: `smooth`,
+      });
       
-    // }
+    },
+    calcPage(linkNumber) {
+      return Math.ceil( (linkNumber + (this.lowestPage)*this.pageSize ) / this.pageSize );
+    },
+    log(text) {
+      console.log(text);
+    }
   },
   mounted() {
 
-    // this.smoothScrollToPage(this.scrollToInitialPage);
     console.log(`this.disableInfiniteScroll:`, this.disableInfiniteScroll);
-    
+
   }
 }
 </script>
