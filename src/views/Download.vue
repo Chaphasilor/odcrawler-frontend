@@ -4,7 +4,7 @@
   >
 
     <vue-headful
-      title="Download Dump"
+      title="Download Dump - ODCrawler"
     />
 
     <nav
@@ -67,15 +67,15 @@
       >
         Want more control over search results?
         <br>
-        Download a file containing all {{ dumpInfo.numberOfLinks !== 0 ? dumpInfo.numberOfLinks : `` }} links (including not yet indexed ones!) and search them yourself!
+        Download a file containing {{ dumpInfo.numberOfLinks !== 0 ? dumpInfo.numberOfLinks : `` }} links and search them yourself!
       </h2>
 
-      <p>
+      <p class="text-center md:px-12">
         Our search isn’t perfect, we know that. We are doing what we can to improve it, but if you really want to get your hands dirty, you can download a database dump containing all links and search them using RegEx, etc.<br>
-        (You can also check out our GitHub repositories here and here, if you’d like to contribute)
+        (You can also check out our GitHub repositories <a class="text-blue-600 dark:text-blue-400" href="https://github.com/MCOfficer/odcrawler-discovery" target="_blank" rel="noopener noreferrer">here</a> and <a class="text-blue-600 dark:text-blue-400" href="https://github.com/Chaphasilor/odcrawler-frontend" target="_blank" rel="noopener noreferrer">here</a>, if you’d like to contribute)
       </p>
       <p
-        class="mt-4"
+        class="mt-4 text-center"
       >
         To download, just click on the button below 👇🏻
       </p>

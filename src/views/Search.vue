@@ -122,7 +122,6 @@ export default {
         `If you want to go back to the first page, just press 'Search' again!`
       ],
       tipTimer: undefined,
-      lowestPage: 0,
       highestPage: 0,
       loadingResults: false,
       orientation: window.screen.orientation ? window.screen.orientation.type : `landscape-primary`,
@@ -140,6 +139,9 @@ export default {
     },
     pageSize: function() {
       return this.$store.getters.pageSize;
+    },
+    lowestPage: function() {
+      return this.$store.getters.lowestPage;
     },
     infiniteScrollDisabled: function() {
       
@@ -162,7 +164,6 @@ export default {
 
         this.loadingResults = true;
         await this.$store.dispatch(`search`, { query, page });
-        this.lowestPage = page;
         this.highestPage = page;
 
         if (location.pathname != `/search/${query}`) {
@@ -275,13 +276,15 @@ export default {
   },
   mounted() {
 
-    this.searchQuery = this.$route.params.query
-    this.lowestPage = Number(this.$route.query.p) || 0;
+    this.searchQuery = this.$route.params.query;
+    let currentPage = Number(this.$route.query.p) || 0;
 
     if (this.searchQuery !== ``) {
       
-      if (this.lowestPage > 1) {
-        this.search(this.searchQuery, this.lowestPage);
+      if (currentPage > 1) {
+        this.search(this.searchQuery, currentPage).then(() => {
+
+        })
       } else {
         this.search(this.searchQuery);
       }

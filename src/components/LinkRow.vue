@@ -296,8 +296,6 @@ export default {
 
       }
 
-      console.log(`res:`, res);
-
       if ([502, 504].includes(res.status)) {
         return false;
       }
@@ -320,9 +318,13 @@ export default {
   },
   mounted() {
 
-    this.checkLink().then(alive => this.alive = alive);
+    // this.checkLink().then(alive => this.alive = alive);
 
     this.generateSublinks(this.link);
+
+    setTimeout(() => {
+      this.$emit(`link-mounted`);
+    }, 500);
 
   }
 }
