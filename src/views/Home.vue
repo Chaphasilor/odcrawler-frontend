@@ -21,15 +21,15 @@
     </nav>
 
     <div
-      class="w-full h-full flex flex-col"
+      class="flex flex-col w-full h-full"
     >
 
       <div
-        class="w-full md:h-full flex-shrink-0 flex-col justify-center flex"
+        class="flex flex-col justify-center flex-shrink-0 w-full md:h-full"
       >
 
         <div
-          class="w-full mt-10 text-center flex-shrink-0"
+          class="flex-shrink-0 w-full mt-10 text-center"
         >
 
           <svg
@@ -59,7 +59,7 @@
           </router-link>
           
           <iframe
-            class="m-auto mt-4 w-40 h-10"
+            class="w-40 h-10 m-auto mt-4"
             src="https://github.com/sponsors/MCOfficer/button"
             title="Sponsor MCOfficer"
             
@@ -68,7 +68,7 @@
         </div>
 
         <SearchField
-          class="mx-auto mt-10 mb-4 md:my-4 w-full md:w-192 h-12"
+          class="w-full h-12 mx-auto mt-10 mb-4 md:my-4 md:w-192"
           v-model="searchQuery"
           :focus="true"
           :placeholder="`Search ${stats.totalIndexed} links...`"
@@ -81,15 +81,15 @@
         />
 
         <p
-          class="w-full md:w-192 mx-auto mb-10 px-10 text-center text-xs md:text-sm italic text-gray-800 dark:text-gray-600"
+          class="w-full px-10 mx-auto mb-10 text-xs italic text-center text-gray-800 md:w-192 md:text-sm dark:text-gray-600"
         >
-          Links are automatically aggregated from all over the Internet. Illegal Content may be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website.
+          Links are automatically aggregated from all over the Internet. Illegal Content might be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website which the link points to.
         </p>
 
       </div>
 
       <div
-        class="flex-shrink-0 md:fixed md:bottom-0 md:left-0 w-full p-8 text-center"
+        class="flex-shrink-0 w-full p-8 text-center md:fixed md:bottom-0 md:left-0"
       >
 
         <div
@@ -102,7 +102,7 @@
           </div>
 
           <div
-            class="md:flex flex-row justify-center flex-wrap"
+            class="flex-row flex-wrap justify-center md:flex"
           >
 
             <div
@@ -110,7 +110,7 @@
               :key="index"
             >
               <a
-                class="text-blue-600 dark:text-blue-400 underline"
+                class="text-blue-600 underline dark:text-blue-400"
                 :href="item.url"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -130,7 +130,7 @@
               
               <svg
                 v-if="index != poweredBy.length-1"
-                class="hidden md:inline-block mx-1 w-4 h-4"
+                class="hidden w-4 h-4 mx-1 md:inline-block"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
@@ -174,21 +174,21 @@ export default {
           url: `https://github.com/KoalaBear84/OpenDirectoryDownloader/`,
         },
         {
-          title: `MeiliSearch`,
-          url: `https://www.meilisearch.com/`,
+          title: `Elasticsearch`,
+          url: `https://www.elastic.co/elasticsearch/`,
         },
         {
           title: `Tabler Icons`,
           url: `https://tablericons.com/`,
-          icon: {
-            paths: `
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-              <path d="M8 9l3 3l-3 3" />
-              <line x1="13" y1="15" x2="16" y2="15" />
-              <rect x="4" y="4" width="16" height="16" rx="4" />
-            `,
-            color: `#318BEF`,
-          },
+          // icon: {
+          //   paths: `
+          //     <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          //     <path d="M8 9l3 3l-3 3" />
+          //     <line x1="13" y1="15" x2="16" y2="15" />
+          //     <rect x="4" y="4" width="16" height="16" rx="4" />
+          //   `,
+          //   color: `#318BEF`,
+          // },
         },
         {
           title: `Netlify`,

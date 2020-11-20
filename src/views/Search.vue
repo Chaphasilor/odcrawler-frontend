@@ -9,7 +9,7 @@
 
     <!-- <div
       v-if="!isLandscape"
-      class="p-2 text-center mb-4 bg-orange-500 dark:bg-orange-800 rounded-lg"
+      class="p-2 mb-4 text-center bg-orange-500 rounded-lg dark:bg-orange-800"
     >
       This page isn't optimized for mobile yet.
       <br>
@@ -17,11 +17,11 @@
     </div> -->
 
     <div
-      class="md:flex flex-row justify-start md:mb-4"
+      class="flex-row justify-start md:flex md:mb-4"
     >
 
       <div
-        class="md:w-20 text-center md:text-left flex-shrink-0"
+        class="flex-shrink-0 text-center md:w-20 md:text-left"
       >
         <router-link
           :to="{
@@ -39,7 +39,7 @@
       </div>
 
       <SearchField
-        class="ml-0 md:w-3/5 lg:w-192 h-12"
+        class="h-12 ml-0 md:w-3/5 lg:w-192"
         v-model="searchQuery"
         :focus="false"
         :placeholder="`Search ${stats.totalIndexed} links...`"
@@ -47,30 +47,30 @@
       />
 
       <div
-        class="md:w-2/5 flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm flex flex-row"
+        class="flex flex-row flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm md:w-2/5"
       >
       
         <div
-          class="h-full flex flex-col justify-center pr-2 font-bold tracking-wider"
+          class="flex flex-col justify-center h-full pr-2 font-bold tracking-wider"
         >
           <span>TIP:</span>
         </div>
 
         <div
-          class="h-full flex flex-row overflow-hidden"
+          class="flex flex-row h-full overflow-hidden"
         >
           <transition
             name="slideTips"
-            enter-active-class="transform transition-all duration-1000"
+            enter-active-class="transition-all duration-1000 transform"
             enter-class="translate-x-64 opacity-0"
             enter-to-class="translate-x-0 opacity-100"
-            leave-active-class="transform transition-all duration-700 whitespace-no-wrap"
+            leave-active-class="whitespace-no-wrap transition-all duration-700 transform"
             leave-class="translate-x-0 opacity-100"
-            leave-to-class="-translate-x-64 opacity-0 w-0"
+            leave-to-class="w-0 -translate-x-64 opacity-0"
           >
           <div
             :key="activeTipIndex"
-            class="h-auto flex flex-col justify-center break-words leading-4"
+            class="flex flex-col justify-center h-auto leading-4 break-words"
           >
             <span>{{ activeTip }}</span>
           </div>
@@ -82,7 +82,7 @@
     </div>
 
     <ResultList
-      class="w-full h-auto flex flex-row justify-start pb-16"
+      class="flex flex-row justify-start w-full h-auto pb-16"
       :results="results"
       :pageSize="pageSize"
       :lowestPage="lowestPage"
@@ -122,10 +122,9 @@ export default {
         `If you want to go back to the first page, just press 'Search' again!`
       ],
       tipTimer: undefined,
-      lowestPage: 0,
       highestPage: 0,
       loadingResults: false,
-      orientation: window.screen.orientation.type,
+      orientation: window.screen.orientation ? window.screen.orientation.type : `landscape-primary`,
     };
   },
   computed: {
@@ -140,6 +139,9 @@ export default {
     },
     pageSize: function() {
       return this.$store.getters.pageSize;
+    },
+    lowestPage: function() {
+      return this.$store.getters.lowestPage;
     },
     infiniteScrollDisabled: function() {
       
@@ -162,7 +164,6 @@ export default {
 
         this.loadingResults = true;
         await this.$store.dispatch(`search`, { query, page });
-        this.lowestPage = page;
         this.highestPage = page;
 
         if (location.pathname != `/search/${query}`) {
@@ -206,6 +207,12 @@ export default {
     async loadNextPage() {
 
       if (this.lowestPage == 0) {
+        return;
+      }
+
+      console.log(`this.$store.getters.results.hits:`, this.$store.getters.results.hits);
+
+      if (!(this.$store.getters.results.hits.length > 0)) {
         return;
       }
 
@@ -259,7 +266,7 @@ export default {
 
     },
     handleOrientationChange() {
-      this.orientation = window.screen.orientation.type;
+      this.orientation = window.screen.orientation ? window.screen.orientation.type : `landscape-primary`;
     }
   },
   created() {
@@ -269,13 +276,15 @@ export default {
   },
   mounted() {
 
-    this.searchQuery = this.$route.params.query
-    this.lowestPage = Number(this.$route.query.p) || 0;
+    this.searchQuery = this.$route.params.query;
+    let currentPage = Number(this.$route.query.p) || 0;
 
     if (this.searchQuery !== ``) {
       
-      if (this.lowestPage > 1) {
-        this.search(this.searchQuery, this.lowestPage);
+      if (currentPage > 1) {
+        this.search(this.searchQuery, currentPage).then(() => {
+
+        })
       } else {
         this.search(this.searchQuery);
       }

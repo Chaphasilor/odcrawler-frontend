@@ -6,7 +6,7 @@ import analyticsModule from './modules/analytics';
 
 Vue.use(Vuex)
 
-const api = new API(`https://odcrawler.xyz`, `https://discovery.odcrawler.xyz`);
+const api = new API(process.env.VUE_APP_ES_ENDPOINT, `https://discovery.odcrawler.xyz`);
 
 export default new Vuex.Store({
   modules: {
@@ -29,7 +29,7 @@ export default new Vuex.Store({
       size: `Unknown`,
       created: new Date(),
     },
-    pageSize: 20,
+    pageSize: 40,
     lowestPage: 0,
   },
   mutations: {
@@ -54,18 +54,17 @@ export default new Vuex.Store({
 
         if (page) {
 
-          //TODO implement smooth scroll, fix page numbering and uncomment
-          // if (page * context.getters.pageSize > 100) {
+          if (page * context.getters.pageSize > 1000) {
 
             result = await api.search(query, (page-1) * context.getters.pageSize, context.getters.pageSize);
             context.commit(`UPDATE_LOWEST_PAGE`, page);
             
-          // } else {
+          } else {
 
-          //   result = await api.search(query, 0, page * context.getters.pageSize);
-          //   context.commit(`UPDATE_LOWEST_PAGE`, 1);
+            result = await api.search(query, 0, page * context.getters.pageSize);
+            context.commit(`UPDATE_LOWEST_PAGE`, 1);
             
-          // }
+          }
           
         } else {
 
