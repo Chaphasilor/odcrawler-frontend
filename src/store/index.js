@@ -1,14 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import API from '../assets/js/api'
+import analyticsModule from './modules/analytics';
 // import API from '@/assets/js/api.js';
 
 Vue.use(Vuex)
 
-var baseUrl = `https://odcrawler.xyz`;
-var api = new API(baseUrl);
+const api = new API(process.env.VUE_APP_ES_ENDPOINT, `https://discovery.odcrawler.xyz`);
 
 export default new Vuex.Store({
+  modules: {
+    analytics: analyticsModule,
+  },
   state: {
     results: {
       query: ``,
@@ -20,7 +23,13 @@ export default new Vuex.Store({
       isIndexing: false,
       types: {},
     },
-    pageSize: 20,
+    dumpInfo: {
+      url: `https://discovery.odcrawler.xyz/dump.zip`,
+      numberOfLinks: 0,
+      size: `Unknown`,
+      created: new Date(),
+    },
+    pageSize: 40,
     lowestPage: 0,
     advancedOptions: {
       filenameOnly: false,
@@ -39,6 +48,9 @@ export default new Vuex.Store({
     SET_ADVANCED_OPTIONS(state, advancedOptions) {
       state.advancedOptions = advancedOptions;
     },
+    UPDATE_DUMP_INFO(state, newDumpInfo) {
+      state.dumpInfo = newDumpInfo;
+    },
   },
   actions: {
     async search(context, { query, page }) {
@@ -48,18 +60,17 @@ export default new Vuex.Store({
 
         if (page) {
 
-          //TODO implement smooth scroll, fix page numbering and uncomment
-          // if (page * context.getters.pageSize > 100) {
+          if (page * context.getters.pageSize > 1000) {
 
             result = await api.search(query, (page-1) * context.getters.pageSize, context.getters.pageSize);
             context.commit(`UPDATE_LOWEST_PAGE`, page);
             
-          // } else {
+          } else {
 
-          //   result = await api.search(query, 0, page * context.getters.pageSize);
-          //   context.commit(`UPDATE_LOWEST_PAGE`, 1);
+            result = await api.search(query, 0, page * context.getters.pageSize);
+            context.commit(`UPDATE_LOWEST_PAGE`, 1);
             
-          // }
+          }
           
         } else {
 
@@ -114,7 +125,20 @@ export default new Vuex.Store({
     },
     changeAdvancedOptions(context, advancedOptions) {
       context.commit(`SET_ADVANCED_OPTIONs`, advancedOptions);
-    }
+    },
+    async loadDumpInfo(context) {
+
+      let dumpInfo;
+      try {
+        dumpInfo = await api.retrieveDumpInfo();
+      } catch (err) {
+        console.warn(err);
+        throw new Error(`Couldn't load dump info!`);
+      }
+
+      context.commit('UPDATE_DUMP_INFO', dumpInfo);
+      
+    },
   },
   getters: {
     results: state => state.results,
@@ -122,5 +146,6 @@ export default new Vuex.Store({
     pageSize: state => state.pageSize,
     lowestPage: state => state.lowestPage,
     advancedOptions: state => state.advancedOptions,
+    dumpInfo: state => state.dumpInfo,
   }
 })

@@ -10,6 +10,7 @@
       @submit.prevent="$emit('search')"
     >
 
+      <!-- class="w-full h-full p-3 pr-8 text-left text-black placeholder-gray-700 bg-white border-2 border-gray-600 outline-none dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500 rounded-xl focus:border-green-400" -->
       <input
         ref="searchField"
         :class="`w-full h-full bg-white dark:bg-gray-700 p-4 pr-12 text-left placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 ${(advancedSearchVisible) ? `rounded-t-xl` : `rounded-xl`} outline-none focus:border-green-400`"
@@ -21,16 +22,15 @@
       >
 
       <div
-        class="absolute right-0 top-0 flex flex-row pr-3"
+        class="absolute top-0 right-0 flex flex-row pr-3"
       >
-
         <svg
-          class="w-8 h-8 mx-1 my-3 p-1 dark:text-gray-200 cursor-pointer hover:stroke-2.5"
+          class="absolute top-0 right-0 w-6 h-6 mx-3 my-3 cursor-pointer dark:text-gray-200"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          stroke-width="1.5"
+          stroke-width="2"
           @click="$emit(`search`)"
         >
           <title>Search</title>
@@ -81,19 +81,19 @@
             class="relative w-6 h-6 p-px"
           >
             <input
-              class="appearance-none w-0 h-0"
+              class="w-0 h-0 appearance-none"
               type="checkbox"
               name="filename-only"
               id="filename-only"
               v-model="advancedOptions.filenameOnly"
             >
             <label
-              class="absolute w-full h-full rounded-sm border-2  border-gray-600  outline-none focus:border-green-400 cursor-pointer"
+              class="absolute w-full h-full border-2 border-gray-600 rounded-sm outline-none cursor-pointer focus:border-green-400"
               for="filename-only"
             >
               <svg
                 v-if="advancedOptions.filenameOnly"
-                class="absolute w-5 h-5 p-xs text-green-400 stroke-current stroke-4"
+                class="absolute w-5 h-5 text-green-400 stroke-current p-xs stroke-4"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke-linecap="round"

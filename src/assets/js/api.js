@@ -1,13 +1,28 @@
 export default class API {
 
-  constructor(baseUrl) {
+  constructor(baseUrl, discoveryUrl) {
 
     this.baseUrl = baseUrl;
-    this.apiEndpoint = `${this.baseUrl}/meili/indexes/links`;
+    this.apiEndpoint = `${this.baseUrl}/links`;
+    this.discoveryEndpoint = discoveryUrl;
     this.apiKey = process.env.VUE_APP_API_KEY;
 
   }
 
+  formatBytes(bytes, decimals = 2) {
+
+    if (bytes === 0) return `0 B`;
+  
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = [`B`, `KB`, `MB`, `GB`, `TB`, `PB`, `EB`, `ZB`, `YB`];
+  
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+  
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ` ` + sizes[i];
+
+  }
+  
   dotify(number) {
 
     let reversedNumberAsString = String(number).split(``).reverse().join(``);
@@ -19,12 +34,12 @@ export default class API {
     
   }
 
-  parseResult(rawResults) {
+  parseResult(rawResults, query) {
 
     let parsedResults = {
-      query: rawResults.query,
-      hits: this.parseHits(rawResults.hits),
-      totalHits: rawResults.nbHits,
+      hits: this.parseHits(rawResults.hits.hits),
+      totalHits: rawResults.hits.total.value,
+      query,
     }
 
     return parsedResults;
@@ -34,10 +49,13 @@ export default class API {
   parseHits(rawHits) {
     return rawHits.map(hit => {
       return {
-        id: hit.id,
-        url: hit.url,
-        highlights: [...new Set(hit._formatted.url.match(/(?<=<em>)(.*?)(?=<\/em>)/g))],
-        size: hit.size || -1,
+        id: hit._id,
+        score: hit._score,
+        url: hit._source.url,
+        filename: hit._source.filename,
+        // highlights: [...new Set(hit.highlight.url[0].match(/(?<=<em>).*?(?=<\/em>)/g))],
+        highlights: [...new Set(hit.highlight.url[0].match(/<em>(.*?)<\/em>/g))].map(highlight => highlight.slice(4,-5)),
+        size: hit._source.size || -1,
       }
     })
   }
@@ -45,30 +63,59 @@ export default class API {
   parseStats(rawStats) {
 
     let parsedStats = {
-      totalIndexed: this.dotify(rawStats.numberOfDocuments),
-      isIndexing: rawStats.isIndexing,
-      types: rawStats.fieldsDistribution,
+      totalIndexed: this.dotify(rawStats.indices.links.primaries.docs.count),
+      isIndexing: true, //TODO find out how to check if ES is indexing, or remove
     }
 
     return parsedStats;
     
   }
 
+  parseDumpInfo(rawDumpInfo) {
+
+    let parsedDumpInfo = {
+      url: rawDumpInfo.url,
+      numberOfLinks: this.dotify(rawDumpInfo.links),
+      size: this.formatBytes(rawDumpInfo.size, 0),
+      created: new Date(rawDumpInfo.created),
+    }
+
+    return parsedDumpInfo;
+    
+  }
+
+  // eslint-disable-next-line no-unused-vars
   search(query, offset = 0, limit = 20) {
     return new Promise((resolve, reject) => {
 
-        fetch(this.apiEndpoint + `/search?q=${encodeURIComponent(query)}&offset=${encodeURIComponent(offset)}&limit=${encodeURIComponent(limit)}&attributesToHighlight=url`, {
+        fetch(`${this.apiEndpoint}/_search`, {
           mode: 'cors',
           method: 'POST',
           headers: {
-            'X-Meili-API-Key': this.apiKey,
-          }
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: {
+              // match: {
+              match_phrase: { // doesn't work with multiple words (space separated)
+                  url: query,
+              }
+            },
+            size: limit,
+            from: offset,
+            highlight: {
+              fields: {
+                url: {},
+                filename: {},
+              }
+            }
+          }),
         })
         .then(response => {
           return response.json();
         })
         .then(result => {
-          return resolve(this.parseResult(result));
+          return resolve(this.parseResult(result, query));
         })
         .catch(err => {
           console.warn(`Failed to fetch results:`, err);
@@ -83,7 +130,7 @@ export default class API {
     let res, stats;
 
     try {
-      res = await fetch(this.baseUrl + `/stats.json`, {
+      res = await fetch(`${this.apiEndpoint}/_stats/docs,store,indexing,search`, {
         mode: 'cors',
         method: 'GET',
         headers: {
@@ -103,6 +150,34 @@ export default class API {
     }
 
     return this.parseStats(stats);
+    
+  }
+
+  async retrieveDumpInfo() {
+
+    let res, dumpInfo;
+
+    try {
+      res = await fetch(this.discoveryEndpoint + `/dump.json`, {
+        mode: 'cors',
+        method: 'GET',
+        headers: {
+          // 'X-Meili-API-Key': this.apiKey,
+        }
+      })
+    } catch (err) {
+      console.warn(err);
+      throw new Error(`Couldn't retrieve dump info`);
+    }
+
+    try {
+      dumpInfo = await res.json()
+    } catch (err) {
+      console.warn(err);
+      throw new Error(`Error while parsing the dump info, the server didn't respond with a valid json string!`);
+    }
+
+    return this.parseDumpInfo(dumpInfo);
     
   }
 
