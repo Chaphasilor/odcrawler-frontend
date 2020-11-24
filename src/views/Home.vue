@@ -68,7 +68,7 @@
         </div>
 
         <SearchField
-          class="w-full h-12 mx-auto mt-10 mb-4 md:my-4 md:w-192"
+          class="w-full mx-auto mt-10 mb-4 md:my-4 md:w-192"
           v-model="searchQuery"
           :focus="true"
           :placeholder="`Search ${stats.totalIndexed} links...`"

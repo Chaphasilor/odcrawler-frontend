@@ -24,13 +24,14 @@
       <div
         class="absolute top-0 right-0 flex flex-row pr-3"
       >
+          <!-- class="absolute top-0 right-0 w-6 h-6 mx-3 my-3 cursor-pointer dark:text-gray-200" -->
         <svg
-          class="absolute top-0 right-0 w-6 h-6 mx-3 my-3 cursor-pointer dark:text-gray-200"
+          class="w-8 h-8 mx-1 my-3 p-1 dark:text-gray-200 cursor-pointer hover:stroke-2.5"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          stroke-width="2"
+          stroke-width="1.5"
           @click="$emit(`search`)"
         >
           <title>Search</title>
@@ -72,6 +73,8 @@
         v-if="advancedSearchVisible"
         :class="`p-4 border-2 border-t-0 border-gray-600 rounded-b-xl`"
       >
+
+        <!-- TODO load options from store (text, type) -->
 
         <div
           class="flex flex-row justify-between"
