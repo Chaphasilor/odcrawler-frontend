@@ -21,11 +21,11 @@
     </nav>
 
     <div
-      class="w-full h-full flex flex-col"
+      class="flex flex-col w-full h-full"
     >
 
       <div
-        class="w-full md:h-full flex-shrink-0 flex-col justify-center flex"
+        class="flex flex-col justify-center flex-shrink-0 w-full md:h-full"
       >
 
         <svg
@@ -44,11 +44,11 @@
         </svg>
 
         <div
-          class="w-full md:w-1/2 mx-auto mt-4 mb-6 text-center flex-shrink-0"
+          class="flex-shrink-0 w-full mx-auto mt-4 mb-6 text-center md:w-1/2"
         >
 
           <h1
-            class="block text-3xl mb-6 font-semibold cursor-pointer"
+            class="block mb-6 text-3xl font-semibold cursor-pointer"
           >
             We haven't indexed this link yet...
           </h1>
@@ -63,7 +63,7 @@
         </div>
 
         <SearchField
-          class="mx-auto mt-10 mb-4 md:my-4 w-full md:w-192 h-12"
+          class="w-full h-12 mx-auto mt-10 mb-4 md:my-4 md:w-192"
           v-model="searchQuery"
           :focus="true"
           :placeholder="`Search ${stats.totalIndexed} links...`"
@@ -72,7 +72,7 @@
             params: {
               query: searchQuery,
             }
-          })"
+          }).catch(console.warn)"
         />
 
       </div>

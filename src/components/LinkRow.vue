@@ -8,7 +8,7 @@
     >
 
       <div
-        class="w-full h-auto pl-1 break-all whitespace-pre-wrap"
+        class="w-full h-auto px-1 break-all whitespace-pre-wrap"
       >
 
         <span
@@ -22,7 +22,7 @@
             target="_blank"
             :href="sublink.link"
           ><text-highlight
-            :queries="highlights"
+            :queries="(highlights.apply !== `filename` || index === sublinks.length-1) ? highlights.strings : []"
             :caseSensitive="false"
             highlightClass="bg-yellow-500 dark:bg-yellow-900"
             highlightComponent="span"
@@ -45,7 +45,7 @@
       >
         
         <button
-          class="h-full px-2 mx-1 font-bold transition-colors duration-75 rounded-full sm:hover:bg-gray-400 dark:sm:hover:bg-gray-700 focus:outline-none"
+          class="h-full px-2 mx-1 font-bold transition-colors duration-75 rounded-full sm:hover:bg-gray-400 sm:dark:hover:bg-gray-700 focus:outline-none"
           @click="copyLinkToClipboard"
         >
           <transition
@@ -107,7 +107,7 @@
       >
         
         <button
-          class="h-full px-2 mx-1 font-bold transition-colors duration-75 rounded-full sm:hover:bg-gray-400 dark:sm:hover:bg-gray-700 focus:outline-none"
+          class="h-full px-2 mx-1 font-bold transition-colors duration-75 rounded-full sm:hover:bg-gray-400 sm:dark:hover:bg-gray-700 focus:outline-none"
           @click="shareLink"
         >
           <svg
@@ -136,7 +136,7 @@
         class="flex-col justify-center inline-block w-1/2 text-center border-l border-black md:w-auto dark:border-gray-700 md:flex"
       >
         <button
-          class="h-full px-2 mx-1 font-bold transition-colors duration-75 rounded-full sm:hover:bg-gray-400 dark:sm:hover:bg-gray-700 focus:outline-none"
+          class="h-full px-2 mx-1 font-bold transition-colors duration-75 rounded-full sm:hover:bg-gray-400 sm:dark:hover:bg-gray-700 focus:outline-none"
           @click="openNewTab(`https://www.virustotal.com/gui/search/${doubleEncodedUrl}`)"
         >
 
@@ -186,9 +186,12 @@ export default {
       }
     },
     highlights: {
-      type: Array,
+      type: Object,
       default: function() {
-        return ``;
+        return {
+          apply: `url`,
+          strings: [],
+        };
       }
     },
   },

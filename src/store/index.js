@@ -31,6 +31,18 @@ export default new Vuex.Store({
     },
     pageSize: 40,
     lowestPage: 0,
+    advancedOptions: {
+      filenameOnly: {
+        text: `Filename-only Search`,
+        type: `toggle`,
+        value: false,
+      },
+      matchPhrase: {
+        text: `Use Phrase-Matching`,
+        type: `toggle`,
+        value: true,
+      },
+    }
   },
   mutations: {
     UPDATE_RESULTS(state, newResuls) {
@@ -41,6 +53,9 @@ export default new Vuex.Store({
     },
     UPDATE_LOWEST_PAGE(state, newLowestPage) {
       state.lowestPage = newLowestPage;
+    },
+    SET_ADVANCED_OPTIONS(state, advancedOptions) {
+      state.advancedOptions = advancedOptions;
     },
     UPDATE_DUMP_INFO(state, newDumpInfo) {
       state.dumpInfo = newDumpInfo;
@@ -56,19 +71,19 @@ export default new Vuex.Store({
 
           if (page * context.getters.pageSize > 1000) {
 
-            result = await api.search(query, (page-1) * context.getters.pageSize, context.getters.pageSize);
+            result = await api.search(query, (page-1) * context.getters.pageSize, context.getters.pageSize, context.getters.searchOptions);
             context.commit(`UPDATE_LOWEST_PAGE`, page);
             
           } else {
 
-            result = await api.search(query, 0, page * context.getters.pageSize);
+            result = await api.search(query, 0, page * context.getters.pageSize, context.getters.searchOptions);
             context.commit(`UPDATE_LOWEST_PAGE`, 1);
             
           }
           
         } else {
 
-          result = await api.search(query, 0, context.getters.pageSize);
+          result = await api.search(query, 0, context.getters.pageSize, context.getters.searchOptions);
           context.commit(`UPDATE_LOWEST_PAGE`, 1);
 
         }
@@ -89,7 +104,7 @@ export default new Vuex.Store({
 
       let result;
       try {
-        result = await api.search(context.getters.results.query, (context.getters.lowestPage-1)*context.getters.pageSize + context.getters.results.hits.length, context.getters.pageSize);
+        result = await api.search(context.getters.results.query, (context.getters.lowestPage-1)*context.getters.pageSize + context.getters.results.hits.length, context.getters.pageSize, context.getters.searchOptions);
       } catch (err) {
         console.warn(err);
         throw new Error(`Couldn't load additional results!`);
@@ -117,6 +132,9 @@ export default new Vuex.Store({
       context.commit('UPDATE_STATS', stats);
       
     },
+    changeAdvancedOptions(context, advancedOptions) {
+      context.commit(`SET_ADVANCED_OPTIONs`, advancedOptions);
+    },
     async loadDumpInfo(context) {
 
       let dumpInfo;
@@ -136,6 +154,13 @@ export default new Vuex.Store({
     stats: state => state.stats,
     pageSize: state => state.pageSize,
     lowestPage: state => state.lowestPage,
+    advancedOptions: state => state.advancedOptions,
+    searchOptions: state => {
+      return {
+        filenameOnly: state.advancedOptions.filenameOnly.value,
+        matchPhrase: state.advancedOptions.matchPhrase.value,
+      };
+    },
     dumpInfo: state => state.dumpInfo,
   }
 })

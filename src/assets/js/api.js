@@ -34,10 +34,10 @@ export default class API {
     
   }
 
-  parseResult(rawResults, query) {
+  parseResult(rawResults, query, searchOptions) {
 
     let parsedResults = {
-      hits: this.parseHits(rawResults.hits.hits),
+      hits: this.parseHits(rawResults.hits.hits, searchOptions),
       totalHits: rawResults.hits.total.value,
       query,
     }
@@ -46,7 +46,7 @@ export default class API {
     
   }
 
-  parseHits(rawHits) {
+  parseHits(rawHits, searchOptions) {
     return rawHits.map(hit => {
       return {
         id: hit._id,
@@ -54,7 +54,10 @@ export default class API {
         url: hit._source.url,
         filename: hit._source.filename,
         // highlights: [...new Set(hit.highlight.url[0].match(/(?<=<em>).*?(?=<\/em>)/g))],
-        highlights: [...new Set(hit.highlight.url[0].match(/<em>(.*?)<\/em>/g))].map(highlight => highlight.slice(4,-5)),
+        highlights: {
+          apply: searchOptions.filenameOnly ? `filename` : `url`,
+          strings: [...new Set(hit.highlight[searchOptions.filenameOnly ? `filename` : `url`][0].match(/<em>(.*?)<\/em>/g))].map(highlight => highlight.slice(4,-5)),
+        },
         size: hit._source.size || -1,
       }
     })
@@ -85,42 +88,64 @@ export default class API {
   }
 
   // eslint-disable-next-line no-unused-vars
-  search(query, offset = 0, limit = 20) {
+  search(query, offset = 0, limit = 20, options = {
+    filenameOnly: false,
+    matchPhrase: false,
+  }) {
     return new Promise((resolve, reject) => {
 
-        fetch(`${this.apiEndpoint}/_search`, {
-          mode: 'cors',
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: {
-              // match: {
-              match_phrase: { // doesn't work with multiple words (space separated)
-                  url: query,
-              }
-            },
-            size: limit,
-            from: offset,
-            highlight: {
-              fields: {
-                url: {},
-                filename: {},
-              }
-            }
-          }),
-        })
-        .then(response => {
-          return response.json();
-        })
-        .then(result => {
-          return resolve(this.parseResult(result, query));
-        })
-        .catch(err => {
-          console.warn(`Failed to fetch results:`, err);
-          return reject(`Couldn't fetch results!`);
-        })
+      let requestBody = {
+        size: limit,
+        from: offset,
+        highlight: {
+          fields: {
+            url: {},
+            filename: {},
+          }
+        }
+      }
+
+      let searchField;
+      if (options.filenameOnly) {
+        searchField = {
+          filename: query, // search filename field
+        }
+      } else {
+        searchField = {
+          url: query, // search url field
+        }
+      }
+
+      if (options.matchPhrase) {
+        requestBody.query = {
+          match_phrase: searchField // issues with multiple words (space separated)
+        }
+      } else {
+        requestBody.query = {
+          match: searchField,
+        }
+      }
+
+      console.log(`requestBody:`, requestBody);
+      
+      fetch(`${this.apiEndpoint}/_search`, {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(result => {
+        return resolve(this.parseResult(result, query, options));
+      })
+      .catch(err => {
+        console.warn(`Failed to fetch results:`, err);
+        return reject(`Couldn't fetch results!`);
+      })
     
     })
   }
