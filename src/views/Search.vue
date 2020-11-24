@@ -39,7 +39,7 @@
       </div>
 
       <SearchField
-        class="h-12 ml-0 md:w-3/5 lg:w-192"
+        class="h-auto ml-0 md:w-3/5 lg:w-192"
         v-model="searchQuery"
         :focus="false"
         :placeholder="`Search ${stats.totalIndexed} links...`"
@@ -47,11 +47,11 @@
       />
 
       <div
-        class="flex flex-row flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm md:w-2/5"
+        class="flex flex-row flex-grow-0 flex-shrink-0 h-12 mt-1 ml-4 text-base md:w-2/5"
       >
       
         <div
-          class="flex flex-col justify-center h-full pr-2 font-bold tracking-wider"
+          class="flex flex-col justify-center h-full pr-2 text-lg font-bold tracking-wider"
         >
           <span>TIP:</span>
         </div>
@@ -118,7 +118,7 @@ export default {
         `You can click on subpaths to jump to the corresponding folder!`,
         `Strike-through'd links are most likely dead!`,
         `You can see the amount of pages on the left side of the links!`,
-        `You can click the middle mouse button (scroll wheel) to open links in a new tab!`,
+        `All links will open in a new tab!`,
         `If you want to go back to the first page, just press 'Search' again!`
       ],
       tipTimer: undefined,
@@ -166,11 +166,11 @@ export default {
         await this.$store.dispatch(`search`, { query, page });
         this.highestPage = page;
 
-        if (location.pathname != `/search/${query}`) {
-          this.$router.push({
-            path: `/search/${query}`,
-          })
-        }
+        // if (location.pathname != `/search/${query}`) {
+        //   this.$router.push({
+        //     path: `/search/${query}`,
+        //   })
+        // }
 
         if (this.$route.query.p && Number(this.$route.query.p) != this.highestPage) {
           this.$router.push({

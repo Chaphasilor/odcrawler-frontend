@@ -29,7 +29,7 @@
           :link="link.url"
           :highlights="link.highlights"
           :size="link.size"
-          @link-mounted="calcPage(id) === scrollToInitialPage ? smoothScrollToPage(calcPage(id)) : false;"
+          @link-mounted="calcPage(id) === scrollToInitialPage && scrollToInitialPage > 1 ? smoothScrollToPage(calcPage(id)) : false;"
         />
 
       </div>
