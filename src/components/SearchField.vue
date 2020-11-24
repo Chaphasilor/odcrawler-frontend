@@ -13,7 +13,7 @@
       <!-- class="w-full h-full p-3 pr-8 text-left text-black placeholder-gray-700 bg-white border-2 border-gray-600 outline-none dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500 rounded-xl focus:border-green-400" -->
       <input
         ref="searchField"
-        :class="`w-full h-full bg-white dark:bg-gray-700 p-4 pr-12 text-left placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 ${(advancedSearchVisible) ? `rounded-t-xl` : `rounded-xl`} outline-none focus:border-green-400`"
+        :class="`w-full h-full bg-white dark:bg-gray-700 p-4 pr-24 text-left placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 ${(advancedSearchVisible) ? `rounded-t-xl` : `rounded-xl`} outline-none focus:border-green-400`"
         :placeholder="placeholder"
         type="search"
         :value="value"
