@@ -47,11 +47,11 @@
       />
 
       <div
-        class="flex flex-row flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm md:w-2/5"
+        class="flex flex-row flex-grow-0 flex-shrink-0 h-12 mt-1 ml-4 text-base md:w-2/5"
       >
       
         <div
-          class="flex flex-col justify-center h-full pr-2 font-bold tracking-wider"
+          class="flex flex-col justify-center h-full pr-2 text-lg font-bold tracking-wider"
         >
           <span>TIP:</span>
         </div>

@@ -182,6 +182,12 @@ export default {
           this.$refs.searchField.blur();
         }
       }
+    },
+    advancedOptions: {
+      deep: true,
+      handler: function() {
+        this.$emit(`search`);
+      }
     }
   },
   mounted() {
