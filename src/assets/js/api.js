@@ -96,8 +96,8 @@ export default class API {
           },
           body: JSON.stringify({
             query: {
-              match: {
-              // match_phrase: { // doesn't work with multiple words (space separated)
+              // match: {
+              match_phrase: { // doesn't work with multiple words (space separated)
                   url: query,
               }
             },
