@@ -72,12 +72,16 @@
           v-model="searchQuery"
           :focus="true"
           :placeholder="`Search ${stats.totalIndexed} links...`"
-          @search="$router.push({
-            name: `Search`,
-            params: {
-              query: searchQuery,
-            }
-          })"
+          @search="
+            searchQuery.length > 0 ?
+            $router.push({
+              name: `Search`,
+              params: {
+                query: searchQuery,
+              }
+            }) :
+            false
+          "
         />
 
         <p

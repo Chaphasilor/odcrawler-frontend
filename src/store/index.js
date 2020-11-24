@@ -32,7 +32,16 @@ export default new Vuex.Store({
     pageSize: 40,
     lowestPage: 0,
     advancedOptions: {
-      filenameOnly: false,
+      filenameOnly: {
+        text: `Filename-only Search`,
+        type: `toggle`,
+        value: false,
+      },
+      matchPhrase: {
+        text: `Use Phrase-Matching`,
+        type: `toggle`,
+        value: false,
+      },
     }
   },
   mutations: {

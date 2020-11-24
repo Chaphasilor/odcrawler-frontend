@@ -74,28 +74,29 @@
         :class="`p-4 border-2 border-t-0 border-gray-600 rounded-b-xl`"
       >
 
-        <!-- TODO load options from store (text, type) -->
-
         <div
-          class="flex flex-row justify-between"
+          v-for="[key, option] of Object.entries(advancedOptions)"
+          :key="key"
+          class="flex flex-row justify-between py-2"
         >
-          <label for="filename-only">Filename-only Search</label>
+          <label :for="key">{{ option.text }}</label>
           <div
+            v-if="option.type === `toggle`"
             class="relative w-6 h-6 p-px"
           >
             <input
               class="w-0 h-0 appearance-none"
               type="checkbox"
-              name="filename-only"
-              id="filename-only"
-              v-model="advancedOptions.filenameOnly"
+              :name="key"
+              :id="key"
+              v-model="option.value"
             >
             <label
               class="absolute w-full h-full border-2 border-gray-600 rounded-sm outline-none cursor-pointer focus:border-green-400"
-              for="filename-only"
+              :for="key"
             >
               <svg
-                v-if="advancedOptions.filenameOnly"
+                v-if="option.value"
                 class="absolute w-5 h-5 text-green-400 stroke-current p-xs stroke-4"
                 viewBox="0 0 24 24"
                 fill="none"
@@ -165,9 +166,11 @@ export default {
       }
     },
     advancedSearchActive() {
-      return Object.values(this.advancedOptions).reduce((active, current) => {
-        return active || current;
-      })
+      return Object.values(this.advancedOptions).reduce((active, currentOption) => {
+        
+        return active || (typeof currentOption.value == `string` ? currentOption.value.length > 0 : currentOption.value);
+        
+      }, false);
     },
   },
   watch: {
@@ -187,6 +190,8 @@ export default {
     if (this.focus) {
       this.$refs.searchField.focus();
     }
+
+    console.log(`this.advancedSearchActive:`, this.advancedSearchActive);
 
   }
 }
