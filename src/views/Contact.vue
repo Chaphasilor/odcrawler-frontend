@@ -4,7 +4,7 @@
   >
 
     <vue-headful
-      title="Download Dump - ODCrawler"
+      title="Contact - ODCrawler"
     />
 
     <nav
@@ -80,6 +80,7 @@
         class="grid grid-cols-2 row-gap-4 p-6 mx-32 text-center"
         ref="contactForm"
         method="POST"
+        data-netlify="true"
         @submit.prevent="submitForm"
       >
         <input type="hidden" name="form-name" value="contact">

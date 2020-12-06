@@ -29,7 +29,11 @@
     <div id="app"></div>
 
     <!-- Enable Netlify forms -->
-    <form name="contact" method="POST" data-netlify="true"></form>
+    <form class="hidden" name="contact" data-netlify="true" hidden>
+      <input type="text" name="name" > 
+      <input type="email" name="email" > 
+      <textarea name="message" ></textarea>
+    </form>
     
     <!-- built files will be auto injected -->
   </body>
