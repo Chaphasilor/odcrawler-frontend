@@ -7,16 +7,40 @@
       title="ODCrawler"
     />
 
+    <a
+      class="absolute top-0 left-0 p-6 text-lg hover:font-bold"
+      href="https://github.com/sponsors/MCOfficer"
+    >
+      Support ODCrawler!
+    </a>
+
     <nav
       class="absolute top-0 right-0 p-6 text-lg"
     >
       <router-link
+        v-for="(link, index) of navLinks"
+        :key="link.title"
         class="hover:font-bold"
-        :to="{
-          name: `Download`,
-        }"
+        :to="link.to"
       >
-        Get All Links
+
+      {{ link.title }}
+      
+        <svg
+          v-if="index != navLinks.length-1"
+          class="hidden w-4 h-4 mx-1 md:inline-block"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <circle cx="12" cy="12" r="4" />
+        </svg>
+
       </router-link>
     </nav>
 
@@ -58,13 +82,6 @@
             </h1>
           </router-link>
           
-          <iframe
-            class="w-40 h-10 m-auto mt-4"
-            src="https://github.com/sponsors/MCOfficer/button"
-            title="Sponsor MCOfficer"
-            
-          ></iframe>
-          
         </div>
 
         <SearchField
@@ -100,7 +117,7 @@
           class="m-auto md:text-lg md:font-bold"
         >
           <div
-            class="display-block"
+            class="font-normal display-block"
           >
             Powered by:
           </div>
@@ -172,6 +189,20 @@ export default {
     return {
       searchQuery: ``,
       resultListBottomText: ``,
+      navLinks: [
+        {
+          title: `Contact Us`,
+          to: {
+            name: `Contact`,
+          }
+        },
+        {
+          title: `Download All Links`,
+          to: {
+            name: `Download`,
+          }
+        },
+      ],
       poweredBy: [
         {
           title: `OpenDirectoryDownloader`,
