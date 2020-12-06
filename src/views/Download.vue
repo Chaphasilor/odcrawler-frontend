@@ -91,7 +91,7 @@
           rel="noopener noreferrer"
           target="_blank"
         >
-          Download Dump (.zip, {{ dumpInfo.size }})
+          Download Dump ({{dumpInfo.url.split(`.`).length > 0 ? `.${dumpInfo.url.split(`.`).slice(-1)[0]}` : `.7z`}}, {{ dumpInfo.size }})
         </a>
       </div>
 
