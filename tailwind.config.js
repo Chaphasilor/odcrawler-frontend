@@ -1,5 +1,3 @@
-const plugin = require('tailwindcss/plugin')
-
 module.exports = {
   purge: {
     enabled: process.env.NODE_ENV === 'production',
@@ -72,13 +70,5 @@ module.exports = {
     backgroundColor: ({ after }) => after(['active']),
     strokeWidth: ({ after }) => after(['hover']),
   },
-  plugins: [
-    plugin(function({ addVariant, e }) {
-      addVariant('autofilled', ({ modifySelectors, separator }) => {
-        modifySelectors(({ className }) => {
-          return `.${e(`autofilled${separator}${className}`)}:-webkit-autofill`
-        })
-      })
-    })
-  ],
+  plugins: [],
 }
