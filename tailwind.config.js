@@ -69,6 +69,7 @@ module.exports = {
   variants: {
     backgroundColor: ({ after }) => after(['active']),
     strokeWidth: ({ after }) => after(['hover']),
+    transitionProperty: ({ after }) => after(['motion-safe', 'motion-reduce']),
   },
   plugins: [],
 }

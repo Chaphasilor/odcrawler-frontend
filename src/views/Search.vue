@@ -41,6 +41,7 @@
       <SearchField
         class="h-auto ml-0 md:w-3/5 lg:w-192"
         v-model="searchQuery"
+        v-observe-visibility="handleVisibilityChanged"
         :focus="false"
         :placeholder="`Search ${stats.totalIndexed} links...`"
         @search="search(searchQuery)"
@@ -80,6 +81,39 @@
       </div>
 
     </div>
+
+    <transition
+      name="scrollToTopButton"
+      enter-active-class="transition-transform duration-300 transform motion-reduce:transition-none"
+      enter-class="translate-x-32"
+      enter-to-class=""
+      leave-active-class="transition-transform duration-300 transform motion-reduce:transition-none"
+      leave-class=""
+      leave-to-class="translate-x-32"
+    >
+      <div
+        class="fixed bottom-0 right-0 w-12 h-12 mb-10 mr-10 bg-gray-100 border border-black rounded-md shadow-lg"
+        v-if="scrollToTopButton"
+        @click="scrollToTop"
+      >
+        <svg
+          class="w-full h-full text-gray-700"
+          width="84"
+          height="84"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>Back to top</title>
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <polyline points="6 15 12 9 18 15" />
+        </svg>
+      </div>
+    </transition>
 
     <ResultList
       class="flex flex-row justify-start w-full h-auto pb-16"
@@ -125,6 +159,7 @@ export default {
       highestPage: 0,
       loadingResults: false,
       orientation: window.screen.orientation ? window.screen.orientation.type : `landscape-primary`,
+      scrollToTopButton: false,
     };
   },
   computed: {
@@ -267,6 +302,12 @@ export default {
     },
     handleOrientationChange() {
       this.orientation = window.screen.orientation ? window.screen.orientation.type : `landscape-primary`;
+    },
+    handleVisibilityChanged(isVisible) {
+      this.scrollToTopButton = !isVisible
+    },
+    scrollToTop() {
+      scrollTo(0, 0)
     }
   },
   created() {

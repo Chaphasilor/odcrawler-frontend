@@ -6,10 +6,12 @@ import "@/assets/css/tailwind.css";
 import infiniteScroll from 'vue-infinite-scroll';
 import TextHighlight from 'vue-text-highlight/dist/component';
 import vueHeadful from 'vue-headful';
+import VueObserveVisibility from 'vue-observe-visibility'
 
 Vue.config.productionTip = false
 
 Vue.use(infiniteScroll);
+Vue.use(VueObserveVisibility)
 Vue.component('vue-headful', vueHeadful);
 Vue.component('text-highlight', TextHighlight);
 

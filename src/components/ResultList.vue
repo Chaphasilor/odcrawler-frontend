@@ -20,7 +20,7 @@
           class="flex-shrink-0 w-auto my-1 font-bold text-center md:w-20 md:pt-2 md:pr-2 md:font-normal md:text-right"
           :ref="`page-${(id % pageSize === 0) ? calcPage(id) : `${calcPage(id)}-${id - calcPage(id)*pageSize}`}`"
         >
-          {{ (id % pageSize === 0) ? `${calcPage(id)}/${Math.ceil(results.totalHits/pageSize)}` : ``}}
+          {{ (id % pageSize === 0) ? `${calcPage(id)}/${Math.ceil(results.totalHits/pageSize)}${results.totalHits >= 10000 ? `+` : ``}` : ``}}
         </div>
 
 
@@ -117,7 +117,7 @@ export default {
 
       console.log(`page:`, page);
       this.$refs[`page-${page}`][0].scrollIntoView({
-        behavior: `smooth`,
+        // behavior: `smooth`, // handled by CSS
       });
       
     },
