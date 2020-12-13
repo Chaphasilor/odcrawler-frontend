@@ -1,48 +1,54 @@
 <template>
   <div
-    class="w-full h-full px-6"
+    class="w-full h-full p-4"
   >
 
     <vue-headful
       title="ODCrawler"
     />
 
-    <a
-      class="absolute top-0 left-0 p-6 text-lg hover:font-bold"
-      href="https://github.com/sponsors/MCOfficer"
+    <div
+      class="flex flex-row justify-between w-full h-auto font-semibold"
     >
-      Support ODCrawler!
-    </a>
 
-    <nav
-      class="absolute top-0 right-0 p-6 text-lg"
-    >
-      <router-link
-        v-for="(link, index) of navLinks"
-        :key="link.title"
-        class="hover:font-bold"
-        :to="link.to"
+      <a
+        class="text-lg hover:font-bold"
+        href="https://github.com/sponsors/MCOfficer"
       >
+        Support Us!
+      </a>
 
-      {{ link.title }}
-      
-        <svg
-          v-if="index != navLinks.length-1"
-          class="hidden w-4 h-4 mx-1 md:inline-block"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          xmlns="http://www.w3.org/2000/svg"
+      <nav
+        class="flex flex-col text-lg text-right md:block"
+      >
+        <router-link
+          v-for="(link, index) of navLinks"
+          :key="link.title"
+          class="pb-2 hover:font-bold"
+          :to="link.to"
         >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <circle cx="12" cy="12" r="4" />
-        </svg>
 
-      </router-link>
-    </nav>
+        {{ link.title }}
+        
+          <svg
+            v-if="index != navLinks.length-1"
+            class="hidden w-4 h-4 mx-1 md:inline-block"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <circle cx="12" cy="12" r="4" />
+          </svg>
+
+        </router-link>
+      </nav>
+      
+    </div>
 
     <div
       class="flex flex-col w-full h-full"
@@ -114,7 +120,7 @@
       >
 
         <div
-          class="m-auto md:text-lg md:font-bold"
+          class="m-auto font-bold md:text-lg"
         >
           <div
             class="font-normal display-block"
@@ -191,7 +197,7 @@ export default {
       resultListBottomText: ``,
       navLinks: [
         {
-          title: `Contact Us`,
+          title: `Contact`,
           to: {
             name: `Contact`,
           }
