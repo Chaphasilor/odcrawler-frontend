@@ -215,7 +215,7 @@ export default {
       return encodeURIComponent(encodeURIComponent(this.link));
     },
     formattedSize: function() {
-      return this.size >= 0 ? this.formatBytes(this.size) : this.meta.sizeInBytes >= 0 ? this.formatBytes(this.meta.sizeInBytes) : `N/A`;
+      return this.size >= 0 ? this.formatBytes(this.size) : (this.meta.sizeInBytes != null && this.meta.sizeInBytes >= 0) ? this.formatBytes(this.meta.sizeInBytes) : `N/A`;
     },
     webShare: function() {
       return navigator.share;
