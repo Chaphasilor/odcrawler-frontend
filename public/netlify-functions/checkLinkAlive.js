@@ -22,6 +22,7 @@ function resolveLink(url) {
   }
   
   return {
+    originalUrl: url,
     url: resolvedUrl,
     headers: resolvedHeaders,
   };
@@ -39,7 +40,8 @@ function checkLink(urlData) {
       return resolve({
         statusCode: res.status,
         isAlive: res.ok,
-        sizeInBytes: Number(res.headers.get(`Content-Length`)),
+        sizeInBytes: res.headers.get(`Content-Length`) === null ? NaN : Number(res.headers.get(`Content-Length`)),
+        url: urlData.originalUrl,
         checkedUrl: urlData.url,
         headers: urlData.headers,
       });
