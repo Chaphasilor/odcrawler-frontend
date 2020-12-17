@@ -194,6 +194,12 @@ export default {
         };
       }
     },
+    meta: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    },
   },
   data: function() {
     return {
@@ -209,7 +215,7 @@ export default {
       return encodeURIComponent(encodeURIComponent(this.link));
     },
     formattedSize: function() {
-      return this.size >= 0 ? this.formatBytes(this.size) : `N/A`;
+      return this.size >= 0 ? this.formatBytes(this.size) : this.meta.sizeInBytes >= 0 ? this.formatBytes(this.meta.sizeInBytes) : `N/A`;
     },
     webShare: function() {
       return navigator.share;
@@ -280,44 +286,44 @@ export default {
     openNewTab(url) {
       window.open(url);
     },
-    async checkLink() {
+    // async checkLink() {
 
-      let schroedingersLink = this.link;
-      let res;
+    //   let schroedingersLink = this.link;
+    //   let res;
 
-      try {
-        res = await fetch(`/.netlify/functions/checkLinkAlive`, {
-          method: `POST`,
-          body: JSON.stringify({
-            url: schroedingersLink,
-          })
-        })
-      } catch (err) {
+    //   try {
+    //     res = await fetch(`/.netlify/functions/checkLinkAlive`, {
+    //       method: `POST`,
+    //       body: JSON.stringify({
+    //         url: schroedingersLink,
+    //       })
+    //     })
+    //   } catch (err) {
 
-        console.warn(`Couldn't check if link is alive:`, err);
-        return false;
+    //     console.warn(`Couldn't check if link is alive:`, err);
+    //     return false;
 
-      }
+    //   }
 
-      if ([502, 504].includes(res.status)) {
-        return false;
-      }
+    //   if ([502, 504].includes(res.status)) {
+    //     return false;
+    //   }
 
-      let body;
-      try {
-        body = await res.json();
-      } catch (err) {
-        console.warn(`Couldn't parse JSON from response body!`);
-        return res.ok;
-      }
+    //   let body;
+    //   try {
+    //     body = await res.json();
+    //   } catch (err) {
+    //     console.warn(`Couldn't parse JSON from response body!`);
+    //     return res.ok;
+    //   }
 
-      if (body.sizeInBytes > 0) {
-        //TODO make this persistant by updating the item in the store.
-        this.size = body.sizeInBytes;
-      }
-      return body.isAlive;
+    //   if (body.sizeInBytes > 0) {
+    //     //TODO make this persistant by updating the item in the store.
+    //     this.size = body.sizeInBytes;
+    //   }
+    //   return body.isAlive;
       
-    }
+    // }
   },
   mounted() {
 

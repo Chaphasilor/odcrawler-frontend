@@ -29,6 +29,7 @@
           :link="link.url"
           :highlights="link.highlights"
           :size="link.size"
+          :meta="link.meta"
           @link-mounted="calcPage(id) === scrollToInitialPage && scrollToInitialPage > 1 ? smoothScrollToPage(calcPage(id)) : false;"
         />
 
@@ -111,6 +112,21 @@ export default {
         console.log(`this.disableInfiniteScroll:`, this.disableInfiniteScroll);
       }
     },
+    // results: {
+    //   deep: false, 
+    //   handler: function(newResults) {
+
+    //     // console.log(`newResults:`, newResults);
+    //     // let newPage = newResults.hits.slice(-this.pageSize);
+    //     // console.log(`newPage:`, newPage);
+    //     // setTimeout(() => {
+    //     //   newPage.forEach(hit => {
+    //     //     hit.url = `test`;
+    //     //   })
+    //     // }, 5000)
+        
+    //   }
+    // }
   },
   methods: {
     smoothScrollToPage(page) {

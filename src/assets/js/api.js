@@ -206,4 +206,52 @@ export default class API {
     
   }
 
+  async checkLinks(urls) {
+
+    // let res;
+
+    // try {
+    //   res = await fetch(`/.netlify/functions/checkLinkAlive`, {
+    //     method: `POST`,
+    //     body: JSON.stringify({
+    //       urls,
+    //     })
+    //   })
+    // } catch (err) {
+
+    //   throw new Error(`Couldn't check if links are alive: ${err.message}`)
+
+    // }
+
+    // if ([502, 504].includes(res.status)) {
+    //   return false;
+    // }
+
+    let body = {};
+    // try {
+    //   body = await res.json();
+    // } catch (err) {
+    //   throw new Error(`Couldn't parse JSON from response body!`)
+    // }
+
+    // if (!body.results) {
+    //   throw new Error(`Received invalid response format while trying to check links`)
+    // }
+
+    body.results = []
+    urls.forEach(url => {
+      body.results.push({
+        statusCode: 500,
+        isAlive: false,
+        sizeInBytes: 153749821,
+        url: url,
+        checkedUrl: 'https://two.hashhackers.com/0:/Star.Wars.Resistance.S01.720p.x265-MeGusta/Star.Wars.Resistance.S01E08.720p.HEVC.x265-MeGusta.mkv',
+        headers: { referer: 'hashhackers.com' }
+      })
+    })
+
+    return body.results;
+    
+  }
+  
 }
