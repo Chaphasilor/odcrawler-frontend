@@ -3,7 +3,7 @@ export default class API {
   constructor(baseUrl, discoveryUrl) {
 
     this.baseUrl = baseUrl;
-    this.apiEndpoint = `${this.baseUrl}/meili/indexes/links`;
+    this.apiEndpoint = `${this.baseUrl}/links`;
     this.discoveryEndpoint = discoveryUrl;
     this.apiKey = process.env.VUE_APP_API_KEY;
 
@@ -34,25 +34,31 @@ export default class API {
     
   }
 
-  parseResult(rawResults) {
+  parseResult(rawResults, query, searchOptions) {
 
     let parsedResults = {
-      query: rawResults.query,
-      hits: this.parseHits(rawResults.hits),
-      totalHits: rawResults.nbHits,
+      hits: this.parseHits(rawResults.hits.hits, searchOptions),
+      totalHits: rawResults.hits.total.value,
+      query,
     }
 
     return parsedResults;
     
   }
 
-  parseHits(rawHits) {
+  parseHits(rawHits, searchOptions) {
     return rawHits.map(hit => {
       return {
-        id: hit.id,
-        url: hit.url,
-        highlights: [...new Set(hit._formatted.url.match(/(?<=<em>)(.*?)(?=<\/em>)/g))],
-        size: hit.size || -1,
+        id: hit._id,
+        score: hit._score,
+        url: hit._source.url,
+        filename: hit._source.filename,
+        // highlights: [...new Set(hit.highlight.url[0].match(/(?<=<em>).*?(?=<\/em>)/g))],
+        highlights: {
+          apply: searchOptions.filenameOnly ? `filename` : `url`,
+          strings: [...new Set(hit.highlight[searchOptions.filenameOnly ? `filename` : `url`][0].match(/<em>(.*?)<\/em>/g))].map(highlight => highlight.slice(4,-5)),
+        },
+        size: hit._source.size || -1,
       }
     })
   }
@@ -60,9 +66,8 @@ export default class API {
   parseStats(rawStats) {
 
     let parsedStats = {
-      totalIndexed: this.dotify(rawStats.numberOfDocuments),
-      isIndexing: rawStats.isIndexing,
-      types: rawStats.fieldsDistribution,
+      totalIndexed: this.dotify(rawStats.indices.links.primaries.docs.count),
+      isIndexing: true, //TODO find out how to check if ES is indexing, or remove
     }
 
     return parsedStats;
@@ -82,26 +87,65 @@ export default class API {
     
   }
 
-  search(query, offset = 0, limit = 20) {
+  // eslint-disable-next-line no-unused-vars
+  search(query, offset = 0, limit = 20, options = {
+    filenameOnly: false,
+    matchPhrase: false,
+  }) {
     return new Promise((resolve, reject) => {
 
-        fetch(this.apiEndpoint + `/search?q=${encodeURIComponent(query)}&offset=${encodeURIComponent(offset)}&limit=${encodeURIComponent(limit)}&attributesToHighlight=url`, {
-          mode: 'cors',
-          method: 'GET',
-          headers: {
-            'X-Meili-API-Key': this.apiKey,
+      let requestBody = {
+        size: limit,
+        from: offset,
+        highlight: {
+          fields: {
+            url: {},
+            filename: {},
           }
-        })
-        .then(response => {
-          return response.json();
-        })
-        .then(result => {
-          return resolve(this.parseResult(result));
-        })
-        .catch(err => {
-          console.warn(`Failed to fetch results:`, err);
-          return reject(`Couldn't fetch results!`);
-        })
+        }
+      }
+
+      let searchField;
+      if (options.filenameOnly) {
+        searchField = {
+          filename: query, // search filename field
+        }
+      } else {
+        searchField = {
+          url: query, // search url field
+        }
+      }
+
+      if (options.matchPhrase) {
+        requestBody.query = {
+          match_phrase: searchField // issues with multiple words (space separated)
+        }
+      } else {
+        requestBody.query = {
+          match: searchField,
+        }
+      }
+
+      console.log(`requestBody:`, requestBody);
+      
+      fetch(`${this.apiEndpoint}/_search`, {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(result => {
+        return resolve(this.parseResult(result, query, options));
+      })
+      .catch(err => {
+        console.warn(`Failed to fetch results:`, err);
+        return reject(`Couldn't fetch results!`);
+      })
     
     })
   }
@@ -111,7 +155,7 @@ export default class API {
     let res, stats;
 
     try {
-      res = await fetch(this.baseUrl + `/stats.json`, {
+      res = await fetch(`${this.apiEndpoint}/_stats/docs,store,indexing,search`, {
         mode: 'cors',
         method: 'GET',
         headers: {

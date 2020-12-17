@@ -9,7 +9,7 @@
 
     <!-- <div
       v-if="!isLandscape"
-      class="p-2 text-center mb-4 bg-orange-500 dark:bg-orange-800 rounded-lg"
+      class="p-2 mb-4 text-center bg-orange-500 rounded-lg dark:bg-orange-800"
     >
       This page isn't optimized for mobile yet.
       <br>
@@ -17,11 +17,11 @@
     </div> -->
 
     <div
-      class="md:flex flex-row justify-start md:mb-4"
+      class="flex-row justify-start md:flex md:mb-4"
     >
 
       <div
-        class="md:w-20 text-center md:text-left flex-shrink-0"
+        class="flex-shrink-0 text-center md:w-20 md:text-left"
       >
         <router-link
           :to="{
@@ -39,38 +39,39 @@
       </div>
 
       <SearchField
-        class="ml-0 md:w-3/5 lg:w-192 h-12"
+        class="h-auto ml-0 md:w-3/5 lg:w-192"
         v-model="searchQuery"
+        v-observe-visibility="handleVisibilityChanged"
         :focus="false"
         :placeholder="`Search ${stats.totalIndexed} links...`"
         @search="search(searchQuery)"
       />
 
       <div
-        class="md:w-2/5 flex-grow-0 flex-shrink-0 h-12 ml-2 text-sm flex flex-row"
+        class="flex flex-row flex-grow-0 flex-shrink-0 h-12 mt-1 ml-4 text-base md:w-2/5"
       >
       
         <div
-          class="h-full flex flex-col justify-center pr-2 font-bold tracking-wider"
+          class="flex flex-col justify-center h-full pr-2 text-lg font-bold tracking-wider"
         >
           <span>TIP:</span>
         </div>
 
         <div
-          class="h-full flex flex-row overflow-hidden"
+          class="flex flex-row h-full overflow-hidden"
         >
           <transition
             name="slideTips"
-            enter-active-class="transform transition-all duration-1000"
+            enter-active-class="transition-all duration-1000 transform"
             enter-class="translate-x-64 opacity-0"
             enter-to-class="translate-x-0 opacity-100"
-            leave-active-class="transform transition-all duration-700 whitespace-no-wrap"
+            leave-active-class="whitespace-no-wrap transition-all duration-700 transform"
             leave-class="translate-x-0 opacity-100"
-            leave-to-class="-translate-x-64 opacity-0 w-0"
+            leave-to-class="w-0 -translate-x-64 opacity-0"
           >
           <div
             :key="activeTipIndex"
-            class="h-auto flex flex-col justify-center break-words leading-4"
+            class="flex flex-col justify-center h-auto leading-4 break-words"
           >
             <span>{{ activeTip }}</span>
           </div>
@@ -81,8 +82,41 @@
 
     </div>
 
+    <transition
+      name="scrollToTopButton"
+      enter-active-class="transition-transform duration-300 transform motion-reduce:transition-none"
+      enter-class="translate-x-32"
+      enter-to-class=""
+      leave-active-class="transition-transform duration-300 transform motion-reduce:transition-none"
+      leave-class=""
+      leave-to-class="translate-x-32"
+    >
+      <div
+        class="fixed bottom-0 right-0 w-12 h-12 mb-10 mr-10 bg-gray-100 border border-black rounded-md shadow-lg dark:border-gray-700 dark:bg-gray-900"
+        v-if="scrollToTopButton"
+        @click="scrollToTop"
+      >
+        <svg
+          class="w-full h-full text-gray-700"
+          width="84"
+          height="84"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>Back to top</title>
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <polyline points="6 15 12 9 18 15" />
+        </svg>
+      </div>
+    </transition>
+
     <ResultList
-      class="w-full h-auto flex flex-row justify-start pb-16"
+      class="flex flex-row justify-start w-full h-auto pb-16"
       :results="results"
       :pageSize="pageSize"
       :lowestPage="lowestPage"
@@ -118,14 +152,14 @@ export default {
         `You can click on subpaths to jump to the corresponding folder!`,
         `Strike-through'd links are most likely dead!`,
         `You can see the amount of pages on the left side of the links!`,
-        `You can click the middle mouse button (scroll wheel) to open links in a new tab!`,
+        `All links will open in a new tab!`,
         `If you want to go back to the first page, just press 'Search' again!`
       ],
       tipTimer: undefined,
-      lowestPage: 0,
       highestPage: 0,
       loadingResults: false,
-      orientation: window.screen.orientation.type,
+      orientation: window.screen.orientation ? window.screen.orientation.type : `landscape-primary`,
+      scrollToTopButton: false,
     };
   },
   computed: {
@@ -140,6 +174,9 @@ export default {
     },
     pageSize: function() {
       return this.$store.getters.pageSize;
+    },
+    lowestPage: function() {
+      return this.$store.getters.lowestPage;
     },
     infiniteScrollDisabled: function() {
       
@@ -162,14 +199,13 @@ export default {
 
         this.loadingResults = true;
         await this.$store.dispatch(`search`, { query, page });
-        this.lowestPage = page;
         this.highestPage = page;
 
-        if (location.pathname != `/search/${query}`) {
-          this.$router.push({
-            path: `/search/${query}`,
-          })
-        }
+        // if (location.pathname != `/search/${query}`) {
+        //   this.$router.push({
+        //     path: `/search/${query}`,
+        //   })
+        // }
 
         if (this.$route.query.p && Number(this.$route.query.p) != this.highestPage) {
           this.$router.push({
@@ -206,6 +242,12 @@ export default {
     async loadNextPage() {
 
       if (this.lowestPage == 0) {
+        return;
+      }
+
+      console.log(`this.$store.getters.results.hits:`, this.$store.getters.results.hits);
+
+      if (!(this.$store.getters.results.hits.length > 0)) {
         return;
       }
 
@@ -259,7 +301,13 @@ export default {
 
     },
     handleOrientationChange() {
-      this.orientation = window.screen.orientation.type;
+      this.orientation = window.screen.orientation ? window.screen.orientation.type : `landscape-primary`;
+    },
+    handleVisibilityChanged(isVisible) {
+      this.scrollToTopButton = !isVisible
+    },
+    scrollToTop() {
+      scrollTo(0, 0)
     }
   },
   created() {
@@ -269,13 +317,15 @@ export default {
   },
   mounted() {
 
-    this.searchQuery = this.$route.params.query
-    this.lowestPage = Number(this.$route.query.p) || 0;
+    this.searchQuery = this.$route.params.query;
+    let currentPage = Number(this.$route.query.p) || 0;
 
     if (this.searchQuery !== ``) {
       
-      if (this.lowestPage > 1) {
-        this.search(this.searchQuery, this.lowestPage);
+      if (currentPage > 1) {
+        this.search(this.searchQuery, currentPage).then(() => {
+
+        })
       } else {
         this.search(this.searchQuery);
       }

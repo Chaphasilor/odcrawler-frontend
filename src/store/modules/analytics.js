@@ -24,12 +24,16 @@ export default {
 
       console.log(`page:`, page);
 
+      let ref = document.referrer;
+
+      ref = ref.replace(/(odcrawler\.xyz\/search\/)(.*)/, `$1`) // remove any search queries on odcrawler from the referrer
+      
       if (!context.getters.umami) {
 
         let id = setInterval(() => {
 
           if (context.getters.umami) {
-            context.getters.umami.trackView(page);
+            context.getters.umami.trackView(page, ref);
             clearInterval(id);
           }
           
@@ -37,7 +41,7 @@ export default {
         
       } else {
 
-        context.getters.umami.trackView(page);
+        context.getters.umami.trackView(page, ref);
         
       }
       
@@ -48,7 +52,7 @@ export default {
         return;
       }
 
-      console.log(`event:`, event);
+      // console.log(`event:`, event);
 
       if (!context.getters.umami) {
 

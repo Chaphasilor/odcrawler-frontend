@@ -15,12 +15,13 @@
     "vue": "^2.6.11",
     "vue-headful": "^2.1.0",
     "vue-infinite-scroll": "^2.0.2",
+    "vue-observe-visibility": "^0.4.6",
     "vue-router": "^3.4.3",
     "vue-text-highlight": "^2.0.10",
     "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-babel": "^4.5.8",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",

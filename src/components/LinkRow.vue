@@ -1,14 +1,14 @@
 <template>
   <div
-    class="w-full h-auto md:flex flex-row"
+    class="flex-row w-full h-auto md:flex"
   >
 
     <div
-      class="w-full md:flex md:flex-row-reverse border-b md:border-b-0 border-black dark:border-gray-700 mb-3"
+      class="w-full mb-3 border-b border-black md:flex md:flex-row-reverse md:border-b-0 dark:border-gray-700"
     >
 
       <div
-        class="w-full h-auto pl-1 whitespace-pre-wrap break-all"
+        class="w-full h-auto px-1 break-all whitespace-pre-wrap"
       >
 
         <span
@@ -22,7 +22,7 @@
             target="_blank"
             :href="sublink.link"
           ><text-highlight
-            :queries="highlights"
+            :queries="(highlights.apply !== `filename` || index === sublinks.length-1) ? highlights.strings : []"
             :caseSensitive="false"
             highlightClass="bg-yellow-500 dark:bg-yellow-900"
             highlightComponent="span"
@@ -31,7 +31,7 @@
       </div>
 
       <div
-        class="md:w-14 mr-1 text-center md:text-right flex-shrink-0"
+        class="flex-shrink-0 mr-1 text-center md:w-14 md:text-right"
       >{{ formattedSize }}</div>
 
     </div>
@@ -41,11 +41,11 @@
     >
 
       <div
-        class="w-1/2 md:w-auto text-center inline-block md:border-l border-black dark:border-gray-700 md:flex flex-col justify-center"
+        class="flex-col justify-center inline-block w-1/2 text-center border-black md:w-auto md:border-l dark:border-gray-700 md:flex"
       >
         
         <button
-          class="h-full mx-1 px-2 rounded-full font-bold sm:hover:bg-gray-400 dark:sm:hover:bg-gray-700 focus:outline-none transition-colors duration-75"
+          class="h-full px-2 mx-1 font-bold transition-colors duration-75 rounded-full sm:hover:bg-gray-400 sm:dark:hover:bg-gray-700 focus:outline-none"
           @click="copyLinkToClipboard"
         >
           <transition
@@ -103,11 +103,11 @@
 
       <div
         v-if="webShare"
-        class="w-1/2 md:w-auto text-center inline-block border-l border-black dark:border-gray-700 md:flex flex-col justify-center"
+        class="flex-col justify-center inline-block w-1/2 text-center border-l border-black md:w-auto dark:border-gray-700 md:flex"
       >
         
         <button
-          class="h-full mx-1 px-2 rounded-full font-bold sm:hover:bg-gray-400 dark:sm:hover:bg-gray-700 focus:outline-none transition-colors duration-75"
+          class="h-full px-2 mx-1 font-bold transition-colors duration-75 rounded-full sm:hover:bg-gray-400 sm:dark:hover:bg-gray-700 focus:outline-none"
           @click="shareLink"
         >
           <svg
@@ -133,10 +133,10 @@
       </div>
 
       <div
-        class="w-1/2 md:w-auto inline-block text-center border-l border-black dark:border-gray-700 md:flex flex-col justify-center"
+        class="flex-col justify-center inline-block w-1/2 text-center border-l border-black md:w-auto dark:border-gray-700 md:flex"
       >
         <button
-          class="h-full mx-1 px-2 rounded-full font-bold sm:hover:bg-gray-400 dark:sm:hover:bg-gray-700 focus:outline-none transition-colors duration-75"
+          class="h-full px-2 mx-1 font-bold transition-colors duration-75 rounded-full sm:hover:bg-gray-400 sm:dark:hover:bg-gray-700 focus:outline-none"
           @click="openNewTab(`https://www.virustotal.com/gui/search/${doubleEncodedUrl}`)"
         >
 
@@ -186,9 +186,12 @@ export default {
       }
     },
     highlights: {
-      type: Array,
+      type: Object,
       default: function() {
-        return ``;
+        return {
+          apply: `url`,
+          strings: [],
+        };
       }
     },
   },
@@ -296,8 +299,6 @@ export default {
 
       }
 
-      console.log(`res:`, res);
-
       if ([502, 504].includes(res.status)) {
         return false;
       }
@@ -320,9 +321,13 @@ export default {
   },
   mounted() {
 
-    this.checkLink().then(alive => this.alive = alive);
+    // this.checkLink().then(alive => this.alive = alive);
 
     this.generateSublinks(this.link);
+
+    setTimeout(() => {
+      this.$emit(`link-mounted`);
+    }, 500);
 
   }
 }
