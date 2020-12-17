@@ -59,6 +59,14 @@ export default class API {
           strings: [...new Set(hit.highlight[searchOptions.filenameOnly ? `filename` : `url`][0].match(/<em>(.*?)<\/em>/g))].map(highlight => highlight.slice(4,-5)),
         },
         size: hit._source.size || -1,
+        meta: {
+          statusCode: undefined,
+          isAlive: undefined,
+          sizeInBytes: undefined,
+          url: undefined,
+          checkedUrl: undefined,
+          headers: undefined,
+        }
       }
     })
   }
