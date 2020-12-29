@@ -48,6 +48,7 @@ export default class API {
 
   parseHits(rawHits, searchOptions) {
     return rawHits.map(hit => {
+      console.log(`hit:`, hit);
       return {
         id: hit._id,
         score: hit._score,
@@ -56,7 +57,9 @@ export default class API {
         // highlights: [...new Set(hit.highlight.url[0].match(/(?<=<em>).*?(?=<\/em>)/g))],
         highlights: {
           apply: searchOptions.filenameOnly ? `filename` : `url`,
-          strings: [...new Set(hit.highlight[searchOptions.filenameOnly ? `filename` : `url`][0].match(/<em>(.*?)<\/em>/g))].map(highlight => highlight.slice(4,-5)),
+          strings: hit.highlight ?
+            [...new Set(hit.highlight[searchOptions.filenameOnly ? `filename` : `url`][0].match(/<em>(.*?)<\/em>/g))].map(highlight => highlight.slice(4,-5)) : 
+            [],
         },
         size: hit._source.size || -1,
         meta: {
