@@ -97,6 +97,18 @@ export default new Vuex.Store({
         console.warn(`Query got corrupted on the way!`);
       }
 
+      api.checkLinks(result.hits.map(hit => hit.url))
+      .then(linkInfo => {
+
+        linkInfo.forEach(info => {
+          result.hits.find(hit => hit.url === info.url).meta = info 
+        })
+
+        console.log(`result.hits:`, result.hits);
+
+      })
+      .catch(err => console.warn(err));
+
       context.commit('UPDATE_RESULTS', result);
       
     },
@@ -104,7 +116,21 @@ export default new Vuex.Store({
 
       let result;
       try {
+
         result = await api.search(context.getters.results.query, (context.getters.lowestPage-1)*context.getters.pageSize + context.getters.results.hits.length, context.getters.pageSize, context.getters.searchOptions);
+
+        api.checkLinks(result.hits.map(hit => hit.url))
+        .then(linkInfo => {
+
+          linkInfo.forEach(info => {
+            result.hits.find(hit => hit.url === info.url).meta = info 
+          })
+
+          console.log(`result.hits:`, result.hits);
+
+        })
+        .catch(err => console.warn(err));
+
       } catch (err) {
         console.warn(err);
         throw new Error(`Couldn't load additional results!`);
