@@ -22,9 +22,40 @@ function resolveLink(url) {
   }
   
   return {
+    originalUrl: url,
     url: resolvedUrl,
     headers: resolvedHeaders,
   };
+  
+}
+
+function checkLink(urlData) {
+  return new Promise((resolve) => {
+  
+    fetchTimeout(urlData.url, 9500, {
+      method: `HEAD`,
+      headers: urlData.headers,
+    }).then(res => {
+  
+      return resolve({
+        statusCode: res.status,
+        isAlive: res.ok,
+        sizeInBytes: res.headers.get(`Content-Length`) === null ? NaN : Number(res.headers.get(`Content-Length`)),
+        url: urlData.originalUrl,
+        checkedUrl: urlData.url,
+        headers: urlData.headers,
+      });
+      
+    }).catch(err => {
+  
+      return resolve({
+        statusCode: 504, // gateway timeout
+        body: err.message,
+      });
+      
+    })
+  
+  })
   
 }
 
@@ -47,36 +78,35 @@ exports.handler = function(event, context, callback) {
     })
   }
 
-  if (!parsedBody.url || parsedBody.url.length === 0) {
+  if (!parsedBody.urls || parsedBody.urls.length === 0) {
     return callback(null, {
       statusCode: 400,
-      body: `You need to provide a valid url! Recieved ${parsedBody}, ${parsedBody.url}`,
+      body: `You need to provide at least one valid url! Received ${parsedBody}, ${parsedBody.url}`,
     })
   }
 
-  let resolvedUrlData = resolveLink(parsedBody.url);
-  
-  fetchTimeout(resolvedUrlData.url, 9500, {
-    method: `HEAD`,
-    headers: resolvedUrlData.headers,
-  }).then(res => {
+  let responseBody = {
+    results: new Array(parsedBody.urls.length),
+  }
+
+  let requests = [];
+  for (let i = 0; i < parsedBody.urls.length; i++) {
+
+    const urlToCheck = parsedBody.urls[i];
+    
+    let resolvedUrlData = resolveLink(urlToCheck);
+    requests.push(checkLink(resolvedUrlData).then(result => {
+      responseBody.results[i] = result;
+    }))
+    
+  }
+
+  Promise.all(requests).then(() => {
 
     return callback(null, {
-      statusCode: res.status,
-      body: JSON.stringify({
-        isAlive: res.ok,
-        sizeInBytes: res.headers.get(`Content-Length`),
-        checkedUrl: resolvedUrlData.url,
-        headers: resolvedUrlData.headers,
-      })
-    })
-    
-  }).catch(err => {
-
-    return callback(err, {
-      statusCode: 504, // gateway timeout
-      body: err.message,
-    })
+      statusCode: 200,
+      body: JSON.stringify(responseBody),
+    });
     
   })
   

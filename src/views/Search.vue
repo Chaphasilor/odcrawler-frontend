@@ -245,7 +245,7 @@ export default {
         return;
       }
 
-      console.log(`this.$store.getters.results.hits:`, this.$store.getters.results.hits);
+      // console.log(`this.$store.getters.results.hits:`, this.$store.getters.results.hits);
 
       if (!(this.$store.getters.results.hits.length > 0)) {
         return;
