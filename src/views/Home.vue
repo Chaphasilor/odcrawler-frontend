@@ -8,11 +8,11 @@
     />
 
     <div
-      class="flex flex-row justify-between w-full h-auto font-semibold"
+      class="flex flex-row justify-between w-full h-auto font-semibold md:p-4 md:absolute md:top-0 md:left-0"
     >
 
       <a
-        class="text-lg hover:font-bold"
+        class="text-lg hover:text-green-400"
         href="https://github.com/sponsors/MCOfficer"
       >
         Support Us!
@@ -22,17 +22,21 @@
         class="flex flex-col text-lg text-right md:block"
       >
         <router-link
+          class="pb-2"
           v-for="(link, index) of navLinks"
           :key="link.title"
-          class="pb-2 hover:font-bold"
           :to="link.to"
         >
 
-        {{ link.title }}
+        <span
+          class="hover:text-green-400"
+        >
+          {{ link.title }}
+        </span>
         
           <svg
             v-if="index != navLinks.length-1"
-            class="hidden w-4 h-4 mx-1 md:inline-block"
+            class="w-4 h-4 mx-1 md:inline-block"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
@@ -51,7 +55,7 @@
     </div>
 
     <div
-      class="flex flex-col w-full h-full"
+      class="w-full h-full"
     >
 
       <div
@@ -120,7 +124,7 @@
       >
 
         <div
-          class="m-auto font-bold md:text-lg"
+          class="m-auto font-semibold md:text-lg"
         >
           <div
             class="font-normal display-block"
@@ -137,7 +141,7 @@
               :key="index"
             >
               <a
-                class="text-blue-600 underline dark:text-blue-400"
+                class="text-blue-600 underline dark:text-blue-400 hover:text-green-400"
                 :href="item.url"
                 rel="noopener noreferrer"
                 target="_blank"
