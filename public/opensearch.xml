@@ -1,7 +1,7 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
                        xmlns:moz="http://www.mozilla.org/2006/browser/search/">
-  <ShortName>ODC</ShortName>
-  <Description>ODCrawler</Description>
+  <ShortName>ODCrawler</ShortName>
+  <Description>A search engine for open directories</Description>
   <InputEncoding>UTF-8</InputEncoding>
   <Image width="32" height="32" type="image/x-icon">https://odcrawler.xyz/favicon.ico</Image>
   <Url type="text/html" template="https://odcrawler.xyz/search/{searchTerms}"/>
