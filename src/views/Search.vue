@@ -149,11 +149,11 @@ export default {
       },
       activeTipIndex: 0,
       tips: [
+        `This site uses no cookies. Have a great day! :D`,
         `You can click on subpaths to jump to the corresponding folder!`,
-        `Strike-through'd links are most likely dead!`,
+        // `Strike-through'd links are most likely dead!`,
         `You can see the amount of pages on the left side of the links!`,
         `All links will open in a new tab!`,
-        `If you want to go back to the first page, just press 'Search' again!`
       ],
       tipTimer: undefined,
       highestPage: 0,

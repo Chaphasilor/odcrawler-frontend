@@ -8,7 +8,7 @@
     />
 
     <nav
-      class="absolute top-0 left-0 p-6 text-lg"
+      class="absolute top-0 left-0 p-4 text-lg"
     >
       <router-link
         class="hover:font-bold"
