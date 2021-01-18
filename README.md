@@ -1,8 +1,9 @@
 # ODCrawler
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/a975a57a-1891-45d0-88ef-9750bcbadf8c/deploy-status)](https://app.netlify.com/sites/odcrawler/deploys)
-![Indexed Links](https://img.shields.io/badge/Indexed%20Links:-150M%2B-brightgreen)
-![Tracking](https://img.shields.io/badge/Tracking:-Disabled-grey)
+<!-- [![Netlify Status](https://api.netlify.com/api/v1/badges/a975a57a-1891-45d0-88ef-9750bcbadf8c/deploy-status)](https://app.netlify.com/sites/odcrawler/deploys) -->
+![Indexed Links](https://img.shields.io/badge/Indexed%20Links:-150M%2B-brightgreen?style=for-the-badge)
+![Tracking](https://img.shields.io/badge/Tracking:-Disabled-brightgreen?style=for-the-badge)
+![Ads](https://img.shields.io/badge/Ads:-None-brightgreen?style=for-the-badge)
 
 ![Preview](./Screenshot.png)
 
