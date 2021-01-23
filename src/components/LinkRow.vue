@@ -4,7 +4,7 @@
   >
 
     <div
-      class="w-full mb-3 border-b border-black md:flex md:flex-row-reverse md:border-b-0 dark:border-gray-700"
+      class="w-full py-px border-b border-black md:flex md:flex-row-reverse md:border-b-0 dark:border-gray-700"
     >
 
       <div
@@ -31,8 +31,33 @@
       </div>
 
       <div
-        class="flex-shrink-0 mr-1 text-center md:w-14 md:text-right"
-      >{{ formattedSize }}</div>
+        class="grid flex-shrink-0 mr-1 text-center place-content-center md:w-14"
+      >
+
+        <span
+          v-if="!loadingLinkInfo"
+          class=""
+        >{{ formattedSize }}</span>
+
+        <svg
+          v-if="loadingLinkInfo"
+          key="0"
+          class="w-6 h-6 animate-spin"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>Loading Size</title>
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M4.05 11a8 8 0 1 1 .5 4m-.5 5v-5h5" />
+        </svg>
+
+      </div>
+
 
     </div>
 
@@ -215,11 +240,14 @@ export default {
       return encodeURIComponent(encodeURIComponent(this.link));
     },
     formattedSize: function() {
-      return this.size >= 0 ? this.formatBytes(this.size) : (this.meta.sizeInBytes != null && this.meta.sizeInBytes >= 0) ? this.formatBytes(this.meta.sizeInBytes) : `N/A`;
+      return this.size >= 0 ? this.formatBytes(this.size) : (this.meta.sizeInBytes != null && this.meta.sizeInBytes >= 0) ? this.formatBytes(this.meta.sizeInBytes) : `-/-`;
     },
     webShare: function() {
       return navigator.share;
-    }
+    },
+    loadingLinkInfo: function() {
+      return this.$store.getters.loadingLinkInfo;
+    },
   },
   watch: {
     copied: {
