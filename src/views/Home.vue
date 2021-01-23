@@ -19,37 +19,47 @@
       </a>
 
       <nav
-        class="flex flex-col text-lg text-right md:block"
+        class="flex flex-col text-lg text-right md:flex-row"
       >
-        <router-link
-          class="pb-2"
+        <div
           v-for="(link, index) of navLinks"
           :key="link.title"
-          :to="link.to"
         >
 
-        <span
-          class="hover:text-green-400"
-        >
-          {{ link.title }}
-        </span>
-        
-          <svg
-            v-if="index != navLinks.length-1"
-            class="w-4 h-4 mx-1 md:inline-block"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            xmlns="http://www.w3.org/2000/svg"
+          <div
+            class="pb-2"
           >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <circle cx="12" cy="12" r="4" />
-          </svg>
 
-        </router-link>
+            <router-link
+              :to="link.to"
+            >
+
+              <span
+                class="hover:text-green-400"
+              >
+                {{ link.title }}
+              </span>
+
+            </router-link>
+            
+            <svg
+              v-if="index != navLinks.length-1"
+              class="hidden w-4 h-4 mr-1 md:inline-block"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <circle cx="12" cy="12" r="4" />
+            </svg>
+
+          </div>
+
+        </div>
       </nav>
       
     </div>

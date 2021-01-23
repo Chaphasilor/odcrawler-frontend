@@ -2,7 +2,7 @@
   <div
     v-infinite-scroll="() => this.$emit(`end-of-list`)"
     :infinite-scroll-disabled="disableInfiniteScroll"
-    infinite-scroll-distance="5"
+    infinite-scroll-distance="100"
     infinite-scroll-throttle-delay="500"
   >
 
@@ -42,13 +42,27 @@
       </div> -->
 
       <div
-        class="flex flex-row w-full mb-2"
+        class="flex flex-row justify-center w-full mb-2"
       >
 
         <div
-          :class="`w-full p-2 text-center mb-4 ${message.level === `warning` ? `bg-orange-500 dark:bg-orange-800` : message.level === `error` ? `bg-red-500 dark:bg-red-800` : ``} rounded-lg`"
+          :class="`w-full md:w-1/2 p-4 text-center mb-4 ${message.level === `warning` ? `bg-orange-500 dark:bg-orange-800 text-white` : message.level === `error` ? `bg-red-600 dark:bg-red-800 text-white` : ``} rounded-md font-bold`"
         >
-          {{ message.text }}
+
+          <span
+            class=""
+          >
+            {{ message.text }}
+          </span>
+          <br>
+          <button
+            v-if="message.button"
+            class="px-4 py-1 mt-2 font-bold border-white rounded-sm border-3"
+            @click="$emit(`message-button`, message.button.payload)"
+          >
+            {{ message.button.label }}
+          </button>
+          
         </div>
 
       </div>

@@ -29,7 +29,7 @@
           }"
         >
           <h1
-            class="text-3xl font-semibold cursor-pointer"
+            class="text-3xl font-semibold cursor-pointer md:py-1"
           >
             <span class="hidden md:inline">ODC</span>
             <span class="inline md:hidden">ODCrawler</span>
@@ -124,6 +124,7 @@
       :message="message"
       :disableInfiniteScroll="infiniteScrollDisabled"
       @end-of-list="loadNextPage"
+      @message-button="handleMessageButton($event)"
     />
 
   </div>
@@ -197,15 +198,19 @@ export default {
 
       try {
 
+        if (location.pathname != `/search/${encodeURIComponent(query)}`) {
+          this.$router.push({
+            path: `/search/${query}`,
+          })
+        }
+
         this.loadingResults = true;
+        this.message = {
+          text: `Loading Results...`,
+          level: `normal`,
+        }
         await this.$store.dispatch(`search`, { query, page });
         this.highestPage = page;
-
-        // if (location.pathname != `/search/${query}`) {
-        //   this.$router.push({
-        //     path: `/search/${query}`,
-        //   })
-        // }
 
         if (this.$route.query.p && Number(this.$route.query.p) != this.highestPage) {
           this.$router.push({
@@ -220,6 +225,11 @@ export default {
           this.message = {
             text: `No links found!`,
             level: `warning`,
+          }
+        } else {
+          this.message = {
+            text: ``,
+            level: ``,
           }
         }
 
@@ -294,6 +304,10 @@ export default {
         this.message = {
           text: `Error while loading more links :/`,
           level: `error`,
+          button: {
+            label: `Retry`,
+            payload: `loadNextPage`,
+          }
         }
       } finally {
         this.loadingResults = false;
@@ -305,6 +319,18 @@ export default {
     },
     handleVisibilityChanged(isVisible) {
       this.scrollToTopButton = !isVisible
+    },
+    handleMessageButton(payload) {
+
+      switch (payload) {
+        case `loadNextPage`:
+          this.loadNextPage();
+          break;
+      
+        default:
+          break;
+      }
+      
     },
     scrollToTop() {
       scrollTo(0, 0)

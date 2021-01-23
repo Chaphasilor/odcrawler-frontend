@@ -42,7 +42,8 @@ export default new Vuex.Store({
         type: `toggle`,
         value: true,
       },
-    }
+    },
+    loadingLinkInfo: false,
   },
   mutations: {
     UPDATE_RESULTS(state, newResuls) {
@@ -60,10 +61,19 @@ export default new Vuex.Store({
     UPDATE_DUMP_INFO(state, newDumpInfo) {
       state.dumpInfo = newDumpInfo;
     },
+    SET_LOADING_LINK_INFO(state, loading) {
+      state.loadingLinkInfo = loading;
+    },
   },
   actions: {
     async search(context, { query, page }) {
 
+      context.commit(`UPDATE_RESULTS`, {
+        hits: [],
+        totalHits: 0,
+        query,
+      })
+      
       let result;
       try {
 
@@ -97,6 +107,7 @@ export default new Vuex.Store({
         console.warn(`Query got corrupted on the way!`);
       }
 
+      context.commit(`SET_LOADING_LINK_INFO`, true);
       api.checkLinks(result.hits.map(hit => hit.url))
       .then(linkInfo => {
 
@@ -104,10 +115,16 @@ export default new Vuex.Store({
           result.hits.find(hit => hit.url === info.url).meta = info 
         })
 
+        context.commit(`SET_LOADING_LINK_INFO`, false);
         console.log(`result.hits:`, result.hits);
 
       })
-      .catch(err => console.warn(err));
+      .catch(err => {
+        
+        context.commit(`SET_LOADING_LINK_INFO`, false);
+        console.warn(err)
+
+      });
 
       context.commit('UPDATE_RESULTS', result);
       
@@ -158,9 +175,9 @@ export default new Vuex.Store({
       context.commit('UPDATE_STATS', stats);
       
     },
-    changeAdvancedOptions(context, advancedOptions) {
-      context.commit(`SET_ADVANCED_OPTIONs`, advancedOptions);
-    },
+    // updateAdvancedOptions(context, advancedOptions) {
+    //   context.commit(`SET_ADVANCED_OPTIONs`, advancedOptions);
+    // },
     async loadDumpInfo(context) {
 
       let dumpInfo;
@@ -188,5 +205,6 @@ export default new Vuex.Store({
       };
     },
     dumpInfo: state => state.dumpInfo,
+    loadingLinkInfo: state => state.loadingLinkInfo,
   }
 })

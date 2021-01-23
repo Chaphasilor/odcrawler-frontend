@@ -92,7 +92,7 @@
               v-model="option.value"
             >
             <label
-              class="absolute w-full h-full border-2 border-gray-600 rounded-sm outline-none cursor-pointer focus:border-green-400"
+              class="absolute w-full h-full border-2 border-gray-600 rounded-xs outline-none cursor-pointer focus:border-green-400"
               :for="key"
             >
               <svg
@@ -161,9 +161,9 @@ export default {
       get() {
         return this.$store.getters.advancedOptions;
       },
-      set(newOptions) {
-        this.$store.dispatch(`updateAdvancedOptions`, newOptions);
-      }
+      // set(newOptions) {
+      //   this.$store.dispatch(`updateAdvancedOptions`, newOptions);
+      // }
     },
     advancedSearchActive() {
       return Object.values(this.advancedOptions).reduce((active, currentOption) => {
@@ -186,7 +186,10 @@ export default {
     advancedOptions: {
       deep: true,
       handler: function() {
-        this.$emit(`search`);
+        // only trigger a search if already on the search page
+        if (this.$route.name === `Search`) {
+          this.$emit(`search`);
+        }
       }
     }
   },
