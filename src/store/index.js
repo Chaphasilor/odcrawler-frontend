@@ -42,12 +42,29 @@ export default new Vuex.Store({
         type: `toggle`,
         value: true,
       },
+      extensions: {
+        text: `Filter Extensions`,
+        type: `keywords`,
+        value: false,
+        options: [
+          {
+            text: `Included`,
+            value: `include`,
+          },
+          {
+            text: `Excluded`,
+            value: `exclude`,
+          },
+        ],
+        selectedOption: `exclude`,
+        keywords: [],
+      }
     },
     loadingLinkInfo: false,
   },
   mutations: {
-    UPDATE_RESULTS(state, newResuls) {
-      state.results = newResuls;
+    UPDATE_RESULTS(state, newResults) {
+      state.results = newResults;
     },
     UPDATE_STATS(state, newStats) {
       state.stats = newStats;
@@ -202,6 +219,10 @@ export default new Vuex.Store({
       return {
         filenameOnly: state.advancedOptions.filenameOnly.value,
         matchPhrase: state.advancedOptions.matchPhrase.value,
+        extensions: state.advancedOptions.extensions.value ? {
+          mode: state.advancedOptions.extensions.selectedOption,
+          list: state.advancedOptions.extensions.keywords,
+        } : undefined,
       };
     },
     dumpInfo: state => state.dumpInfo,
