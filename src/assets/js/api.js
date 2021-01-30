@@ -48,7 +48,6 @@ export default class API {
 
   parseHits(rawHits, searchOptions) {
     return rawHits.map(hit => {
-      console.log(`hit:`, hit);
       return {
         id: hit._id,
         score: hit._score,
@@ -98,12 +97,30 @@ export default class API {
     
   }
 
+  /**
+   * 
+   * @param {String} query The search query
+   * @param {Number} offset The amount of results to skip
+   * @param {Number} limit The page size
+   * @param {Object} [options] Advanced search options
+   * @param {Boolean} [options.filenameOnly] Only search filename?
+   * @param {Boolean} [options.matchPhrase] Use (exact) phrase matching instead of regular matching?
+   * @param {Object} [options.extensions] Manage file extensions of search results
+   * @param {String} [options.extensions.mode="off"] What to do with these extensions (include or exclude)
+   * @param {Array<String>} [options.extensions.list] Array of extensions that will be included/excluded
+   */
   // eslint-disable-next-line no-unused-vars
-  search(query, offset = 0, limit = 20, options = {
-    filenameOnly: false,
-    matchPhrase: false,
-  }) {
+  search(query, offset = 0, limit = 20, options = {}) {
     return new Promise((resolve, reject) => {
+
+      options.filenameOnly = options.filenameOnly || false;
+      options.matchPhrase = options.matchPhrase || false;
+      options.extensions = options.extensions || {};
+      options.extensions.mode = options.extensions.mode || `off`;
+      options.extensions.list = options.extensions.list || [];
+      // hopefully temporary workaround until `extension` field is changed to be case-insensitive in Elasticsearch
+      options.extensions.list = [...options.extensions.list, ...options.extensions.list.map(x => x.toLowerCase()), ...options.extensions.list.map(x => x.toUpperCase())]
+      
 
       let requestBody = {
         size: limit,
@@ -127,14 +144,28 @@ export default class API {
         }
       }
 
-      if (options.matchPhrase) {
-        requestBody.query = {
-          match_phrase: searchField // issues with multiple words (space separated)
+      requestBody.query = {
+        bool: {
+          must: [
+            options.matchPhrase ? { match_phrase: searchField } : { match: searchField },
+          ],
+          should: [
+            options.matchPhrase ? { match_phrase: { filename: query } } : { match: { filename: query } }  // make results that include the query in the filename have a higher score when searching the url field
+          ],
+          must_not: [],
         }
-      } else {
-        requestBody.query = {
-          match: searchField,
-        }
+      }
+
+      let filterTerm = {
+        terms: {
+          extension: options.extensions.list
+        },
+      }
+      
+      if (options.extensions.mode === `include`) {
+        requestBody.query.bool.must.push(filterTerm)
+      } else if (options.extensions.mode === `exclude`) {
+        requestBody.query.bool.must_not.push(filterTerm)
       }
 
       console.log(`requestBody:`, requestBody);

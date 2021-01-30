@@ -19,10 +19,11 @@
         :value="value"
         name="OD Search"
         @input="$emit('input', $event.target.value)"
+        @keydown.enter="$emit(`search`)"
       >
 
       <div
-        class="absolute top-0 right-0 flex flex-row pr-3"
+        class="absolute top-0 right-0 flex flex-row-reverse pr-3"
       >
           <!-- class="absolute top-0 right-0 w-6 h-6 mx-3 my-3 cursor-pointer dark:text-gray-200" -->
         <svg
@@ -75,40 +76,196 @@
       >
 
         <div
+          class="w-full"
           v-for="[key, option] of Object.entries(advancedOptions)"
           :key="key"
-          class="flex flex-row justify-between py-2"
         >
-          <label :for="key">{{ option.text }}</label>
+
           <div
             v-if="option.type === `toggle`"
-            class="relative w-6 h-6 p-px"
+            class="flex flex-row justify-between py-2"
           >
-            <input
-              class="w-0 h-0 appearance-none"
-              type="checkbox"
-              :name="key"
-              :id="key"
-              v-model="option.value"
+            <label :for="key">{{ option.text }}</label>
+            
+            <div
+              class="relative w-6 h-6 p-px"
             >
-            <label
-              class="absolute w-full h-full border-2 border-gray-600 rounded-xs outline-none cursor-pointer focus:border-green-400"
-              :for="key"
-            >
-              <svg
-                v-if="option.value"
-                class="absolute w-5 h-5 text-green-400 stroke-current p-xs stroke-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                xmlns="http://www.w3.org/2000/svg"
+              
+              <input
+                class="w-0 h-0 appearance-none"
+                type="checkbox"
+                :name="key"
+                :id="key"
+                v-model="option.value"
               >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </label>
+              <label
+                class="absolute w-full h-full border-2 border-gray-600 outline-none cursor-pointer rounded-xs focus:border-green-400"
+                :for="key"
+              >
+                <svg
+                  v-if="option.value"
+                  class="absolute w-5 h-5 text-green-400 stroke-current p-xs stroke-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </label>
+            </div>
           </div>
+
+          <div
+            v-else-if="option.type === `keywords`"
+          >
+            <div
+              class="flex flex-row justify-between py-2"
+            >
+              <label :for="key">{{ option.text }}</label>
+
+              <div
+                class="relative w-6 h-6 p-px"
+              >
+                <input
+                  class="w-0 h-0 appearance-none"
+                  type="checkbox"
+                  :name="key"
+                  :id="key"
+                  v-model="option.value"
+                >
+                <label
+                  class="absolute w-full h-full border-2 border-gray-600 outline-none cursor-pointer rounded-xs focus:border-green-400"
+                  :for="key"
+                >
+                  <svg
+                    v-if="option.value"
+                    class="absolute w-5 h-5 text-green-400 stroke-current p-xs stroke-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </label>
+
+              </div>
+            </div>
+
+            <div
+              v-if="option.value"
+              class="w-full px-10"
+            >
+
+              <div
+                class="flex flex-row flex-wrap justify-between mb-2"
+              >
+                <span>Extensions should be...</span>
+                <div
+                  class="flex flex-row"
+                >
+                  <div
+                    class="flex flex-row ml-6"
+                    v-for="innerOption of option.options"
+                    :key="innerOption.value"
+                  >
+                    <label
+                      class="pr-1"
+                      :for="`${key}-${innerOption.value}`"
+                    >{{ innerOption.text }}</label>
+
+                    <div
+                      class="relative w-6 h-6 p-px"
+                    >
+                      <label
+                        class="absolute w-6 h-6 border-2 border-gray-600 rounded-full outline-none cursor-pointer focus:border-green-400"
+                        :for="`${key}-${innerOption.value}`"
+                      >
+                        <svg
+                          v-if="option.selectedOption === innerOption.value"
+                          class="absolute w-full h-full text-green-400 stroke-current p-xs stroke-4"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle cx="12 " cy="12" r="6" />
+                        </svg>
+                      </label>
+                    </div>
+
+                    <input class="hidden" type="radio" :name="key" :value="innerOption.value" :id="`${key}-${innerOption.value}`" v-model="option.selectedOption">
+                    
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="flex flex-row flex-wrap p-2 border-2 border-gray-600 rounded-lg"
+                @click="$refs[`${key}-keywords-input`][0].focus()"
+              >
+                <!-- <div
+                  class="absolute grid h-10 m-1 opacity-50 place-content-center"
+                  v-if=""
+                >
+                  <span>Add file extensions...</span>
+                </div> -->
+
+                <div
+                  v-for="(keyword, index) of option.keywords"
+                  :key="index"
+                >
+                  <div
+                    class="flex flex-row p-2 m-1 border border-gray-600 rounded-md"
+                  >
+                    <span>{{ keyword }}</span>
+
+                    <button
+                      class="block w-5 h-5 pt-px mt-px text-green-400 hover:text-red-600 dark:hover:text-red-800"
+                      @mouseup="option.keywords = option.keywords.filter(x => x !== keyword)"
+                    >
+                      <svg
+                        v-if="option.value"
+                        class="w-5 h-5 stroke-current p-xs stroke-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                    </button>
+                    
+                  </div>
+                </div>
+
+                <input
+                  :class="`${option.keywords.length === 0 ? `w-full` : `w-16 md:w-32`} h-10 m-1 bg-transparent focus:outline-none`"
+                  style="caret-color: #68d391;"
+                  type="text"
+                  :ref="`${key}-keywords-input`"
+                  :placeholder="option.keywords.length === 0 ? `Add extensions...` : ``"
+                  @keypress.enter="
+                    $refs[`${key}-keywords-input`][0].value.length > 0 ? option.keywords.push($refs[`${key}-keywords-input`][0].value) : false;
+                    $refs[`${key}-keywords-input`][0].value = ``
+                  "
+                  @keydown.delete="$refs[`${key}-keywords-input`][0].value.length === 0 ? option.keywords.pop() : false"
+                >
+
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -184,7 +341,7 @@ export default {
       }
     },
     advancedOptions: {
-      deep: true,
+      deep: true, 
       handler: function() {
         // only trigger a search if already on the search page
         if (this.$route.name === `Search`) {
