@@ -149,7 +149,7 @@
 
             <img
               class="w-2/3 mx-auto my-2"
-              src="http://docfetcher.sourceforge.net/all/xp_all.png"
+              src="https://a.fsdn.com/con/app/proj/docfetcher/screenshots/189585.jpg"
               alt="DocFetcher Screenshot"
             >
             
@@ -178,7 +178,7 @@
 
             <img
               class="w-2/3 mx-auto my-2"
-              src="http://astrogrep.sourceforge.net/pics/ss_main_new.png"
+              src="https://a.fsdn.com/con/app/proj/astrogrep/screenshots/ss_main_new.png"
               alt="AstroGrep Screenshot"
             >
             
