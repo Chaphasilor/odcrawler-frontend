@@ -29,7 +29,7 @@
       >
 
         <svg
-          class="w-32 h-32 mx-auto mt-12 md:mt-0 stroke-current stroke-1.5"
+          class="w-32 h-32 mx-auto mt-12 stroke-current stroke-1 md:mt-0"
           viewBox="0 0 24 24"
           fill="none"
           stroke-linecap="round"
