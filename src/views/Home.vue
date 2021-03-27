@@ -108,7 +108,7 @@
           class="w-full mx-auto mt-10 mb-4 md:my-4 md:w-192"
           v-model="searchQuery"
           :focus="true"
-          :placeholder="`Search ${stats.totalIndexed} links...`"
+          :placeholder="`Search ${stats.totalIndexed || `millions of`} links...`"
           @search="
             searchQuery.length > 0 ?
             $router.push({

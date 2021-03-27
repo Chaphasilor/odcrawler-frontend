@@ -17,6 +17,25 @@
     </div> -->
 
     <div
+      class="flex flex-row justify-between w-full h-auto font-semibold"
+    >
+
+      <nav
+        class="flex flex-col text-lg text-right md:flex-row"
+      >
+        <router-link
+          class="hover:text-green-400"
+          :to="{
+            name: `Home`,
+          }"
+        >
+          Start Page
+        </router-link>
+      </nav>
+
+    </div>
+
+    <div
       class="flex-row justify-start md:flex md:mb-4"
     >
 
