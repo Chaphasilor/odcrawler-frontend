@@ -10,10 +10,10 @@
 
 ---
 
-![Website Status](https://img.shields.io/uptimerobot/status/m786605489-b418dd2b30029ffd44f60f5c?label=Website&style=for-the-badge)
+![Website Status](https://img.shields.io/uptimerobot/status/m786605489-b418dd2b30029ffd44f60f5c?label=Website&logo=Vue.js&style=for-the-badge)
 ![Elasticsearch Status](https://img.shields.io/uptimerobot/status/m786605474-aefb8b00783d9151d10f204e?label=Elasticsearch&logo=elasticsearch&style=for-the-badge)
 ![Search Server Status](https://img.shields.io/uptimerobot/status/m786605477-0d07f387d5ad4a952c0859e2?label=Search%20Server&style=for-the-badge)
-![Discovery Server Status](https://img.shields.io/uptimerobot/status/m786605483-e2e9ac70943fe44fc85b8d64?label=Discovery%20Server&style=for-the-badge)
+![Discovery Server Status](https://img.shields.io/uptimerobot/status/m786605483-e2e9ac70943fe44fc85b8d64?label=Discovery%20Server&logo=Rust&style=for-the-badge)
 
 ![Preview](./Screenshot.png)
 
@@ -39,7 +39,8 @@ We collected a vast amount of ODs and indexed every link we found inside them, s
 There are two parts to this question:  
 
 1. This tool (ODCrawler) is completely free. We don't record your searches, we don't use or sell your data, we don't show ads. (Though if you enjoy it, we would appreciate [a small donation](https://github.com/sponsors/MCOfficer))  
-2. Open Directories are more complex. They are free to access and therefore technically are free, but there might be content inside of them that is protected by copyright. Always keep in mind, *just because it is accessible, that doesn't mean you are allowed to download it*! When in doubt, try contacting the website/content owner and confirm with them.
+2. Open Directories are more complex. They are free to access and therefore technically are free, but they might contain content that is protected by copyright. Always keep in mind, *just because it is accessible, that doesn't mean you are allowed to download it*!  
+When in doubt, try contacting the website/content owner and confirm with them.
 
 ---
 
