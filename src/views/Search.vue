@@ -353,6 +353,9 @@ export default {
         this.search(this.searchQuery, currentPage).then(() => {
 
         })
+
+        this.$store.dispatch(`analytics/trackEvent`, `scrolledPageReload`); // tracks if a page was reloaded that was previously scrolled to a higher page
+        
       } else {
         this.search(this.searchQuery);
       }

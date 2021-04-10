@@ -122,11 +122,12 @@ export default new Vuex.Store({
 
       if (result.query != query) {
         console.warn(`Query got corrupted on the way!`);
+        context.dispatch(`analytics/trackEvent`, `corruptedQuery`);
       }
 
       context.commit('UPDATE_RESULTS', result);
       
-      context.dispatch(`loadLinkInfo`);
+      context.dispatch(`loadLinkInfo`, result.hits);
       
     },
     async loadNextPage(context) {
@@ -162,16 +163,14 @@ export default new Vuex.Store({
 
       context.commit('UPDATE_RESULTS', result);
       
-      context.dispatch(`loadLinkInfo`);
+      context.dispatch(`loadLinkInfo`, result.hits);
       
     },
-    async loadLinkInfo(context) {
+    async loadLinkInfo(context, hitsToCheck) {
 
-      console.log(`context.getters.results.hits:`, context.getters.results.hits)
-      
       // enable link info loading indicator and request link info from the lambda function
       context.commit(`SET_LOADING_LINK_INFO`, true);
-      api.checkLinks(context.getters.results.hits.map(hit => hit.url))
+      api.checkLinks(hitsToCheck.map(hit => hit.url))
       .then(linkInfo => {
 
         // add the info to the corresponding hit object
