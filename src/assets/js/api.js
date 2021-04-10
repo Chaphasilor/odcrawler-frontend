@@ -118,6 +118,15 @@ export default class API {
       options.extensions = options.extensions || {};
       options.extensions.mode = options.extensions.mode || `off`;
       options.extensions.list = options.extensions.list || [];
+      // remove leading dots
+      options.extensions.list = options.extensions.list.map(x => {
+        if (x[0] === `.`) {
+          return x.slice(1)
+        } else {
+          return x
+        }
+      })
+      console.log(`options.extensions.list:`, options.extensions.list)
       // hopefully temporary workaround until `extension` field is changed to be case-insensitive in Elasticsearch
       options.extensions.list = [...options.extensions.list, ...options.extensions.list.map(x => x.toLowerCase()), ...options.extensions.list.map(x => x.toUpperCase())]
       
