@@ -40,7 +40,7 @@
         >{{ formattedSize }}</span>
 
         <svg
-          v-if="loadingLinkInfo"
+          v-if="loadingLinkInfo && (meta !== {} && size > -1)"
           key="0"
           class="w-6 h-6 animate-spin"
           viewBox="0 0 24 24"
@@ -207,7 +207,7 @@ export default {
     size: {
       type: Number,
       default: function() {
-        return 0;
+        return -1;
       }
     },
     highlights: {
@@ -240,7 +240,7 @@ export default {
       return encodeURIComponent(encodeURIComponent(this.link));
     },
     formattedSize: function() {
-      return this.size >= 0 ? this.formatBytes(this.size) : (this.meta.sizeInBytes != null && this.meta.sizeInBytes >= 0) ? this.formatBytes(this.meta.sizeInBytes) : `-/-`;
+      return this.size > -1 ? this.formatBytes(this.size) : (this.meta.sizeInBytes != null && this.meta.sizeInBytes >= 0) ? this.formatBytes(this.meta.sizeInBytes) : `-/-`;
     },
     webShare: function() {
       return navigator.share;
