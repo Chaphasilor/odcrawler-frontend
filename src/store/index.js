@@ -124,24 +124,7 @@ export default new Vuex.Store({
         console.warn(`Query got corrupted on the way!`);
       }
 
-      context.commit(`SET_LOADING_LINK_INFO`, true);
-      api.checkLinks(result.hits.map(hit => hit.url))
-      .then(linkInfo => {
-
-        linkInfo.forEach(info => {
-          result.hits.find(hit => hit.url === info.url).meta = info 
-        })
-
-        context.commit(`SET_LOADING_LINK_INFO`, false);
-        console.log(`result.hits:`, result.hits);
-
-      })
-      .catch(err => {
-        
-        context.commit(`SET_LOADING_LINK_INFO`, false);
-        console.warn(err)
-
-      });
+      context.dispatch(`loadLinkInfo`);
 
       context.commit('UPDATE_RESULTS', result);
       
@@ -174,9 +157,38 @@ export default new Vuex.Store({
         console.warn(`Query got corrupted on the way!`);
       }
 
+      // combine the new results with the existing ones
       result.hits = [...context.getters.results.hits, ...result.hits];
+
+      context.dispatch(`loadLinkInfo`);
       
       context.commit('UPDATE_RESULTS', result);
+      
+    },
+    async loadLinkInfo(context) {
+
+      // enable link info loading indicator and request link info from the lambda function
+      context.commit(`SET_LOADING_LINK_INFO`, true);
+      api.checkLinks(context.getters.results.hits.map(hit => hit.url))
+      .then(linkInfo => {
+
+        // add the info to the corresponding hit object
+        linkInfo.forEach(info => {
+          context.getters.results.hits.find(hit => hit.url === info.url).meta = info 
+        })
+
+        // disable the link info loading indicator (causes info to be shown)
+        context.commit(`SET_LOADING_LINK_INFO`, false);
+        console.log(`linkInfo:`, linkInfo)
+
+      })
+      .catch(err => {
+        
+        // if info failed to load, also disable the loading indicator and show the fallback
+        context.commit(`SET_LOADING_LINK_INFO`, false);
+        console.warn(err)
+
+      });
       
     },
     async loadStats(context) {

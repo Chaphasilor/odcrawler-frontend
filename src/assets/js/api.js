@@ -127,7 +127,7 @@ export default class API {
         }
       })
       console.log(`options.extensions.list:`, options.extensions.list)
-      // hopefully temporary workaround until `extension` field is changed to be case-insensitive in Elasticsearch
+      //TODO hopefully temporary workaround until `extension` field is changed to be case-insensitive in Elasticsearch
       options.extensions.list = [...options.extensions.list, ...options.extensions.list.map(x => x.toLowerCase()), ...options.extensions.list.map(x => x.toUpperCase())]
       
 
