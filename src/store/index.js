@@ -6,7 +6,7 @@ import analyticsModule from './modules/analytics';
 
 Vue.use(Vuex)
 
-const api = new API(process.env.VUE_APP_ES_ENDPOINT, `https://discovery.odcrawler.xyz`);
+const api = new API(process.env.VUE_APP_ES_ENDPOINT, `https://discovery.odcrawler.xyz`, process.env.VUE_APP_LAMBDA_ENDPOINT);
 
 export default new Vuex.Store({
   modules: {
@@ -137,18 +137,6 @@ export default new Vuex.Store({
 
         result = await api.search(context.getters.results.query, (context.getters.lowestPage-1)*context.getters.pageSize + context.getters.results.hits.length, context.getters.pageSize, context.getters.searchOptions);
 
-        api.checkLinks(result.hits.map(hit => hit.url))
-        .then(linkInfo => {
-
-          linkInfo.forEach(info => {
-            result.hits.find(hit => hit.url === info.url).meta = info 
-          })
-
-          console.log(`result.hits:`, result.hits);
-
-        })
-        .catch(err => console.warn(err));
-
       } catch (err) {
         console.warn(err);
         throw new Error(`Couldn't load additional results!`);
@@ -173,9 +161,15 @@ export default new Vuex.Store({
       api.checkLinks(hitsToCheck.map(hit => hit.url))
       .then(linkInfo => {
 
+        console.log(`linkInfo:`, linkInfo)
         // add the info to the corresponding hit object
         linkInfo.forEach(info => {
-          context.getters.results.hits.find(hit => hit.url === info.url).meta = info 
+          
+          const foundLink = context.getters.results.hits.find(hit => hit.url === info.url)
+          if (foundLink) {
+            foundLink.meta = info 
+          }
+
         })
 
         // disable the link info loading indicator (causes info to be shown)
@@ -189,7 +183,24 @@ export default new Vuex.Store({
         context.commit(`SET_LOADING_LINK_INFO`, false);
         console.warn(err)
 
-      });
+      })
+      .finally(() => {
+
+        console.log(`hitsToCheck.length:`, hitsToCheck.length)
+        
+        hitsToCheck.map(hit => hit.url).forEach(url => {
+
+          const foundLink = context.getters.results.hits.find(hit => hit.url === url)
+          
+          if (url === `https://ftp.isc.org/usenet/control/alt/alt.Jamie.Baillie.test.test.test.gz`) {
+            console.log(`JSON.stringify(foundLink):`, JSON.stringify(foundLink))
+          }
+          
+          foundLink.meta.checked = true;
+
+        })
+        
+      })
       
     },
     async loadStats(context) {

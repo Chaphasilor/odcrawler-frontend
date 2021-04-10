@@ -1,5 +1,14 @@
+const http = require(`http`);
+const https = require(`https`);
 const fetch = require(`node-fetch`);
 const AbortController = require(`abort-controller`);
+
+const httpAgent = new http.Agent({
+  rejectUnauthorized: false,
+});
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+});
 
 // https://stackoverflow.com/a/57888548/5485777
 const fetchTimeout = (url, ms, options = {}) => {
@@ -35,6 +44,9 @@ function checkLink(urlData) {
     fetchTimeout(urlData.url, 9500, {
       method: `HEAD`,
       headers: urlData.headers,
+      agent: function (_parsedURL) {
+        return _parsedURL.protocol === 'https:' ? httpsAgent : httpAgent;
+      }
     }).then(res => {
   
       return resolve({
@@ -48,9 +60,13 @@ function checkLink(urlData) {
       
     }).catch(err => {
   
+      console.warn(`Request failed:`, err);
+      console.log(`urlData.url:`, urlData.url)
+      
       return resolve({
         statusCode: 504, // gateway timeout
         body: err.message,
+        url: urlData.originalUrl,
       });
       
     })

@@ -35,12 +35,12 @@
       >
 
         <span
-          v-if="!loadingLinkInfo || (meta !== {} && size > -1)"
+          v-if="!loadingLinkInfo || meta.checked"
           class=""
         >{{ formattedSize }}</span>
 
         <svg
-          v-if="loadingLinkInfo && (meta === {} && size === -1)"
+          v-if="loadingLinkInfo && !meta.checked"
           key="0"
           class="w-6 h-6 animate-spin"
           viewBox="0 0 24 24"
