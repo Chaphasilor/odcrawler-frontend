@@ -124,9 +124,9 @@ export default new Vuex.Store({
         console.warn(`Query got corrupted on the way!`);
       }
 
-      context.dispatch(`loadLinkInfo`);
-
       context.commit('UPDATE_RESULTS', result);
+      
+      context.dispatch(`loadLinkInfo`);
       
     },
     async loadNextPage(context) {
@@ -160,13 +160,15 @@ export default new Vuex.Store({
       // combine the new results with the existing ones
       result.hits = [...context.getters.results.hits, ...result.hits];
 
-      context.dispatch(`loadLinkInfo`);
-      
       context.commit('UPDATE_RESULTS', result);
+      
+      context.dispatch(`loadLinkInfo`);
       
     },
     async loadLinkInfo(context) {
 
+      console.log(`context.getters.results.hits:`, context.getters.results.hits)
+      
       // enable link info loading indicator and request link info from the lambda function
       context.commit(`SET_LOADING_LINK_INFO`, true);
       api.checkLinks(context.getters.results.hits.map(hit => hit.url))
