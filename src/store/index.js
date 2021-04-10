@@ -158,12 +158,12 @@ export default new Vuex.Store({
         console.warn(`Query got corrupted on the way!`);
       }
 
+      context.dispatch(`loadLinkInfo`, result.hits);
+      
       // combine the new results with the existing ones
       result.hits = [...context.getters.results.hits, ...result.hits];
 
       context.commit('UPDATE_RESULTS', result);
-      
-      context.dispatch(`loadLinkInfo`, result.hits);
       
     },
     async loadLinkInfo(context, hitsToCheck) {
