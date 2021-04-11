@@ -57,7 +57,7 @@ export default new Vuex.Store({
           },
         ],
         selectedOption: `exclude`,
-        keywords: [],
+        keywords: [`html`],
       }
     },
     loadingLinkInfo: false,

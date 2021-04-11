@@ -42,7 +42,7 @@
 
         <svg
           v-if="!advancedSearchVisible"
-          :class="`w-8 h-8 mx-1 my-3 ${advancedSearchActive ? `text-orange-600` : ``} stroke-current stroke-1.5 cursor-pointer stroke-2 hover:text-green-400`"
+          :class="`w-8 h-8 mx-1 my-3 ${advancedSearchActive ? `text-orange-600` : ``} stroke-current cursor-pointer stroke-2 hover:text-green-400`"
           viewBox="0 0 24 24"
           fill="none"
           stroke-linecap="round"
