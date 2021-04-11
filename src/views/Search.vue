@@ -208,13 +208,12 @@ export default {
       try {
 
         // update the query in the URL path
-        //FIXME throws route duplication errors, remove if everything still works without it
-        // this.$router.push({
-        //   name: `Search`,
-        //   params: {
-        //     query,
-        //   }
-        // })
+        this.$router.push({
+          name: `Search`,
+          params: {
+            query,
+          }
+        })
 
         this.loadingResults = true;
         this.message = {

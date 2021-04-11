@@ -16,8 +16,8 @@
           :key="index"
           class=""
         ><a
-            :class="`${(index == sublinks.length-1 && alive === false) ? `line-through text-red-500` : `text-blue-600 dark:text-blue-400 hover:underline hover:text-green-400`} `"
-            :title="(index == sublinks.length-1 && alive === false) ? `This link appears to be dead...` : ``"
+            :class="`${(index == sublinks.length-1 && meta.isAlive === false) ? `line-through text-red-500` : `text-blue-600 dark:text-blue-400 hover:underline hover:text-green-400`} `"
+            :title="(index == sublinks.length-1 && meta.isAlive === false) ? `This link appears to be dead...` : ``"
             rel="noopener noreferrer"
             target="_blank"
             :href="sublink.link"
@@ -229,7 +229,6 @@ export default {
   data: function() {
     return {
       copied: false,
-      alive: undefined,
     }
   },
   computed: {
