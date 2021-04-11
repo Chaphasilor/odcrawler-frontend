@@ -159,10 +159,11 @@ export default {
         `You can see the amount of pages on the left side of the links!`,
       ],
       tipTimer: undefined,
-      highestPage: 0,
+      highestPage: 1,
       loadingResults: false,
       orientation: window.screen.orientation ? window.screen.orientation.type : `landscape-primary`,
       scrollToTopButton: false,
+      initialPage: 1,
     };
   },
   computed: {
@@ -209,12 +210,26 @@ export default {
       try {
 
         // update the query in the URL path
-        this.$router.push({
-          name: `Search`,
-          params: {
-            query,
-          }
-        })
+        if (page === 1 || this.initialPage <= 1) {
+          this.$router.push({
+            name: `Search`,
+            params: {
+              query,
+            },
+          })
+        } else {
+          this.$router.push({
+            name: `Search`,
+            // inline parameters
+            params: {
+              query,
+            },
+            // query parameters
+            query: {
+              p: this.initialPage,
+            }
+          })
+        }
 
         this.loadingResults = true;
         this.message = {
@@ -313,6 +328,8 @@ export default {
           }
         })
 
+        console.log(`this.highestPage:`, this.highestPage)
+
         if (this.results.hits.length == 0) {
           this.message = {
             text: `No more links to load!`,
@@ -372,8 +389,21 @@ export default {
     if (this.searchQuery !== ``) {
       
       if (currentPage > 1) {
-        this.search(this.searchQuery, currentPage).then(() => {
 
+        // update the page in the URL path
+        // this.$router.push({
+        //   name: `Search`,
+        //   params: {
+        //     query: this.searchQuery,
+        //   },
+        //   // query parameters
+        //   query: {
+        //     p: currentPage,
+        //   }
+        // })
+        
+        this.initialPage = currentPage;
+        this.search(this.searchQuery, currentPage).then(() => {
         })
 
         this.$store.dispatch(`analytics/trackEvent`, `scrolledPageReload`); // tracks if a page was reloaded that was previously scrolled to a higher page

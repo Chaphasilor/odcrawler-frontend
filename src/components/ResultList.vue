@@ -30,7 +30,7 @@
           :highlights="link.highlights"
           :size="link.size"
           :meta="link.meta"
-          @link-mounted="calcPage(id) === scrollToInitialPage && scrollToInitialPage > 1 ? smoothScrollToPage(calcPage(id)) : false;"
+          @link-mounted="calcPage(id) === scrollToInitialPage && scrollToInitialPage > 1 ? scrollToInitialPageOnce(id) : false;"
         />
 
       </div>
@@ -120,6 +120,11 @@ export default {
       }
     },
   },
+  data: function() {
+    return {
+      alreadyScrolledToInitialPage: false,
+    }
+  },
   watch: {
     disableInfiniteScroll: {
       handler: function() {
@@ -149,6 +154,14 @@ export default {
       this.$refs[`page-${page}`][0].scrollIntoView({
         // behavior: `smooth`, // handled by CSS
       });
+      
+    },
+    scrollToInitialPageOnce(id) {
+
+      if (!this.alreadyScrolledToInitialPage) {
+        this.smoothScrollToPage(this.calcPage(id));
+        this.alreadyScrolledToInitialPage = true;
+      }
       
     },
     calcPage(linkNumber) {
