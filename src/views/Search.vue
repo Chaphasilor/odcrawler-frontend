@@ -197,6 +197,7 @@ export default {
   methods: {
     async search(query, page = 1) {
 
+      console.log(`query:`, query)
       if (query === ``) {
         console.warn(`Empty query`)
         return this.$router.push({
@@ -206,11 +207,14 @@ export default {
 
       try {
 
-        if (location.pathname != `/search/${encodeURIComponent(query)}`) {
-          this.$router.push({
-            path: `/search/${query}`,
-          })
-        }
+        // update the query in the URL path
+        //FIXME throws route duplication errors, remove if everything still works without it
+        // this.$router.push({
+        //   name: `Search`,
+        //   params: {
+        //     query,
+        //   }
+        // })
 
         this.loadingResults = true;
         this.message = {
@@ -222,7 +226,12 @@ export default {
 
         if (this.$route.query.p && Number(this.$route.query.p) != this.highestPage) {
           this.$router.push({
-            path: location.pathname,
+            name: `Search`,
+            // inline parameters
+            params: {
+              query,
+            },
+            // query parameters
             query: {
               p: this.highestPage,
             }
@@ -294,6 +303,11 @@ export default {
 
         this.$router.push({
           path: this.$router.path,
+          // inline parameters
+          params: {
+            query: this.searchQuery,
+          },
+          // query parameters
           query: {
             p: this.highestPage,
           }
@@ -352,6 +366,7 @@ export default {
   mounted() {
 
     this.searchQuery = this.$route.params.query;
+    console.log(`this.searchQuery:`, this.searchQuery)
     let currentPage = Number(this.$route.query.p) || 0;
 
     if (this.searchQuery !== ``) {

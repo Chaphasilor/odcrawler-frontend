@@ -121,6 +121,13 @@
           "
         />
 
+        {{ {
+              name: `Search`,
+              params: {
+                query: searchQuery,
+              }
+            } }}
+
         <p
           class="w-full px-10 mx-auto mb-10 text-xs italic text-center text-gray-800 md:w-192 md:text-sm dark:text-gray-600"
         >
