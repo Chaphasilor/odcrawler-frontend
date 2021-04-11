@@ -1,27 +1,33 @@
 <template>
   <div
-    class="px-6 pb-64"
+    class="p-4 pb-64"
   >
 
     <vue-headful
       title="Download Dump - ODCrawler"
     />
 
-    <nav
-      class="absolute top-0 left-0 p-6 text-lg"
+    <div
+      class="flex flex-row justify-between w-full h-auto font-semibold"
     >
-      <router-link
-        class="hover:font-bold"
-        :to="{
-          name: `Home`,
-        }"
+
+      <nav
+        class="flex flex-col text-lg text-right md:flex-row"
       >
-        Back
-      </router-link>
-    </nav>
+        <router-link
+          class="hover:text-green-400"
+          :to="{
+            name: `Home`,
+          }"
+        >
+          Start Page
+        </router-link>
+      </nav>
+
+    </div>
 
     <div
-      class="w-full mt-10 text-center"
+      class="w-full mt-2 text-center"
     >
 
       <svg
@@ -43,11 +49,11 @@
           name: `Home`,
         }"
       >
-        <h3
+        <h2
           class="inline-block text-3xl font-semibold cursor-pointer"
         >
           ODCrawler
-        </h3>
+        </h2>
       </router-link>
       
     </div>
@@ -56,10 +62,10 @@
       class="w-full mx-auto md:w-4/5 xl:w-1/2"
     >
 
-       <h1
-        class="mt-16 mb-10 text-3xl font-semibold text-center"
+      <h1
+        class="mt-10 mb-4 text-3xl font-semibold text-center"
       >
-        Download a Database Dump
+        Contact Us
       </h1>
 
       <h2
@@ -96,7 +102,7 @@
       </div>
 
       <h2
-        class="mt-24 mb-10 text-xl text-left"
+        class="mt-12 mb-10 text-xl text-left md:mt-24"
       >
         Tools for Searching the Dump:
       </h2>

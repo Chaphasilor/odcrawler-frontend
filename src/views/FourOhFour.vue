@@ -1,24 +1,30 @@
 <template>
   <div
-    class="w-full h-full px-6"
+    class="w-full h-full p-4"
   >
 
     <vue-headful
       title="Page not Found!"
     />
 
-    <nav
-      class="absolute top-0 left-0 p-4 text-lg"
+    <div
+      class="flex flex-row justify-between w-full h-auto font-semibold md:p-4 md:absolute md:top-0 md:left-0"
     >
-      <router-link
-        class="hover:font-bold"
-        :to="{
-          name: `Home`,
-        }"
+
+      <nav
+        class="flex flex-col text-lg text-right md:flex-row"
       >
-        Start Page
-      </router-link>
-    </nav>
+        <router-link
+          class="hover:text-green-400"
+          :to="{
+            name: `Home`,
+          }"
+        >
+          Start Page
+        </router-link>
+      </nav>
+
+    </div>
 
     <div
       class="flex flex-col w-full h-full"
@@ -72,7 +78,7 @@
             params: {
               query: searchQuery,
             }
-          }).catch(console.warn)"
+          }).catch(warn)"
         />
 
       </div>
@@ -103,6 +109,11 @@ export default {
     isIndexing: function() {
       return this.stats.isIndexing;
     },
+  },
+  methods: {
+    warn(message) {
+      console.warn(message)
+    }
   },
   mounted() {
 

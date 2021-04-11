@@ -13,7 +13,7 @@
       <!-- class="w-full h-full p-3 pr-8 text-left text-black placeholder-gray-700 bg-white border-2 border-gray-600 outline-none dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500 rounded-xl focus:border-green-400" -->
       <input
         ref="searchField"
-        :class="`w-full h-full bg-white dark:bg-gray-700 p-4 pr-24 text-left placeholder-gray-700 dark:placeholder-gray-500 border-2 border-gray-600 ${(advancedSearchVisible) ? `rounded-t-xl` : `rounded-xl`} outline-none focus:border-green-400`"
+        :class="`w-full h-full bg-white dark:bg-gray-700 p-4 pr-24 text-left placeholder-gray-700 dark:placeholder-gray-400 border-2 border-gray-600 ${(advancedSearchVisible) ? `rounded-t-xl` : `rounded-xl`} outline-none focus:border-green-400`"
         :placeholder="placeholder"
         type="search"
         :value="value"
@@ -27,7 +27,7 @@
       >
           <!-- class="absolute top-0 right-0 w-6 h-6 mx-3 my-3 cursor-pointer dark:text-gray-200" -->
         <svg
-          class="w-8 h-8 mx-1 my-3 p-1 dark:text-gray-200 cursor-pointer hover:stroke-2.5"
+          class="w-8 h-8 mx-1 my-3 p-1 dark:text-gray-200 cursor-pointer stroke-2.5 hover:text-green-400"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -35,14 +35,14 @@
           stroke-width="1.5"
           @click="$emit(`search`)"
         >
-          <title>Search</title>
+          <title>Search!</title>
           <circle cx="10" cy="10" r="7" />
           <line x1="21" y1="21" x2="15" y2="15" />
         </svg>
 
         <svg
           v-if="!advancedSearchVisible"
-          :class="`w-8 h-8 mx-1 my-3 ${advancedSearchActive ? `text-orange-600` : ``} stroke-current stroke-1.5 cursor-pointer hover:stroke-2`"
+          :class="`w-8 h-8 mx-1 my-3 ${advancedSearchActive ? `text-orange-600` : ``} stroke-current cursor-pointer stroke-2 hover:text-green-400`"
           viewBox="0 0 24 24"
           fill="none"
           stroke-linecap="round"
@@ -50,6 +50,7 @@
           xmlns="http://www.w3.org/2000/svg"
           @click="advancedSearchVisible = true"
         >
+          <title>{{ advancedSearchActive ? `Advanced Search is active. Click to expand` : `Configure Advanced Search` }}</title>
           <polyline points="7 7 12 12 17 7" />
           <polyline points="7 13 12 18 17 13" />
         </svg>
@@ -64,6 +65,7 @@
           xmlns="http://www.w3.org/2000/svg"
           @click="advancedSearchVisible = false"
         >
+          <title>Collapse Advanced Search Panel</title>
           <polyline points="7 11 12 6 17 11" />
           <polyline points="7 17 12 12 17 17" />
         </svg>

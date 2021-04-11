@@ -24,6 +24,7 @@
         class="flex-shrink-0 text-center md:w-20 md:text-left"
       >
         <router-link
+          class="hover:text-green-400"
           :to="{
             name: `Home`
           }"
@@ -151,16 +152,18 @@ export default {
       activeTipIndex: 0,
       tips: [
         `This site uses no cookies. Have a great day! :D`,
+        `HTML files are excluded by default, check the advanced options (next to the search icon)!`,
         `You can click on subpaths to jump to the corresponding folder!`,
-        // `Strike-through'd links are most likely dead!`,
-        `You can see the amount of pages on the left side of the links!`,
+        `Strike-through'd links are most likely dead!`,
         `All links will open in a new tab!`,
+        `You can see the amount of pages on the left side of the links!`,
       ],
       tipTimer: undefined,
-      highestPage: 0,
+      highestPage: 1,
       loadingResults: false,
       orientation: window.screen.orientation ? window.screen.orientation.type : `landscape-primary`,
       scrollToTopButton: false,
+      initialPage: 1,
     };
   },
   computed: {
@@ -196,11 +199,35 @@ export default {
   methods: {
     async search(query, page = 1) {
 
+      console.log(`query:`, query)
+      if (query === ``) {
+        console.warn(`Empty query`)
+        return this.$router.push({
+          to: `Home`,
+        })
+      }
+
       try {
 
-        if (location.pathname != `/search/${encodeURIComponent(query)}`) {
+        // update the query in the URL path
+        if (page === 1 || this.initialPage <= 1) {
           this.$router.push({
-            path: `/search/${query}`,
+            name: `Search`,
+            params: {
+              query,
+            },
+          })
+        } else {
+          this.$router.push({
+            name: `Search`,
+            // inline parameters
+            params: {
+              query,
+            },
+            // query parameters
+            query: {
+              p: this.initialPage,
+            }
           })
         }
 
@@ -214,7 +241,12 @@ export default {
 
         if (this.$route.query.p && Number(this.$route.query.p) != this.highestPage) {
           this.$router.push({
-            path: location.pathname,
+            name: `Search`,
+            // inline parameters
+            params: {
+              query,
+            },
+            // query parameters
             query: {
               p: this.highestPage,
             }
@@ -286,10 +318,17 @@ export default {
 
         this.$router.push({
           path: this.$router.path,
+          // inline parameters
+          params: {
+            query: this.searchQuery,
+          },
+          // query parameters
           query: {
             p: this.highestPage,
           }
         })
+
+        console.log(`this.highestPage:`, this.highestPage)
 
         if (this.results.hits.length == 0) {
           this.message = {
@@ -344,17 +383,39 @@ export default {
   mounted() {
 
     this.searchQuery = this.$route.params.query;
+    console.log(`this.searchQuery:`, this.searchQuery)
     let currentPage = Number(this.$route.query.p) || 0;
 
     if (this.searchQuery !== ``) {
       
       if (currentPage > 1) {
-        this.search(this.searchQuery, currentPage).then(() => {
 
+        // update the page in the URL path
+        // this.$router.push({
+        //   name: `Search`,
+        //   params: {
+        //     query: this.searchQuery,
+        //   },
+        //   // query parameters
+        //   query: {
+        //     p: currentPage,
+        //   }
+        // })
+        
+        this.initialPage = currentPage;
+        this.search(this.searchQuery, currentPage).then(() => {
         })
+
+        this.$store.dispatch(`analytics/trackEvent`, `scrolledPageReload`); // tracks if a page was reloaded that was previously scrolled to a higher page
+        
       } else {
         this.search(this.searchQuery);
       }
+    } else {
+      // console.warn(`Empty query!`)
+      this.$router.push({
+        to: `Home`,
+      })
     }
 
     this.currentTip = this.tips[0];

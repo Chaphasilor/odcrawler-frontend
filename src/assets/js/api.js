@@ -1,10 +1,11 @@
 export default class API {
 
-  constructor(baseUrl, discoveryUrl) {
+  constructor(baseUrl, discoveryUrl, lambdaEndpoint) {
 
     this.baseUrl = baseUrl;
     this.apiEndpoint = `${this.baseUrl}/links`;
     this.discoveryEndpoint = discoveryUrl;
+    this.lambdaEndpoint = lambdaEndpoint;
     this.apiKey = process.env.VUE_APP_API_KEY;
 
   }
@@ -118,7 +119,16 @@ export default class API {
       options.extensions = options.extensions || {};
       options.extensions.mode = options.extensions.mode || `off`;
       options.extensions.list = options.extensions.list || [];
-      // hopefully temporary workaround until `extension` field is changed to be case-insensitive in Elasticsearch
+      // remove leading dots
+      options.extensions.list = options.extensions.list.map(x => {
+        if (x[0] === `.`) {
+          return x.slice(1)
+        } else {
+          return x
+        }
+      })
+      console.log(`options.extensions.list:`, options.extensions.list)
+      //TODO hopefully temporary workaround until `extension` field is changed to be case-insensitive in Elasticsearch
       options.extensions.list = [...options.extensions.list, ...options.extensions.list.map(x => x.toLowerCase()), ...options.extensions.list.map(x => x.toUpperCase())]
       
 
@@ -253,8 +263,12 @@ export default class API {
     let res;
 
     try {
-      res = await fetch(`/.netlify/functions/checkLinkAlive`, {
+      res = await fetch(`${this.lambdaEndpoint}/.netlify/functions/checkLinkAlive`, {
+        mode: 'cors',
         method: `POST`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           urls,
         })

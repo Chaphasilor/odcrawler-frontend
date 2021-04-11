@@ -16,8 +16,8 @@
           :key="index"
           class=""
         ><a
-            :class="`${(index == sublinks.length-1 && alive === false) ? `line-through text-red-500` : `text-blue-600 dark:text-blue-400 hover:underline hover:text-green-400`} `"
-            :title="(index == sublinks.length-1 && alive === false) ? `This link appears to be dead...` : ``"
+            :class="`${(index == sublinks.length-1 && meta.isAlive === false) ? `line-through text-red-500` : `text-blue-600 dark:text-blue-400 hover:underline hover:text-green-400`} `"
+            :title="(index == sublinks.length-1 && meta.isAlive === false) ? `This link appears to be dead...` : ``"
             rel="noopener noreferrer"
             target="_blank"
             :href="sublink.link"
@@ -35,12 +35,12 @@
       >
 
         <span
-          v-if="!loadingLinkInfo"
+          v-if="!loadingLinkInfo || meta.checked"
           class=""
         >{{ formattedSize }}</span>
 
         <svg
-          v-if="loadingLinkInfo"
+          v-if="loadingLinkInfo && !meta.checked"
           key="0"
           class="w-6 h-6 animate-spin"
           viewBox="0 0 24 24"
@@ -207,7 +207,7 @@ export default {
     size: {
       type: Number,
       default: function() {
-        return 0;
+        return -1;
       }
     },
     highlights: {
@@ -229,7 +229,6 @@ export default {
   data: function() {
     return {
       copied: false,
-      alive: undefined,
     }
   },
   computed: {
@@ -240,7 +239,7 @@ export default {
       return encodeURIComponent(encodeURIComponent(this.link));
     },
     formattedSize: function() {
-      return this.size >= 0 ? this.formatBytes(this.size) : (this.meta.sizeInBytes != null && this.meta.sizeInBytes >= 0) ? this.formatBytes(this.meta.sizeInBytes) : `-/-`;
+      return this.size > -1 ? this.formatBytes(this.size) : (this.meta.sizeInBytes != null && this.meta.sizeInBytes >= 0) ? this.formatBytes(this.meta.sizeInBytes) : `-/-`;
     },
     webShare: function() {
       return navigator.share;

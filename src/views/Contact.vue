@@ -1,27 +1,33 @@
 <template>
   <div
-    class="px-6 pb-64"
+    class="p-4 pb-64 md:pb-0"
   >
 
     <vue-headful
       title="Contact - ODCrawler"
     />
 
-    <nav
-      class="absolute top-0 left-0 p-6 text-lg"
+    <div
+      class="flex flex-row justify-between w-full h-auto font-semibold"
     >
-      <router-link
-        class="hover:font-bold"
-        :to="{
-          name: `Home`,
-        }"
+
+      <nav
+        class="flex flex-col text-lg text-right md:flex-row"
       >
-        Back
-      </router-link>
-    </nav>
+        <router-link
+          class="hover:text-green-400"
+          :to="{
+            name: `Home`,
+          }"
+        >
+          Start Page
+        </router-link>
+      </nav>
+
+    </div>
 
     <div
-      class="w-full mt-10 text-center"
+      class="w-full mt-2 text-center"
     >
 
       <svg
@@ -43,11 +49,11 @@
           name: `Home`,
         }"
       >
-        <h3
+        <h2
           class="inline-block text-3xl font-semibold cursor-pointer"
         >
           ODCrawler
-        </h3>
+        </h2>
       </router-link>
       
     </div>
@@ -57,7 +63,7 @@
     >
 
        <h1
-        class="mt-16 mb-10 text-3xl font-semibold text-center"
+        class="mt-10 mb-4 text-3xl font-semibold text-center"
       >
         Contact Us
       </h1>
@@ -70,14 +76,14 @@
         We would love to hear it!
       </h2>
 
-      <p class="text-center md:px-12 lg:px-24">
+      <p class="text-center md:px-12">
         You can also check out our GitHub repositories <a class="text-blue-600 dark:text-blue-400" href="https://github.com/MCOfficer/odcrawler-discovery" target="_blank" rel="noopener noreferrer">here</a> (backend) and <a class="text-blue-600 dark:text-blue-400" href="https://github.com/Chaphasilor/odcrawler-frontend" target="_blank" rel="noopener noreferrer">here</a> (frontend), if you’d like to contribute ♥
         <br>
         Any issues are welcome, but if you don't want to create an issue, you can simply fill out the form below 👇🏻
       </p>
 
       <form
-        class="grid grid-cols-2 row-gap-4 p-6 mx-32 text-center"
+        class="grid grid-cols-2 row-gap-4 p-6 text-center"
         ref="contactForm"
         method="POST"
         data-netlify="true"
@@ -85,7 +91,10 @@
       >
         <input type="hidden" name="form-name" value="contact">
 
-        <label for="contact-name">Your Name:</label>  
+        <label
+          class="px-2"
+          for="contact-name"
+        >Name:</label>  
         <input
           class="px-2 py-1 bg-gray-300 rounded-md dark:bg-gray-700"
           id="contact-name"
@@ -94,7 +103,10 @@
           required
         > 
 
-        <label for="contact-email">Your E-Mail:</label>  
+        <label
+          class="px-2"
+          for="contact-email"
+        >E-Mail:</label>  
         <input
           class="px-2 py-1 bg-gray-300 rounded-md dark:bg-gray-700"
           id="contact-email"
@@ -104,7 +116,10 @@
           required
         > 
 
-        <label for="contact-message">Your Message:</label>
+        <label
+          class="px-2"
+          for="contact-message"
+        >Message:</label>
         <textarea
           class="h-40 px-2 py-1 bg-gray-300 rounded-md resize-y dark:bg-gray-700"
           id="contact-message"

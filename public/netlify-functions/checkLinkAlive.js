@@ -1,5 +1,20 @@
+const http = require(`http`);
+const https = require(`https`);
+const { performance } = require('perf_hooks');
+
 const fetch = require(`node-fetch`);
+const { curly } = require(`node-libcurl`);
 const AbortController = require(`abort-controller`);
+
+// const REQUEST_TIMEOUT = 9500;
+const REQUEST_TIMEOUT = 4500;
+
+const httpAgent = new http.Agent({
+  rejectUnauthorized: false,
+});
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+});
 
 // https://stackoverflow.com/a/57888548/5485777
 const fetchTimeout = (url, ms, options = {}) => {
@@ -32,15 +47,48 @@ function resolveLink(url) {
 function checkLink(urlData) {
   return new Promise((resolve) => {
   
-    fetchTimeout(urlData.url, 9500, {
+    const startTime = performance.now()
+    urlData.url = encodeURI(urlData.url);
+
+    fetchTimeout(urlData.url, REQUEST_TIMEOUT, {
       method: `HEAD`,
       headers: urlData.headers,
-    }).then(res => {
+      agent: function (_parsedURL) {
+        return _parsedURL.protocol === 'https:' ? httpsAgent : httpAgent;
+      }
+    }).then(async res => {
   
+      let contentLength = res.headers.get('Content-Length');
+      // use libcurl fallback, supports getting Content-Length for 'chunked' encoding
+      if (contentLength === null) {
+        console.info(`retrying with libcurl...`);
+        try {
+          console.log(`urlData.url:`, urlData.url)
+
+          contentLength = await new Promise(async (resolve, reject) => {
+
+            // make sure the curl request doesn't exceed the timeout
+            setTimeout(() => {
+              return reject(`timeout`)
+            }, Math.floor(REQUEST_TIMEOUT - (performance.now() - startTime)))
+            
+            curlRes = await curly.head(urlData.url, {
+              SSL_VERIFYPEER: false,
+              SSL_VERIFYHOST: false,
+            })
+            return resolve(curlRes.headers[0][`Content-Length`])
+
+          })
+
+        } catch (err) {
+          console.error(`Curl failed:`, err)
+        }
+      }
+      
       return resolve({
         statusCode: res.status,
         isAlive: res.ok,
-        sizeInBytes: res.headers.get(`Content-Length`) === null ? NaN : Number(res.headers.get(`Content-Length`)),
+        sizeInBytes: contentLength === null ? NaN : Number(contentLength),
         url: urlData.originalUrl,
         checkedUrl: urlData.url,
         headers: urlData.headers,
@@ -48,9 +96,13 @@ function checkLink(urlData) {
       
     }).catch(err => {
   
+      console.warn(`Request failed:`, err);
+      console.log(`urlData.url:`, urlData.url)
+      
       return resolve({
         statusCode: 504, // gateway timeout
         body: err.message,
+        url: urlData.originalUrl,
       });
       
     })
