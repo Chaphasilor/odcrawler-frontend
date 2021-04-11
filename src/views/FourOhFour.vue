@@ -78,7 +78,7 @@
             params: {
               query: searchQuery,
             }
-          }).catch(console.warn)"
+          }).catch(warn)"
         />
 
       </div>
@@ -109,6 +109,11 @@ export default {
     isIndexing: function() {
       return this.stats.isIndexing;
     },
+  },
+  methods: {
+    warn(message) {
+      console.warn(message)
+    }
   },
   mounted() {
 

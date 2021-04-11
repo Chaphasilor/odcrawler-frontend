@@ -197,6 +197,13 @@ export default {
   methods: {
     async search(query, page = 1) {
 
+      if (query === ``) {
+        console.warn(`Empty query`)
+        return this.$router.push({
+          to: `Home`,
+        })
+      }
+
       try {
 
         if (location.pathname != `/search/${encodeURIComponent(query)}`) {
@@ -359,6 +366,11 @@ export default {
       } else {
         this.search(this.searchQuery);
       }
+    } else {
+      // console.warn(`Empty query!`)
+      this.$router.push({
+        to: `Home`,
+      })
     }
 
     this.currentTip = this.tips[0];

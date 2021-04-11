@@ -161,7 +161,6 @@ export default new Vuex.Store({
       api.checkLinks(hitsToCheck.map(hit => hit.url))
       .then(linkInfo => {
 
-        console.log(`linkInfo:`, linkInfo)
         // add the info to the corresponding hit object
         linkInfo.forEach(info => {
           
@@ -174,7 +173,6 @@ export default new Vuex.Store({
 
         // disable the link info loading indicator (causes info to be shown)
         context.commit(`SET_LOADING_LINK_INFO`, false);
-        console.log(`linkInfo:`, linkInfo)
 
       })
       .catch(err => {
@@ -186,17 +184,12 @@ export default new Vuex.Store({
       })
       .finally(() => {
 
-        console.log(`hitsToCheck.length:`, hitsToCheck.length)
-        
         hitsToCheck.map(hit => hit.url).forEach(url => {
 
           const foundLink = context.getters.results.hits.find(hit => hit.url === url)
-          
-          if (url === `https://ftp.isc.org/usenet/control/alt/alt.Jamie.Baillie.test.test.test.gz`) {
-            console.log(`JSON.stringify(foundLink):`, JSON.stringify(foundLink))
+          if (foundLink) {
+            foundLink.meta.checked = true;
           }
-          
-          foundLink.meta.checked = true;
 
         })
         
