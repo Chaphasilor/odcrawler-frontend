@@ -73,7 +73,7 @@
       >
 
         <div
-          class="flex-shrink-0 w-full mt-10 text-center"
+          class="flex-shrink-0 w-full mt-10 text-center md:-mt-10"
         >
 
           <svg
@@ -105,7 +105,7 @@
         </div>
 
         <SearchField
-          class="w-full mx-auto mt-10 mb-4 md:my-4 md:w-192"
+          class="w-full max-w-3xl mx-auto mt-2 mb-4 md:my-4"
           v-model="searchQuery"
           :focus="true"
           :placeholder="`Search ${stats.totalIndexed || `millions of`} links...`"
@@ -122,7 +122,7 @@
         />
 
         <p
-          class="w-full px-10 mx-auto mb-10 text-xs italic text-center text-gray-800 md:w-192 md:text-sm dark:text-gray-600"
+          class="w-full px-2 mx-auto mb-4 text-xs italic text-center text-gray-800 sm:px-10 md:w-192 md:text-sm dark:text-gray-600"
         >
           Links are automatically aggregated from all over the Internet. Illegal Content might be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website which the link points to.
         </p>
