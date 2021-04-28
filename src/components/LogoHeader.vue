@@ -9,11 +9,12 @@
     >
 
       <svg
-        class="w-20 h-20 m-auto dark:text-gray-200 stroke-1.5"
+        class="w-20 h-20 m-auto stroke-1.5 dark:text-gray-200"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 48 48"
         stroke="currentColor"
+        stroke-width="1.5"
       >
         <title>ODCrawler Logo</title>
 
