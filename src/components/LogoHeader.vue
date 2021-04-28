@@ -1,0 +1,72 @@
+<template>
+  <div>
+
+    <router-link
+      class="flex-shrink-0 block w-full mt-10 text-center"
+      :to="{
+        name: `Home`,
+      }"
+    >
+
+      <svg
+        class="w-20 h-20 m-auto dark:text-gray-200 stroke-1.5"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 48 48"
+        stroke="currentColor"
+      >
+        <title>ODCrawler Logo</title>
+
+        <path d="M35.7485 34.8287C35.7485 36.3754 35.4438 37.9069 34.8519 39.3359C34.2601 40.7648 33.3925 42.0632 32.2989 43.1569C31.2052 44.2505 29.9068 45.1181 28.4778 45.71C27.0489 46.3019 25.5174 46.6065 23.9707 46.6065C20.847 46.6065 17.8513 45.3656 15.6425 43.1569C13.4338 40.9481 12.1929 37.9524 12.1929 34.8287C12.1929 33.282 12.4976 31.7505 13.0894 30.3215C13.6813 28.8926 14.5489 27.5942 15.6425 26.5005C16.7362 25.4069 18.0346 24.5393 19.4635 23.9474C20.8925 23.3555 22.424 23.0509 23.9707 23.0509C25.5174 23.0509 27.0489 23.3555 28.4778 23.9474C29.9068 24.5393 31.2052 25.4069 32.2989 26.5005C33.3925 27.5942 34.2601 28.8926 34.8519 30.3215C35.4438 31.7505 35.7485 33.282 35.7485 34.8287V34.8287Z"/>
+        <path d="M13.3814 29.8273H34.621"/>
+        <path d="M13.4362 39.8177H34.6758"/>
+        <path d="M12.1501 34.809H35.8803"/>
+        <path d="M23.9592 22.9978V46.63"/>
+        <path d="M23.9592 46.5247C21.131 46.5455 17.3432 42.2014 17.3624 34.9277"/>
+        <path d="M23.9592 23.3308C21.131 23.31 17.3432 27.6541 17.3624 34.9278"/>
+        <path d="M23.9592 46.5247C26.7874 46.5455 30.5752 42.2014 30.556 34.9277"/>
+        <path d="M23.9592 23.3308C26.7874 23.31 30.5752 27.6541 30.556 34.9278"/>
+        <path d="M28.6384 18.3722C28.6384 18.9862 28.5175 19.5941 28.2826 20.1613C28.0476 20.7285 27.7033 21.2438 27.2691 21.678C26.835 22.1121 26.3197 22.4564 25.7525 22.6914C25.1853 22.9263 24.5774 23.0472 23.9634 23.0472C22.7236 23.0472 21.5345 22.5547 20.6577 21.678C19.781 20.8012 19.2885 19.6121 19.2885 18.3722C19.2885 17.1324 19.781 15.9433 20.6577 15.0665C21.5345 14.1898 22.7236 13.6973 23.9634 13.6973C25.2033 13.6973 26.3924 14.1898 27.2691 15.0665C28.1459 15.9433 28.6384 17.1324 28.6384 18.3722V18.3722Z"/>
+        <path d="M19.2766 19.6982H9.20292L5.00002 29.7484L5 37.1765" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19.1836 17.6407H13.7595L9.39251 12.138L9.35294 4.11304" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19.875 16L15.9869 14.8952L13.9991 12.1763L13.9991 1" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M20.2733 21.3765L11.5668 23.9884L9.35295 29.7482L9.35294 40.5836" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21.9983 9.99902C21.4126 10.9752 20.4984 12.4988 20.4984 12.4988L22.1893 13.9391" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M25.9979 9.99902L27.4977 12.4988L25.6684 13.9391" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M28.625 19.6982H38.6548L42.8577 29.7484L42.8577 37.1765" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M28.75 17.6407H34.0981L38.4651 12.138L38.5047 4.11304" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M27.9977 15.9985L32.0093 14.8952L33.9971 12.1763L33.9971 1" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M27.5843 21.3765L36.2908 23.9884L38.5047 29.7482L38.5047 40.5836" stroke-linecap="round" stroke-linejoin="round"/>
+
+      </svg>
+
+      <h1
+        class="text-3xl font-semibold cursor-pointer "
+      >
+        ODCrawler
+      </h1>
+
+    </router-link>
+
+    <p
+      v-if="showDescription"
+      class="w-full px-2 mx-auto mb-4 text-sm text-center text-gray-800 sm:px-10 md:w-192 md:text-base dark:text-gray-500"
+    >
+      A search engine for open directories. Find millions of publicly available files!
+    </p>
+
+  </div>
+    
+</template>
+
+<script>
+export default {
+  name: `LogoHeader`,
+  props: {
+    showDescription: {
+      type: Boolean,
+      default: false,
+    }
+  }
+}
+</script>

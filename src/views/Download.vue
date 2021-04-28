@@ -26,37 +26,7 @@
 
     </div>
 
-    <div
-      class="w-full mt-2 text-center"
-    >
-
-      <svg
-        class="w-20 h-20 m-auto dark:text-gray-200"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <title>ODCrawler</title>
-
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-        <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
-        <circle cx="12" cy="12" r="3" />
-      </svg>
-
-      <router-link
-        :to="{
-          name: `Home`,
-        }"
-      >
-        <h2
-          class="inline-block text-3xl font-semibold cursor-pointer"
-        >
-          ODCrawler
-        </h2>
-      </router-link>
-      
-    </div>
+    <LogoHeader/>
 
     <div
       class="w-full mx-auto md:w-4/5 xl:w-1/2"
@@ -207,9 +177,12 @@
 
 <script>
 
+import LogoHeader from '@/components/LogoHeader';
+
 export default {
   name: `Download`,
   components: {
+    LogoHeader,
   },
   data: function() {
     return {

@@ -46,7 +46,7 @@
               v-if="index != navLinks.length-1"
               class="hidden w-4 h-4 mr-1 md:inline-block"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+            
               stroke="currentColor"
               fill="none"
               stroke-linecap="round"
@@ -56,7 +56,7 @@
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <circle cx="12" cy="12" r="4" />
             </svg>
-
+            
           </div>
 
         </div>
@@ -72,37 +72,10 @@
         class="flex flex-col justify-center flex-shrink-0 w-full md:h-full"
       >
 
-        <div
-          class="flex-shrink-0 w-full mt-10 text-center md:-mt-10"
-        >
-
-          <svg
-            class="w-20 h-20 m-auto dark:text-gray-200"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <title>{{ isIndexing ? `Currently indexing new links!` : `Not indexing right now...` }}</title>
-
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
-
-          <router-link
-            :to="{
-              name: `Home`,
-            }"
-          >
-            <h1
-              class="inline-block text-3xl font-semibold cursor-pointer"
-            >
-              ODCrawler
-            </h1>
-          </router-link>
-          
-        </div>
+        <LogoHeader
+          class="md:-mt-10"
+          showDescription="true"
+        />
 
         <SearchField
           class="w-full max-w-3xl mx-auto mt-2 mb-4 md:my-4"
@@ -162,7 +135,7 @@
                 :stroke="item.icon.color"
                 class="inline-block h-6 mr-1"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+              
                 fill="none"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -173,7 +146,7 @@
                 v-if="index != poweredBy.length-1"
                 class="hidden w-4 h-4 mx-1 md:inline-block"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+              
                 stroke="currentColor"
                 fill="none"
                 stroke-linecap="round"
@@ -199,11 +172,13 @@
 <script>
 
 import SearchField from '@/components/SearchField';
+import LogoHeader from '@/components/LogoHeader';
 
 export default {
   name: `Home`,
   components: {
     SearchField,
+    LogoHeader,
   },
   data: function() {
     return {
