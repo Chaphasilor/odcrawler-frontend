@@ -1,0 +1,26 @@
+{
+  "name": "ODCrawler",
+  "short_name": "ODC",
+  "lang": "en-US",
+  "description": "A search engine for open directories. Find millions of publicly available files",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#68d391",
+  "background_color": "#1a202c",
+  "display": "browser",
+  "url": "https://odcrawler.xyz/",
+  "start_url": "/",
+  "scope": "/",
+  "appleMobileWebAppCapable": "yes",
+  "appleMobileWebAppStatusBarStyle": "default"
+}

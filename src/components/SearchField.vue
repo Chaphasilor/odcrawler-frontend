@@ -4,7 +4,7 @@
   >
 
     <form
-      class="relative"
+      class="relative flex flex-row"
       method=""
       action="#"
       @submit.prevent="$emit('search')"
@@ -13,7 +13,7 @@
       <!-- class="w-full h-full p-3 pr-8 text-left text-black placeholder-gray-700 bg-white border-2 border-gray-600 outline-none dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500 rounded-xl focus:border-green-400" -->
       <input
         ref="searchField"
-        :class="`w-full h-full bg-white dark:bg-gray-700 p-4 pr-24 text-left placeholder-gray-700 dark:placeholder-gray-400 border-2 border-gray-600 ${(advancedSearchVisible) ? `rounded-t-xl` : `rounded-xl`} outline-none focus:border-green-400`"
+        :class="`w-full h-full bg-white dark:bg-gray-700 p-4 pr-24 sm:pr-56 text-left placeholder-gray-700 dark:placeholder-gray-400 border-2 border-gray-600 ${(advancedSearchVisible) ? `rounded-t-xl` : `rounded-xl`} outline-none focus:border-green-400`"
         :placeholder="placeholder"
         type="search"
         :value="value"
@@ -21,6 +21,22 @@
         @input="$emit('input', $event.target.value)"
         @keydown.enter="$emit(`search`)"
       >
+
+      <span
+        class="absolute top-0 right-0 hidden px-2 py-1 text-sm text-gray-700 transform -translate-x-24 translate-y-3 cursor-pointer mt-xs dark:text-gray-400 sm:block font-quicksand"
+        title="Press ' / ' to search"
+        @click="focusSearchbar"
+      >
+        <span
+          class=""
+        >Press </span>
+        <kbd
+          class="px-1 border border-gray-300 py-xs font-quicksand rounded-xs"
+        >/</kbd>
+        <span
+          class=""
+        > to focus</span>
+      </span>
 
       <div
         class="absolute top-0 right-0 flex flex-row-reverse pr-3"
@@ -313,6 +329,12 @@ export default {
   data: function() {
     return {
       advancedSearchVisible: false,
+      shortcutHandler: (event) => {
+        if (event.key === `/`) {
+          event.preventDefault();
+          this.focusSearchbar();
+        }       
+      }
     }
   },
   computed: {
@@ -352,15 +374,27 @@ export default {
       }
     }
   },
+  methods: {
+    focusSearchbar() {
+      console.log(`test`)
+      this.$refs.searchField.focus();
+    }
+  },
   mounted() {
 
     this.advancedSearchVisible = this.advanced;
     if (this.focus) {
-      this.$refs.searchField.focus();
+      this.focusSearchbar();
     }
 
     console.log(`this.advancedSearchActive:`, this.advancedSearchActive);
 
+    document.addEventListener(`keydown`, this.shortcutHandler);
+
+  },
+  beforeDestroy() {
+    document.removeEventListener(`keydown`, this.shortcutHandler);
   }
 }
+
 </script>

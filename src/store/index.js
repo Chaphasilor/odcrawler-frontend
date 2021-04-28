@@ -45,7 +45,7 @@ export default new Vuex.Store({
       extensions: {
         text: `Filter Extensions`,
         type: `keywords`,
-        value: false,
+        value: true,
         options: [
           {
             text: `Included`,
