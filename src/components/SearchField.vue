@@ -4,7 +4,7 @@
   >
 
     <form
-      class="relative flex flex-row"
+      class="relative flex flex-col"
       method=""
       action="#"
       @submit.prevent="$emit('search')"
