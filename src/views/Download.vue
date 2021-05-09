@@ -35,7 +35,7 @@
       <h1
         class="mt-10 mb-4 text-3xl font-semibold text-center"
       >
-        Contact Us
+        Download a Database Dump
       </h1>
 
       <h2

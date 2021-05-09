@@ -74,7 +74,7 @@
 
         <LogoHeader
           class="md:-mt-10"
-          showDescription="true"
+          :showDescription="true"
         />
 
         <SearchField

@@ -93,7 +93,7 @@
       leave-to-class="translate-x-32"
     >
       <div
-        class="fixed bottom-0 right-0 w-12 h-12 mb-10 mr-10 bg-gray-100 border border-black rounded-md shadow-lg dark:border-gray-700 dark:bg-gray-900"
+        class="fixed bottom-0 right-0 w-12 h-12 mb-10 mr-10 bg-gray-100 border border-black rounded-md shadow-lg cursor-pointer dark:border-gray-700 dark:bg-gray-900"
         v-if="scrollToTopButton"
         @click="scrollToTop"
       >
