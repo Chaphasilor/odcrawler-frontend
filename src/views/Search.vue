@@ -66,7 +66,7 @@
             enter-active-class="transition-all duration-1000 transform"
             enter-class="translate-x-64 opacity-0"
             enter-to-class="translate-x-0 opacity-100"
-            leave-active-class="whitespace-no-wrap transition-all duration-700 transform"
+            leave-active-class="transition-all duration-700 transform whitespace-nowrap"
             leave-class="translate-x-0 opacity-100"
             leave-to-class="w-0 -translate-x-64 opacity-0"
           >

@@ -43,12 +43,10 @@
       >
           <!-- class="absolute top-0 right-0 w-6 h-6 mx-3 my-3 cursor-pointer dark:text-gray-200" -->
         <svg
-          class="w-8 h-8 mx-1 my-3 p-1 dark:text-gray-200 cursor-pointer stroke-2.5 hover:text-green-400"
+          class="w-8 h-8 p-1 mx-1 my-3 text-gray-900 cursor-pointer stroke-current stroke-2 dark:text-gray-200 hover:text-green-400"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="1.5"
           @click="$emit(`search`)"
         >
           <title>Search!</title>

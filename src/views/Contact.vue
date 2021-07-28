@@ -47,13 +47,13 @@
       </h2>
 
       <p class="text-center md:px-12">
-        You can also check out our GitHub repositories <a class="text-blue-600 dark:text-blue-400" href="https://github.com/MCOfficer/odcrawler-discovery" target="_blank" rel="noopener noreferrer">here</a> (backend) and <a class="text-blue-600 dark:text-blue-400" href="https://github.com/Chaphasilor/odcrawler-frontend" target="_blank" rel="noopener noreferrer">here</a> (frontend), if you’d like to contribute ♥
+        You can also check out our GitHub repositories <a class="text-blue-600 underline dark:text-blue-400" href="https://github.com/MCOfficer/odcrawler-discovery" target="_blank" rel="noopener noreferrer">here (backend)</a> and <a class="text-blue-600 underline dark:text-blue-400" href="https://github.com/Chaphasilor/odcrawler-frontend" target="_blank" rel="noopener noreferrer">here (frontend)</a>, if you would like to contribute ❤
         <br>
         Any issues are welcome, but if you don't want to create an issue, you can simply fill out the form below 👇🏻
       </p>
 
       <form
-        class="grid grid-cols-2 row-gap-4 p-6 text-center"
+        class="grid grid-cols-2 p-6 text-center gap-y-4"
         ref="contactForm"
         method="POST"
         data-netlify="true"
@@ -101,7 +101,7 @@
           class="justify-center col-span-2 mt-8 text-lg font-semibold"
         >
           <input
-            class="inline-block h-full p-2 px-12 text-blue-600 transition-colors duration-100 border-blue-600 rounded-lg cursor-pointer dark:text-blue-400 border-3 dark:border-blue-400 hover:bg-blue-600 hover:text-white dark:bg-gray-900 dark:hover:bg-blue-400"
+            class="inline-block h-full p-2 px-12 text-blue-600 transition-colors duration-100 bg-transparent border-blue-600 rounded-lg cursor-pointer dark:text-blue-400 border-3 dark:border-blue-400 hover:bg-blue-600 hover:text-white dark:bg-gray-900 dark:hover:bg-blue-400"
             type="submit"
             value="Submit!"
           >
