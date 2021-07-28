@@ -81,7 +81,7 @@
           class="w-full max-w-3xl mx-auto mt-2 mb-4 md:my-4"
           v-model="searchQuery"
           :focus="true"
-          :placeholder="`Search ${stats.totalIndexed || `millions of`} links...`"
+          :placeholder="`Search ${stats.totalIndexed || `millions of`} links${isLandscape ? ` in ${stats.aliveODs} open directories` : ``}...`"
           @search="
             searchQuery.length > 0 ?
             $router.push({
@@ -232,7 +232,8 @@ export default {
           title: `Tailwind CSS`,
           url: `https://tailwindcss.com/`,
         },
-      ]
+      ],
+      orientation: window.screen.orientation ? window.screen.orientation.type : `landscape-primary`,
     };
   },
   computed: {
@@ -241,6 +242,10 @@ export default {
     },
     isIndexing: function() {
       return this.stats.isIndexing;
+    },
+    isLandscape: function() {
+      console.log(`this.orientation:`, this.orientation)
+      return this.orientation === 'landscape-primary';
     },
   },
   methods: {

@@ -24,12 +24,12 @@ export default class API {
 
   }
   
-  dotify(number) {
+  dotify(number, useCommas = true) {
 
     let reversedNumberAsString = String(number).split(``).reverse().join(``);
     let dotifiedNumber = ``;
     for (let i = 0; i < reversedNumberAsString.length; i++) {
-      dotifiedNumber = `${reversedNumberAsString.charAt(i)}${(i%3===0 && i!=0) ? `.` : ``}${dotifiedNumber}`;
+      dotifiedNumber = `${reversedNumberAsString.charAt(i)}${(i%3===0 && i!=0) ? (useCommas ? `,` : `.`) : ``}${dotifiedNumber}`;
     }
     return dotifiedNumber;
     
@@ -74,10 +74,13 @@ export default class API {
     })
   }
 
-  parseStats(rawStats) {
+  parseStats(rawEsStats, rawDiscoveryStats) {
 
     let parsedStats = {
-      totalIndexed: this.dotify(rawStats.indices.links.primaries.docs.count),
+      totalLinks: this.dotify(rawDiscoveryStats.total_links),
+      totalODs: this.dotify(rawDiscoveryStats.total_opendirectories),
+      aliveODs: this.dotify(rawDiscoveryStats.alive_opendirectories),
+      totalIndexed: this.dotify(rawEsStats.indices.links.primaries.docs.count),
       isIndexing: true, //TODO find out how to check if ES is indexing, or remove
     }
 
@@ -204,10 +207,11 @@ export default class API {
 
   async retrieveStats() {
 
-    let res, stats;
+    let elasticSearchRes, elasticSearchStats;
+    let discoveryServerRes, discoveryServerStats;
 
     try {
-      res = await fetch(`${this.apiEndpoint}/_stats/docs,store,indexing,search`, {
+      elasticSearchRes = await fetch(`${this.apiEndpoint}/_stats/docs,store,indexing,search`, {
         mode: 'cors',
         method: 'GET',
         headers: {
@@ -216,17 +220,34 @@ export default class API {
       })
     } catch (err) {
       console.warn(err);
-      throw new Error(`Couldn't retrieve stats`);
+      throw new Error(`Couldn't retrieve stats from ES`);
     }
 
     try {
-      stats = await res.json()
+      elasticSearchStats = await elasticSearchRes.json()
     } catch (err) {
       console.warn(err);
-      throw new Error(`Error while parsing the stats, the server didn't respond with a valid json string!`);
+      throw new Error(`Error while parsing the ES stats, the server didn't respond with a valid json string!`);
     }
 
-    return this.parseStats(stats);
+    try {
+      discoveryServerRes = await fetch(`${this.discoveryEndpoint}/stats.json`, {
+        mode: 'cors',
+        method: 'GET',
+      })
+    } catch (err) {
+      console.warn(err);
+      throw new Error(`Couldn't retrieve stats from the discovery server`);
+    }
+
+    try {
+      discoveryServerStats = await discoveryServerRes.json()
+    } catch (err) {
+      console.warn(err);
+      throw new Error(`Error while parsing the discovery server stats, the server didn't respond with a valid json string!`);
+    }
+
+    return this.parseStats(elasticSearchStats, discoveryServerStats);
     
   }
 
