@@ -71,6 +71,10 @@
         </a>
       </div>
 
+      <div
+        class="mx-auto mt-4 text-xs text-center"
+      >Generated at {{ dumpInfo.created.toISOString() }}</div>
+
       <h2
         class="mt-12 mb-10 text-xl text-left md:mt-24"
       >
