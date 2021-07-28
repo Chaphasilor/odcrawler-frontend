@@ -1,7 +1,6 @@
 {
   "name": "odcrawler-frontend",
   "version": "1.0.0",
-  "license": "GPL-3.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -11,7 +10,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "postcss": "^7.0.32",
+    "postcss": "^7.0.36",
     "tailwindcss": "^1.8.8",
     "vue": "^2.6.11",
     "vue-headful": "^2.1.0",
@@ -22,12 +21,13 @@
     "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.8",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-plugin-babel": "^4.5.13",
+    "@vue/cli-plugin-eslint": "^4.5.13",
+    "@vue/cli-service": "^4.5.13",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "vue-template-compiler": "^2.6.11"
-  }
+  },
+  "license": "GPL-3.0"
 }
