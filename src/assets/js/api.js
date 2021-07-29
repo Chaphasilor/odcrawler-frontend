@@ -122,6 +122,9 @@ export default class API {
       options.extensions = options.extensions || {};
       options.extensions.mode = options.extensions.mode || `off`;
       options.extensions.list = options.extensions.list || [];
+
+      options = JSON.parse(JSON.stringify(options))
+      
       // remove leading dots
       options.extensions.list = options.extensions.list.map(x => {
         if (x[0] === `.`) {

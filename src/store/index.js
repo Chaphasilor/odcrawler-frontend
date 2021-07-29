@@ -94,8 +94,11 @@ export default new Vuex.Store({
       let result;
       try {
 
+        console.log(`context.getters.searchOptions.extensions.list:`, context.getters.searchOptions.extensions.list)
+        
         if (page) {
 
+          // don't load all previous pages if search starts at a very high page (e.g. after a reload)
           if (page * context.getters.pageSize > 1000) {
 
             result = await api.search(query, (page-1) * context.getters.pageSize, context.getters.pageSize, context.getters.searchOptions);
@@ -115,6 +118,8 @@ export default new Vuex.Store({
 
         }
 
+        console.log(`context.getters.searchOptions.extensions.list (2):`, context.getters.searchOptions.extensions.list)
+
       } catch (err) {
         console.warn(err);
         throw new Error(`Couldn't load results!`);
@@ -132,6 +137,7 @@ export default new Vuex.Store({
     },
     async loadNextPage(context) {
 
+      console.log(`context.getters.searchOptions.extensions.list:`, context.getters.searchOptions.extensions.list)
       let result;
       try {
 
@@ -141,6 +147,7 @@ export default new Vuex.Store({
         console.warn(err);
         throw new Error(`Couldn't load additional results!`);
       }
+      console.log(`context.getters.searchOptions.extensions.list (2):`, context.getters.searchOptions.extensions.list)
 
       if (result.query != context.getters.results.query) {
         console.warn(`Query got corrupted on the way!`);

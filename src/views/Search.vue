@@ -207,6 +207,21 @@ export default {
         })
       }
 
+      // elastic search only serves the first 10k results over the regular API
+      if (this.initialPage * this.$store.getters.pageSize > 10000) {
+        this.message = {
+          text: `Sorry, but as of now we can only show you the first 10000 results. If you need more, please either use the database dump or contact us about this issue!`,
+          level: `warning`,
+          button: {
+            label: `Download Database Dump`,
+            payload: `dbDump`,
+          },
+        }
+
+        this.$store.dispatch(`analytics/trackEvent`, `resultLimitExceeded_initial`);
+        return
+      }
+
       try {
 
         // update the query in the URL path
@@ -287,6 +302,21 @@ export default {
         return;
       }
 
+      // elastic search only serves the first 10k results over the regular API
+      if ((this.highestPage + 1) * this.$store.getters.pageSize > 10000) {
+        this.message = {
+          text: `Sorry, but as of now we can only show you the first 10000 results. If you need more, please either use the database dump or contact us about this issue!`,
+          level: `warning`,
+          button: {
+            label: `Download Database Dump`,
+            payload: `dbDump`,
+          },
+        }
+
+        this.$store.dispatch(`analytics/trackEvent`, `resultLimitExceeded`);
+        return
+      }
+
       // console.log(`this.$store.getters.results.hits:`, this.$store.getters.results.hits);
 
       if (!(this.$store.getters.results.hits.length > 0)) {
@@ -364,6 +394,11 @@ export default {
       switch (payload) {
         case `loadNextPage`:
           this.loadNextPage();
+          break;
+        case `dbDump`:
+          this.$router.push({
+            name: `Download`,
+          })
           break;
       
         default:
