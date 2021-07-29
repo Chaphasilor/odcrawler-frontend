@@ -48,7 +48,7 @@
 
       <p class="text-center md:px-12">
         Our search isn’t perfect, we know that. We are doing what we can to improve it, but if you really want to get your hands dirty, you can download a database dump containing all links and search them using RegEx, etc.<br>
-        (You can also check out our GitHub repositories <a class="text-blue-600 dark:text-blue-400" href="https://github.com/MCOfficer/odcrawler-discovery" target="_blank" rel="noopener noreferrer">here</a> and <a class="text-blue-600 dark:text-blue-400" href="https://github.com/Chaphasilor/odcrawler-frontend" target="_blank" rel="noopener noreferrer">here</a>, if you’d like to contribute)
+        (You can also check out our GitHub repositories <a class="text-blue-600 underline dark:text-blue-400" href="https://github.com/MCOfficer/odcrawler-discovery" target="_blank" rel="noopener noreferrer">here</a> and <a class="text-blue-600 underline dark:text-blue-400" href="https://github.com/Chaphasilor/odcrawler-frontend" target="_blank" rel="noopener noreferrer">here</a>, if you’d like to contribute)
       </p>
       <p
         class="mt-4 text-center"
@@ -106,7 +106,7 @@
 
             Download it from
             <a
-              class="text-blue-600 dark:text-blue-400 hover:underline"
+              class="text-blue-600 underline dark:text-blue-400 hover:underline"
               href="https://github.com/BurntSushi/ripgrep"
               rel="noopener noreferrer"
               target="_blank"
@@ -135,7 +135,7 @@
             
             Download it from
             <a
-              class="text-blue-600 dark:text-blue-400 hover:underline"
+              class="text-blue-600 underline dark:text-blue-400 hover:underline"
               href="http://docfetcher.sourceforge.net/en/index.html"
               rel="noopener noreferrer"
               target="_blank"
@@ -164,7 +164,7 @@
             
             Download it from
             <a
-              class="text-blue-600 dark:text-blue-400 hover:underline"
+              class="text-blue-600 underline dark:text-blue-400 hover:underline"
               href="http://astrogrep.sourceforge.net/"
               rel="noopener noreferrer"
               target="_blank"
