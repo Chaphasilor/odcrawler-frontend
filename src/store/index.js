@@ -61,19 +61,23 @@ export default new Vuex.Store({
         keywordPresets: [
           {
             name: `Videos`,
-            keywords: [`mp4`, `mkv`, `avi`, `webm`, `flv`],
+            keywords: [`mp4`, `mkv`, `avi`, `webm`, `flv`, `ts`, `3gp`, `3g2`, `wmv`, `mov`],
           },
           {
             name: `Images`,
-            keywords: [`jpg`, `jpeg`, `png`, `gif`, `svg`, `bmp`, `tif`, `tiff`],
+            keywords: [`jpg`, `jpeg`, `png`, `webp`, `gif`, `svg`, `bmp`, `tif`, `tiff`, `ico`],
+          },
+          {
+            name: `Audio`,
+            keywords: [`mp3`, `wav`, `m4a`, `aac`, `ogg`, `flac`, `opus`],
           },
           {
             name: `Documents`,
-            keywords: [`txt`, `md`, `tex`, `pdf`, `doc`, `docx`],
+            keywords: [`txt`, `md`, `tex`, `pdf`, `doc`, `docx`, `odf`],
           },
           {
             name: `Archives`,
-            keywords: [`zip`, `rar`, `7z`, `tar`, `gz`, `tar.gz`, `arj`],
+            keywords: [`zip`, `rar`, `7z`, `tar`, `gz`, `tar.gz`, `arj`, `xz`, `tar.xz`, `bz2`, `tar.bz2`],
           },
           {
             name: `eBooks`,

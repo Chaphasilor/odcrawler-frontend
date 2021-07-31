@@ -240,7 +240,7 @@
                   <div
                     class="flex flex-row px-2 py-2 m-1 border border-gray-600 rounded-sm"
                   >
-                    <span class="font-bold text-gray-900">{{ keyword }}</span>
+                    <span class="font-bold text-gray-900 dark:text-gray-100">{{ keyword }}</span>
 
                     <button
                       class="block w-5 h-5 pt-px mt-px ml-2 text-green-400 hover:text-red-600 dark:hover:text-red-800"
@@ -264,7 +264,7 @@
                 </div>
 
                 <input
-                  :class="`${option.keywords.length === 0 ? `w-full` : `w-16 md:w-32`} h-10 m-1 bg-transparent focus:outline-none`"
+                  :class="`${option.keywords.length === 0 ? `w-full` : `w-16 md:w-24`} h-10 m-1 bg-transparent focus:outline-none`"
                   style="caret-color: #68d391;"
                   type="text"
                   :ref="`${key}-keywords-input`"
@@ -286,19 +286,19 @@
                   :key="index"
                 >
                   <div
-                    class="flex flex-row px-2 py-1 m-1 text-green-900 border border-green-900 rounded-sm hover:cursor-pointer"
+                    class="flex flex-row px-2 py-1 m-1 text-green-900 border border-green-900 rounded-sm dark:border-green-400 dark:text-green-100 hover:cursor-pointer"
                     :class="
-                      presetState(preset.keywords, option.keywords) === `all` ? `bg-green-300` : 
-                      presetState(preset.keywords, option.keywords) === `some` ? `bg-green-100` :
+                      presetState(preset.keywords, option.keywords) === `all` ? `bg-green-600` : 
+                      presetState(preset.keywords, option.keywords) === `some` ? `bg-green-900` :
                       `bg-transparent`
                     "
                     @mouseup="togglePreset(preset, option.keywords)"
                   >
-                    <span class="font-bold text-green-900">{{ preset.name }}</span>
+                    <span class="font-bold text-green-900 dark:text-green-100">{{ preset.name }}</span>
 
                     <button
                       class="block w-5 h-5 pt-px mt-px ml-2"
-                      @click="togglePreset(preset, option.keywords)"
+                      @click.native="togglePreset(preset, option.keywords)"
                     >
                       <svg
                         v-if="presetState(preset.keywords, option.keywords) === `all`"
