@@ -58,6 +58,28 @@ export default new Vuex.Store({
         ],
         selectedOption: `exclude`,
         keywords: [`html`],
+        keywordPresets: [
+          {
+            name: `Videos`,
+            keywords: [`mp4`, `mkv`, `avi`, `webm`, `flv`],
+          },
+          {
+            name: `Images`,
+            keywords: [`jpg`, `jpeg`, `png`, `gif`, `svg`, `bmp`, `tif`, `tiff`],
+          },
+          {
+            name: `Documents`,
+            keywords: [`txt`, `md`, `tex`, `pdf`, `doc`, `docx`],
+          },
+          {
+            name: `Archives`,
+            keywords: [`zip`, `rar`, `7z`, `tar`, `gz`, `tar.gz`, `arj`],
+          },
+          {
+            name: `eBooks`,
+            keywords: [`epub`, `pdf`, `mobi`, `azw`],
+          },
+        ],
       }
     },
     loadingLinkInfo: false,

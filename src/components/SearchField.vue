@@ -56,7 +56,7 @@
 
         <svg
           v-if="!advancedSearchVisible"
-          :class="`w-8 h-8 mx-1 my-3 ${advancedSearchActive ? `text-orange-600` : ``} stroke-current cursor-pointer stroke-2 hover:text-green-400`"
+          :class="`w-8 h-8 mx-1 my-3 ${advancedSearchActive ? `text-orange-600` : `text-gray-900`} stroke-current cursor-pointer stroke-2 hover:text-green-400`"
           viewBox="0 0 24 24"
           fill="none"
           stroke-linecap="round"
@@ -71,7 +71,7 @@
 
         <svg
           v-else
-          class="w-8 h-8 mx-1 my-3 stroke-current stroke-1.5 cursor-pointer hover:stroke-2"
+          class="w-8 h-8 mx-1 my-3 text-gray-900 stroke-current stroke-1.5 cursor-pointer hover:stroke-2"
           viewBox="0 0 24 24"
           fill="none"
           stroke-linecap="round"
@@ -223,7 +223,7 @@
               </div>
 
               <div
-                class="flex flex-row flex-wrap p-2 border-2 border-gray-600 rounded-lg"
+                class="flex flex-row flex-wrap p-1 border-2 border-gray-600 rounded-md"
                 @click="$refs[`${key}-keywords-input`][0].focus()"
               >
                 <!-- <div
@@ -238,12 +238,12 @@
                   :key="index"
                 >
                   <div
-                    class="flex flex-row p-2 m-1 border border-gray-600 rounded-md"
+                    class="flex flex-row px-2 py-2 m-1 border border-gray-600 rounded-sm"
                   >
-                    <span>{{ keyword }}</span>
+                    <span class="font-bold text-gray-900">{{ keyword }}</span>
 
                     <button
-                      class="block w-5 h-5 pt-px mt-px text-green-400 hover:text-red-600 dark:hover:text-red-800"
+                      class="block w-5 h-5 pt-px mt-px ml-2 text-green-400 hover:text-red-600 dark:hover:text-red-800"
                       @mouseup="option.keywords = option.keywords.filter(x => x !== keyword)"
                     >
                       <svg
@@ -269,12 +269,77 @@
                   type="text"
                   :ref="`${key}-keywords-input`"
                   :placeholder="option.keywords.length === 0 ? `Add extensions...` : ``"
-                  @keypress.enter="
-                    $refs[`${key}-keywords-input`][0].value.length > 0 ? option.keywords.push($refs[`${key}-keywords-input`][0].value) : false;
-                    $refs[`${key}-keywords-input`][0].value = ``
-                  "
+                  @keypress.enter="handleKeyword(key, option.keywords)"
+                  @keypress.space="handleKeyword(key, option.keywords)"
+                  @blur="handleKeyword(key, option.keywords)"
                   @keydown.delete="$refs[`${key}-keywords-input`][0].value.length === 0 ? option.keywords.pop() : false"
                 >
+
+              </div>
+
+              <div
+                class="flex flex-row flex-wrap p-1"
+              >
+
+                <div
+                  v-for="(preset, index) of option.keywordPresets"
+                  :key="index"
+                >
+                  <div
+                    class="flex flex-row px-2 py-1 m-1 text-green-900 border border-green-900 rounded-sm hover:cursor-pointer"
+                    :class="
+                      presetState(preset.keywords, option.keywords) === `all` ? `bg-green-300` : 
+                      presetState(preset.keywords, option.keywords) === `some` ? `bg-green-100` :
+                      `bg-transparent`
+                    "
+                    @mouseup="togglePreset(preset, option.keywords)"
+                  >
+                    <span class="font-bold text-green-900">{{ preset.name }}</span>
+
+                    <button
+                      class="block w-5 h-5 pt-px mt-px ml-2"
+                      @click="togglePreset(preset, option.keywords)"
+                    >
+                      <svg
+                        v-if="presetState(preset.keywords, option.keywords) === `all`"
+                        class="w-5 h-5 stroke-current p-xs stroke-3.5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                      <svg
+                        v-else-if="presetState(preset.keywords, option.keywords) === `some`"
+                        class="w-5 h-5 stroke-current stroke-2.5 p-x"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect x="4" y="4" width="16" height="16" rx="2" />
+                        <line x1="9" y1="12" x2="15" y2="12" />
+                      </svg>
+                      <svg
+                        v-else
+                        class="w-5 h-5 stroke-current p-xs stroke-3.5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                      </svg>
+                    </button>
+                    
+                  </div>
+                </div>
 
               </div>
 
@@ -320,7 +385,7 @@ export default {
     advanced: {
       type: Boolean,
       default: function() {
-        return false;
+        return true; //FIXME change back
       }
     },
   },
@@ -376,6 +441,60 @@ export default {
     focusSearchbar() {
       console.log(`test`)
       this.$refs.searchField.focus();
+    },
+    handleKeyword(key, keywords) {
+
+      let inputValue = this.$refs[`${key}-keywords-input`][0].value.trim()
+      if (inputValue.length > 0) {
+        keywords.push(inputValue);
+      }
+      this.$refs[`${key}-keywords-input`][0].value = ``
+
+    },
+    // returns true if all elements of `arr1` are also part of `arr2`
+    isSubset(arr1, arr2) {
+      return arr1.reduce((sum, cur) => {
+        return sum && arr2.includes(cur)
+      }, true)
+    },
+    presetState(presetKeywords, allKeywords) {
+      let mode
+      if (this.isSubset(presetKeywords, allKeywords)) {
+        mode = `all`
+      }
+      else if (presetKeywords.reduce((sum, cur) => sum || allKeywords.includes(cur), false)) {
+        mode = `some`
+      } else {
+        mode = `none`
+      }
+      return mode
+    },
+    togglePreset(preset, currentKeywords) {
+      if (this.presetState(preset.keywords, currentKeywords) === `all`) {
+        // remove all preset keywords
+        // strange in-place workaround to preserve reactivity
+        preset.keywords.forEach(x => {
+          const index = currentKeywords.indexOf(x)
+          if (index > -1) {
+            currentKeywords.splice(index)
+          }
+        })
+        console.log(`currentKeywords:`, currentKeywords)
+      } else if (this.presetState(preset.keywords, currentKeywords) === `some`) {
+        // add all missing preset keywords
+        preset.keywords.forEach(x => {
+          if (!currentKeywords.includes(x)) {
+            currentKeywords.push(x)
+          }
+        })
+      } else {
+        // add all keywords, check for duplicates
+        preset.keywords.forEach(x => {
+          if (!currentKeywords.includes(x)) {
+            currentKeywords.push(x)
+          }
+        })
+      }
     }
   },
   mounted() {
