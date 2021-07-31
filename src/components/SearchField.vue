@@ -385,7 +385,7 @@ export default {
     advanced: {
       type: Boolean,
       default: function() {
-        return true; //FIXME change back
+        return false;
       }
     },
   },
