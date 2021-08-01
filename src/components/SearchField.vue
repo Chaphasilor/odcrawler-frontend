@@ -288,8 +288,8 @@
                   <div
                     class="flex flex-row px-2 py-1 m-1 text-green-900 border border-green-900 rounded-sm dark:border-green-400 dark:text-green-100 hover:cursor-pointer"
                     :class="
-                      presetState(preset.keywords, option.keywords) === `all` ? `bg-green-600` : 
-                      presetState(preset.keywords, option.keywords) === `some` ? `bg-green-900` :
+                      presetState(preset.keywords, option.keywords) === `all` ? `bg-green-300 dark:bg-green-600` : 
+                      presetState(preset.keywords, option.keywords) === `some` ? `bg-green-100 dark:bg-green-900` :
                       `bg-transparent`
                     "
                     @mouseup="togglePreset(preset, option.keywords)"
