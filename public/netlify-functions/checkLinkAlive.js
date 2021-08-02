@@ -71,7 +71,7 @@ function checkLink(urlData) {
   
       let contentLength = res.headers.get('Content-Length');
       // use libcurl fallback, supports getting Content-Length for 'chunked' encoding
-      if (contentLength === null) {
+      if (res.ok && contentLength === null) {
         console.info(`retrying with libcurl...`);
         try {
           console.log(`urlData.url:`, urlData.url)
