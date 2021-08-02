@@ -81,7 +81,7 @@ export default new Vuex.Store({
           },
           {
             name: `eBooks`,
-            keywords: [`epub`, `pdf`, `mobi`, `azw`],
+            keywords: [`epub`, `pdf`, `mobi`, `azw`, `azw3`, `cbr`, `iba`],
           },
         ],
       }

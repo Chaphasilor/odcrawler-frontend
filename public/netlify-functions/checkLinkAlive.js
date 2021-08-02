@@ -24,9 +24,20 @@ const fetchTimeout = (url, ms, options = {}) => {
   return promise.finally(() => clearTimeout(timeout));
 };
 
+function encodeUriOnce(url, useURIComponent = false) {
+
+  let decoder = useURIComponent ? decodeURIComponent : decodeURI
+  while(url !== decoder(url)) {
+    url = decoder(url);
+  }
+
+  return encodeURI(url);
+  
+}
+
 function resolveLink(url) {
 
-  let resolvedUrl = url;
+  let resolvedUrl = encodeUriOnce(url);
   let resolvedHeaders = {};
 
   if (url.includes(`driveindex.ga/`)) {
@@ -48,7 +59,7 @@ function checkLink(urlData) {
   return new Promise((resolve) => {
   
     const startTime = performance.now()
-    urlData.url = encodeURI(urlData.url);
+    urlData.url = encodeUriOnce(urlData.url);
 
     fetchTimeout(urlData.url, REQUEST_TIMEOUT, {
       method: `HEAD`,
