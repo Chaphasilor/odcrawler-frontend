@@ -44,7 +44,7 @@
         v-model="searchQuery"
         v-observe-visibility="handleVisibilityChanged"
         :focus="false"
-        :placeholder="`Search ${stats.totalIndexed} links...`"
+        :placeholder="`Search ${stats.totalIndexed || `millions of`} links...`"
         @search="search(searchQuery)"
       />
 

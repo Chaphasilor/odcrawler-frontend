@@ -112,6 +112,7 @@ function checkLink(urlData) {
       
       return resolve({
         statusCode: 504, // gateway timeout
+        isAlive: false,
         body: err.message,
         url: urlData.originalUrl,
       });
