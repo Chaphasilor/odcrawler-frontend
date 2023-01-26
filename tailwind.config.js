@@ -13,8 +13,8 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        'quicksand': ['Quicksand', 'serif', 'system-ui'],
-        'quicksand-bold': ['QuicksandBold', 'serif', 'system-ui'],
+        'quicksand': ['Quicksand', 'sans-serif', 'system-ui'],
+        'quicksand-bold': ['QuicksandBold', 'sans-serif', 'system-ui'],
       },
       borderWidth: {
         '3': '3px',

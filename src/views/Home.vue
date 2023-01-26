@@ -81,7 +81,7 @@
           class="w-full max-w-3xl mx-auto mt-2 mb-4 md:my-4"
           v-model="searchQuery"
           :focus="true"
-          :placeholder="`Search ${stats.totalIndexed || `millions of`} links${isLandscape ? ` in ${stats.aliveODs} open directories` : ``}...`"
+          :placeholder="`Search ${stats.totalIndexed || `millions of`} links${isLandscape ? ` in ${stats.aliveODs || ``} open directories` : ``}...`"
           @search="
             searchQuery.length > 0 ?
             $router.push({
