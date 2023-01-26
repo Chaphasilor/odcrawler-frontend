@@ -97,7 +97,7 @@
         <p
           class="w-full px-2 mx-auto mb-4 text-xs italic text-center text-gray-800 sm:px-10 md:w-192 md:text-sm dark:text-gray-600"
         >
-          Links are automatically aggregated from all over the Internet. Illegal Content might be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website which the link points to.
+          Links are automatically aggregated from all over the Internet. Malicious/infected, illegal, offensive, violent, disturbing or otherwise harmful content might be linked, but is in no way promoted or endorsed. If you have a problem with a link, please contact the owner of the hosting website which the link points to.
         </p>
 
       </div>
